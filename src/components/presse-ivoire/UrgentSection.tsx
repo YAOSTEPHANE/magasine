@@ -11,14 +11,14 @@ export function UrgentSection({ data }: UrgentSectionProps) {
   const [featured, ...rest] = data.articles;
 
   return (
-    <section id="urgent" className="home-band home-band--urgent" aria-label="Actualités urgentes">
+    <section id="urgent" className="home-band home-band--urgent" aria-label="Breaking news">
       <div className="container">
         <SectionHeader
           number="00"
-          eyebrow="Fil d'alerte"
-          title="🔥 Urgent — En Direct"
+          eyebrow="Alert feed"
+          title="🔥 Breaking — Live"
           linkHref="/urgent"
-          linkLabel="Toute l'urgent"
+          linkLabel="All breaking news"
         />
 
         {data.alerts.length > 0 && (
@@ -45,7 +45,7 @@ export function UrgentSection({ data }: UrgentSectionProps) {
               <SectionImage src={featured.image} alt={featured.title} sizes="(max-width: 768px) 100vw, 520px" />
               <span className="breaking-badge">
                 <span className="breaking-dot" />
-                Urgent
+                Breaking
               </span>
             </div>
             <div className="ec-card-h-content">

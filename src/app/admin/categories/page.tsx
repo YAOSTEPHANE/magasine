@@ -47,17 +47,17 @@ export default async function AdminCategoriesPage() {
 
   return (
     <div className="min-h-screen bg-muted-bg">
-      <AdminPageHeader title="Catégories" />
+      <AdminPageHeader title="Categories" />
       <div className="max-w-7xl mx-auto px-6 py-8">
         <div className="bg-surface border border-border rounded-sm overflow-hidden">
           <table className="w-full">
             <thead className="bg-muted-bg border-b border-border">
               <tr>
-                <th className="text-left px-6 py-4 text-xs font-bold uppercase text-muted">Nom</th>
+                <th className="text-left px-6 py-4 text-xs font-bold uppercase text-muted">Name</th>
                 <th className="text-left px-6 py-4 text-xs font-bold uppercase text-muted">Slug</th>
-                <th className="text-left px-6 py-4 text-xs font-bold uppercase text-muted">Ordre</th>
-                <th className="text-left px-6 py-4 text-xs font-bold uppercase text-muted">Statut</th>
-                <th className="text-right px-6 py-4 text-xs font-bold uppercase text-muted">Voir</th>
+                <th className="text-left px-6 py-4 text-xs font-bold uppercase text-muted">Order</th>
+                <th className="text-left px-6 py-4 text-xs font-bold uppercase text-muted">Status</th>
+                <th className="text-right px-6 py-4 text-xs font-bold uppercase text-muted">View</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
@@ -75,7 +75,7 @@ export default async function AdminCategoriesPage() {
                   </td>
                   <td className="px-6 py-4 text-right">
                     <Link href={`/categorie/${cat.slug}`} className="text-sm text-accent hover:underline">
-                      Voir →
+                      View →
                     </Link>
                   </td>
                 </tr>
@@ -84,7 +84,7 @@ export default async function AdminCategoriesPage() {
           </table>
         </div>
         <p className="text-xs text-muted mt-6">
-          Les catégories sont définies via le seed (<code>/api/seed</code>) ou directement en base MongoDB.
+          Categories are defined via the seed (<code>/api/seed</code>) or directly in the MongoDB database.
         </p>
       </div>
     </div>

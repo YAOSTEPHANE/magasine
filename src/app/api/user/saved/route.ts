@@ -12,25 +12,25 @@ const schema = z.object({
 export async function POST(request: NextRequest) {
   const session = await auth();
   if (!session?.user) {
-    return NextResponse.json({ error: "Connexion requise" }, { status: 401 });
+    return NextResponse.json({ error: "Sign in required" }, { status: 401 });
   }
 
   try {
     const body = await request.json();
     const parsed = schema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: "Données invalides" }, { status: 400 });
+      return NextResponse.json({ error: "Invalid data" }, { status: 400 });
     }
 
     await connectDB();
     const article = await Article.findById(parsed.data.articleId);
     if (!article) {
-      return NextResponse.json({ error: "Article introuvable" }, { status: 404 });
+      return NextResponse.json({ error: "Article not found" }, { status: 404 });
     }
 
     const user = await User.findById(session.user.id);
     if (!user) {
-      return NextResponse.json({ error: "Utilisateur introuvable" }, { status: 404 });
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
     const articleId = article._id;
@@ -51,6 +51,6 @@ export async function POST(request: NextRequest) {
     await user.save();
     return NextResponse.json({ saved });
   } catch {
-    return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }

@@ -74,10 +74,10 @@ export function EditorsChoiceSection({ data }: EditorsChoiceSectionProps) {
       <div className="container">
         <SectionHeader
           number="01"
-          eyebrow="Sélection éditoriale"
-          title="Choix de la Rédaction"
+          eyebrow="Editor's pick"
+          title="Editor's Choice"
           linkHref="/recherche"
-          linkLabel="Voir tout"
+          linkLabel="View all"
         />
         <div className="editors-horizontal">
           <HorizontalCard
@@ -88,7 +88,7 @@ export function EditorsChoiceSection({ data }: EditorsChoiceSectionProps) {
             author={featured.author}
             meta={featured.meta}
             tags={featured.tags}
-            ribbon="À la une"
+            ribbon="Featured"
           />
 
           <div className="editors-horizontal-grid">

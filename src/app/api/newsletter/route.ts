@@ -4,7 +4,7 @@ import { Newsletter } from "@/models/Newsletter";
 import { z } from "zod";
 
 const schema = z.object({
-  email: z.string().email("Email invalide"),
+  email: z.string().email("Invalid email"),
   preferences: z.array(z.string()).optional(),
 });
 
@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const parsed = schema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: "Email invalide" }, { status: 400 });
+      return NextResponse.json({ error: "Invalid email" }, { status: 400 });
     }
 
     await connectDB();
@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
         existing.isActive = true;
         await existing.save();
       }
-      return NextResponse.json({ message: "Déjà inscrit" });
+      return NextResponse.json({ message: "Already subscribed" });
     }
 
     await Newsletter.create({
@@ -31,8 +31,8 @@ export async function POST(request: NextRequest) {
       preferences: parsed.data.preferences ?? ["general"],
     });
 
-    return NextResponse.json({ message: "Inscription réussie" }, { status: 201 });
+    return NextResponse.json({ message: "Subscription successful" }, { status: 201 });
   } catch {
-    return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }

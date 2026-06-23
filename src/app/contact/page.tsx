@@ -26,10 +26,10 @@ export default function ContactPage() {
         setSuccess(true);
         setForm({ name: "", email: "", subject: "", message: "" });
       } else {
-        setError(data.error ?? "Erreur lors de l'envoi");
+        setError(data.error ?? "Error sending message");
       }
     } catch {
-      setError("Erreur réseau");
+      setError("Network error");
     } finally {
       setLoading(false);
     }
@@ -42,9 +42,9 @@ export default function ContactPage() {
     <div className="max-w-[1320px] mx-auto px-4 lg:px-6 py-16">
       <div className="text-center mb-12">
         <span className="text-[10px] font-bold tracking-[0.25em] uppercase text-gold">Contact</span>
-        <h1 className="font-serif text-4xl font-bold text-charcoal mt-2 mb-4">Nous contacter</h1>
+        <h1 className="font-serif text-4xl font-bold text-charcoal mt-2 mb-4">Contact us</h1>
         <p className="text-muted max-w-xl mx-auto">
-          Rédaction, partenariats, publicité ou signalement — notre équipe vous répond sous 48h ouvrées.
+          Editorial, partnerships, advertising or tips — our team will respond within 48 business hours.
         </p>
       </div>
 
@@ -52,8 +52,8 @@ export default function ContactPage() {
         <div className="space-y-6">
           {[
             { icon: Mail, label: "Email", value: "contact@globalsouthwatch.com" },
-            { icon: Phone, label: "Téléphone", value: "+225 27 00 00 00 00" },
-            { icon: MapPin, label: "Siège", value: "Abidjan, Côte d'Ivoire" },
+            { icon: Phone, label: "Phone", value: "+225 27 00 00 00 00" },
+            { icon: MapPin, label: "Headquarters", value: "Abidjan, Côte d'Ivoire" },
           ].map(({ icon: Icon, label, value }) => (
             <div key={label} className="flex items-start gap-4 p-4 bg-surface border border-border rounded-sm">
               <Icon className="w-5 h-5 text-gold mt-0.5 shrink-0" />
@@ -64,7 +64,7 @@ export default function ContactPage() {
             </div>
           ))}
           <div className="p-4 bg-surface border border-border rounded-sm">
-            <p className="text-xs font-bold tracking-wider uppercase text-muted mb-3">Réseaux sociaux</p>
+            <p className="text-xs font-bold tracking-wider uppercase text-muted mb-3">Social media</p>
             <SocialLinks variant="inline" iconClassName="w-5 h-5" />
           </div>
         </div>
@@ -72,21 +72,21 @@ export default function ContactPage() {
         <div className="lg:col-span-2">
           {success ? (
             <div className="bg-gold-light border border-gold/30 rounded-sm p-8 text-center">
-              <p className="font-serif text-xl font-bold text-gold-dark mb-2">Message envoyé</p>
-              <p className="text-sm text-muted">Merci ! Nous reviendrons vers vous très prochainement.</p>
+              <p className="font-serif text-xl font-bold text-gold-dark mb-2">Message sent</p>
+              <p className="text-sm text-muted">Thank you! We will get back to you shortly.</p>
               <button
                 type="button"
                 onClick={() => setSuccess(false)}
                 className="mt-4 text-sm text-accent hover:underline"
               >
-                Envoyer un autre message
+                Send another message
               </button>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="bg-surface border border-border rounded-sm p-8 space-y-5">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div>
-                  <label className="block text-xs font-medium tracking-wider uppercase text-muted mb-2">Nom</label>
+                  <label className="block text-xs font-medium tracking-wider uppercase text-muted mb-2">Name</label>
                   <input
                     className={inputClass}
                     value={form.name}
@@ -106,7 +106,7 @@ export default function ContactPage() {
                 </div>
               </div>
               <div>
-                <label className="block text-xs font-medium tracking-wider uppercase text-muted mb-2">Sujet</label>
+                <label className="block text-xs font-medium tracking-wider uppercase text-muted mb-2">Subject</label>
                 <input
                   className={inputClass}
                   value={form.subject}
@@ -126,7 +126,7 @@ export default function ContactPage() {
               </div>
               {error && <p className="text-sm text-red-600">{error}</p>}
               <Button type="submit" variant="gold" disabled={loading}>
-                {loading ? "Envoi..." : "Envoyer le message"}
+                {loading ? "Sending..." : "Send message"}
               </Button>
             </form>
           )}

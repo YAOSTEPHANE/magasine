@@ -9,7 +9,7 @@ interface HomeInsightsBandProps {
 
 export function HomeInsightsBand({ opinions, thematic }: HomeInsightsBandProps) {
   return (
-    <section className="home-band home-band--insights" aria-label="Analyses et rubriques">
+    <section className="home-band home-band--insights" aria-label="Analysis and sections">
       <div className="container home-insights-layout">
         <OpinionSectionHome data={opinions} embedded />
         <ThematicSectionHome data={thematic} embedded />

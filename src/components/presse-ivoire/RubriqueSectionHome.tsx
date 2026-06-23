@@ -18,7 +18,7 @@ export function RubriqueSectionHome({ block, index }: RubriqueSectionHomeProps) 
       <div className="rubrique-block-header">
         <h3 className="rubrique-block-title">{block.title}</h3>
         <Link href={block.href} className="rubrique-block-link">
-          Voir tout
+          View all
         </Link>
       </div>
 
@@ -33,7 +33,7 @@ export function RubriqueSectionHome({ block, index }: RubriqueSectionHomeProps) 
               <div className="ec-card-title ec-card-title-sm">{featured.title}</div>
               {featured.excerpt && <p className="ec-card-excerpt ec-card-excerpt-sm">{featured.excerpt}</p>}
               <div className="ec-card-meta">
-                <span>{featured.author ?? "Rédaction"}</span>
+                <span>{featured.author ?? "Editorial team"}</span>
                 <span>·</span>
                 <span>{featured.meta}</span>
               </div>

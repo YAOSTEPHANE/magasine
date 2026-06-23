@@ -43,13 +43,13 @@ export function ArticleBody({ article, truncated = false }: ArticleBodyProps) {
             <div>
               <span className="article-podcast-label">Podcast · Global South Talks</span>
               <p className="article-podcast-desc">
-                Écoutez cet épisode dans votre application podcast préférée ou lisez la transcription ci-dessous.
+                Listen to this episode in your favorite podcast app or read the transcript below.
               </p>
             </div>
             {embedUrl && (
               <a href={embedUrl} className="article-podcast-play" target="_blank" rel="noopener noreferrer">
                 <Play className="w-4 h-4" />
-                Écouter
+                Listen
               </a>
             )}
           </div>

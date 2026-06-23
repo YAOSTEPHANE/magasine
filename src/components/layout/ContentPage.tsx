@@ -69,7 +69,7 @@ export function ContentCta({
 export function ContentSocialBlock() {
   return (
     <div className="mt-12 pt-8 border-t border-border">
-      <p className="text-sm text-muted mb-4">Suivez Global South Watch</p>
+      <p className="text-sm text-muted mb-4">Follow Global South Watch</p>
       <SocialLinks variant="inline" iconClassName="w-5 h-5" />
     </div>
   );

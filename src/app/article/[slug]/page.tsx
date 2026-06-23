@@ -20,7 +20,7 @@ export const revalidate = 60;
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const data = await getArticleBySlug(slug);
-  if (!data) return { title: "Article introuvable" };
+  if (!data) return { title: "Article not found" };
 
   return {
     title: data.article.seoTitle ?? data.article.title,

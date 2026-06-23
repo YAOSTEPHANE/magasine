@@ -53,7 +53,7 @@ export function SaveArticleButton({ articleId }: { articleId: string }) {
       }`}
     >
       <Bookmark className={`w-4 h-4 ${saved ? "fill-current" : ""}`} />
-      {saved ? "Enregistré" : "Sauvegarder"}
+      {saved ? "Saved" : "Save"}
     </button>
   );
 }

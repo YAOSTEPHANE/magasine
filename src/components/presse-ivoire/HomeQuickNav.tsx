@@ -57,10 +57,10 @@ export function HomeQuickNav({ categories }: HomeQuickNavProps) {
   const items: NavItem[] = [URGENT_LINK, ...rubriques];
 
   return (
-    <nav className="home-quick-nav home-quick-nav--revolution" aria-label="Rubriques rapides">
+    <nav className="home-quick-nav home-quick-nav--revolution" aria-label="Quick sections">
       <div className="container home-quick-nav-wrap">
         <div className="home-quick-nav-head">
-          <span className="home-quick-nav-label">Rubriques</span>
+          <span className="home-quick-nav-label">Sections</span>
           <span className="home-quick-nav-brand">
             <span className="home-quick-nav-brand-dot" aria-hidden />
             Global South Watch

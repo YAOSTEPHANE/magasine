@@ -11,14 +11,14 @@ const schema = z.object({
 export async function POST(request: NextRequest) {
   const session = await auth();
   if (!session?.user) {
-    return NextResponse.json({ error: "Connexion requise" }, { status: 401 });
+    return NextResponse.json({ error: "Sign in required" }, { status: 401 });
   }
 
   try {
     const body = await request.json();
     const parsed = schema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: "Plan invalide" }, { status: 400 });
+      return NextResponse.json({ error: "Invalid plan" }, { status: 400 });
     }
 
     await connectDB();
@@ -27,9 +27,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       success: true,
       plan: parsed.data.plan,
-      message: "Abonnement Premium activé (mode démo — sans paiement réel)",
+      message: "Premium subscription activated (demo mode — no real payment)",
     });
   } catch {
-    return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }

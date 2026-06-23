@@ -16,10 +16,10 @@ export function OpinionSectionHome({ data, embedded = false }: OpinionSectionHom
       <div className={embedded ? undefined : "container"}>
         <SectionHeader
           number="04"
-          eyebrow="Tribunes"
-          title="Opinions & Analyses"
+          eyebrow="Op-eds"
+          title="Opinions & Analysis"
           linkHref="/categorie/opinion"
-          linkLabel="Toutes les tribunes"
+          linkLabel="All op-eds"
           italic
         />
         <div className="opinion-row">
@@ -48,7 +48,7 @@ export function OpinionSectionHome({ data, embedded = false }: OpinionSectionHom
                 </div>
               </div>
               <Link href={op.slug ?? "/categorie/opinion"} className="opinion-read-link">
-                Lire la tribune →
+                Read the op-ed →
               </Link>
             </article>
           ))}

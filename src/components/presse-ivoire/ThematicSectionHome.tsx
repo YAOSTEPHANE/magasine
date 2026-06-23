@@ -14,10 +14,10 @@ export function ThematicSectionHome({ data, embedded = false }: ThematicSectionH
       <div className={embedded ? undefined : "container"}>
         <SectionHeader
           number="05"
-          eyebrow="Rubriques"
-          title="À la Une par Thème"
+          eyebrow="Sections"
+          title="Featured by Theme"
           linkHref="/recherche"
-          linkLabel="Toutes les rubriques"
+          linkLabel="All sections"
         />
         <div className="thematic-grid thematic-grid-premium">
           {data.map((col, i) => (
@@ -25,7 +25,7 @@ export function ThematicSectionHome({ data, embedded = false }: ThematicSectionH
               <div className="thematic-col-header">
                 <span className="thematic-col-title">{col.title}</span>
                 <Link href={col.href} className="thematic-col-link">
-                  Voir tout
+                  View all
                 </Link>
               </div>
               {col.main.slug ? (

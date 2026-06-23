@@ -37,17 +37,17 @@ export default function ProfilPage() {
   }, [session]);
 
   if (status === "loading") {
-    return <div className="max-w-4xl mx-auto px-6 py-16 text-center text-muted">Chargement...</div>;
+    return <div className="max-w-4xl mx-auto px-6 py-16 text-center text-muted">Loading...</div>;
   }
 
   if (!session?.user) {
     return (
       <div className="max-w-md mx-auto px-6 py-24 text-center">
         <User className="w-12 h-12 text-muted mx-auto mb-4" />
-        <h1 className="font-serif text-2xl font-bold text-charcoal mb-4">Mon espace lecteur</h1>
-        <p className="text-muted mb-6">Connectez-vous pour accéder à vos articles sauvegardés et votre historique.</p>
+        <h1 className="font-serif text-2xl font-bold text-charcoal mb-4">My reader space</h1>
+        <p className="text-muted mb-6">Sign in to access your saved articles and reading history.</p>
         <Link href="/connexion" className="inline-block px-6 py-3 bg-charcoal text-white text-sm rounded-sm hover:bg-charcoal/90">
-          Se connecter
+          Sign in
         </Link>
       </div>
     );
@@ -64,11 +64,11 @@ export default function ProfilPage() {
           <p className="text-muted text-sm mt-1">{session.user.email}</p>
           {session.user.isPremium ? (
             <span className="inline-flex items-center gap-1.5 mt-3 px-3 py-1 bg-gold-light text-gold-dark text-xs font-bold tracking-wider uppercase rounded-sm">
-              <Crown className="w-3.5 h-3.5" /> Premium actif
+              <Crown className="w-3.5 h-3.5" /> Premium active
             </span>
           ) : (
             <Link href="/abonnement" className="inline-block mt-3 text-sm text-accent hover:underline">
-              Passer à Premium →
+              Upgrade to Premium →
             </Link>
           )}
         </div>
@@ -77,7 +77,7 @@ export default function ProfilPage() {
       <section className="mb-12">
         <h2 className="font-serif text-xl font-bold text-charcoal mb-6 flex items-center gap-2">
           <Bookmark className="w-5 h-5 text-gold" />
-          Articles sauvegardés
+          Saved articles
         </h2>
         {profile?.savedArticles.length ? (
           <div className="space-y-4">
@@ -87,7 +87,7 @@ export default function ProfilPage() {
           </div>
         ) : (
           <p className="text-sm text-muted py-8 text-center bg-muted-bg rounded-sm">
-            Aucun article sauvegardé. Cliquez sur « Sauvegarder » depuis un article.
+            No saved articles. Click &ldquo;Save&rdquo; from an article.
           </p>
         )}
       </section>
@@ -95,7 +95,7 @@ export default function ProfilPage() {
       <section>
         <h2 className="font-serif text-xl font-bold text-charcoal mb-6 flex items-center gap-2">
           <Clock className="w-5 h-5 text-gold" />
-          Historique de lecture
+          Reading history
         </h2>
         {profile?.readingHistory.length ? (
           <div className="space-y-4">
@@ -105,7 +105,7 @@ export default function ProfilPage() {
           </div>
         ) : (
           <p className="text-sm text-muted py-8 text-center bg-muted-bg rounded-sm">
-            Votre historique apparaîtra ici au fur et à mesure de vos lectures.
+            Your reading history will appear here as you read.
           </p>
         )}
       </section>

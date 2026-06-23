@@ -15,10 +15,10 @@ export function LatestSection({ data }: LatestSectionProps) {
       <div className="container">
         <SectionHeader
           number="02"
-          eyebrow="En direct"
-          title="Dernières Mises à Jour"
+          eyebrow="Live"
+          title="Latest Updates"
           linkHref="/recherche"
-          linkLabel="Voir tout"
+          linkLabel="View all"
         />
         <div className="latest-layout">
           <Link href={featured.slug ?? "#"} className="latest-featured-h reveal">

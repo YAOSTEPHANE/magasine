@@ -40,8 +40,8 @@ export function ArticleDetailView({
     <article className="article-page article-page--revolution">
       <PageBackdrop />
       <div className="container article-page-inner">
-        <nav className="article-breadcrumb article-reveal" aria-label="Fil d'Ariane">
-          <Link href="/">Accueil</Link>
+        <nav className="article-breadcrumb article-reveal" aria-label="Breadcrumb">
+          <Link href="/">Home</Link>
           <span aria-hidden>/</span>
           <Link href={`/categorie/${article.category.slug}`}>{article.category.name}</Link>
           <span aria-hidden>/</span>
@@ -53,9 +53,9 @@ export function ArticleDetailView({
             <span className="tag">{article.category.name}</span>
             {article.isUrgent && <span className="tag article-tag-urgent">🔥 Urgent</span>}
             {article.isPremium && <span className="premium-badge">Premium</span>}
-            {article.contentType === "video" && <span className="tag gold">Vidéo</span>}
+            {article.contentType === "video" && <span className="tag gold">Video</span>}
             {article.contentType === "podcast" && <span className="tag gold">Podcast</span>}
-            {badge !== "Actualité" && badge !== article.category.name && !article.isUrgent && (
+            {badge !== "News" && badge !== article.category.name && !article.isUrgent && (
               <span className="tag outline">{badge}</span>
             )}
           </div>
@@ -98,7 +98,7 @@ export function ArticleDetailView({
                   <span className="article-meta-dot" aria-hidden>·</span>
                   <span className="article-meta-views">
                     <Eye className="w-3.5 h-3.5" aria-hidden />
-                    {article.views.toLocaleString("fr-FR")} vues
+                    {article.views.toLocaleString("en-US")} views
                   </span>
                 </>
               )}
@@ -142,10 +142,10 @@ export function ArticleDetailView({
 
             {author?.bio && (
               <aside className="article-author-box">
-                <h3>À propos de l&apos;auteur</h3>
+                <h3>About the author</h3>
                 <p>{author.bio}</p>
                 <Link href={`/auteur/${author.slug}`} className="read-more">
-                  Voir tous ses articles
+                  View all their articles
                 </Link>
               </aside>
             )}
@@ -165,12 +165,12 @@ export function ArticleDetailView({
         </div>
 
         {(navigation.prev || navigation.next) && (
-          <nav className="article-nav article-reveal article-reveal--delay-4" aria-label="Navigation entre articles">
+          <nav className="article-nav article-reveal article-reveal--delay-4" aria-label="Article navigation">
             {navigation.prev ? (
               <Link href={`/article/${navigation.prev.slug}`} className="article-nav-link article-nav-link--prev">
                 <span className="article-nav-label">
                   <ChevronLeft className="w-4 h-4" aria-hidden />
-                  Précédent
+                  Previous
                 </span>
                 <span className="article-nav-title">{navigation.prev.title}</span>
               </Link>
@@ -180,7 +180,7 @@ export function ArticleDetailView({
             {navigation.next ? (
               <Link href={`/article/${navigation.next.slug}`} className="article-nav-link article-nav-link--next">
                 <span className="article-nav-label">
-                  Suivant
+                  Next
                   <ChevronRight className="w-4 h-4" aria-hidden />
                 </span>
                 <span className="article-nav-title">{navigation.next.title}</span>
@@ -192,7 +192,7 @@ export function ArticleDetailView({
         {related.length > 0 && (
           <section className="article-related article-reveal article-reveal--delay-5" aria-labelledby="related-heading">
             <h2 id="related-heading" className="article-related-title">
-              Articles liés
+              Related articles
             </h2>
             <div className="article-related-grid">
               {related.map((a) => (

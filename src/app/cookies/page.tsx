@@ -3,57 +3,57 @@ import Link from "next/link";
 import { ContentPage, ContentSection } from "@/components/layout/ContentPage";
 
 export const metadata: Metadata = {
-  title: "Politique cookies",
-  description: "Utilisation des cookies sur Global South Watch.",
+  title: "Cookie policy",
+  description: "How Global South Watch uses cookies.",
 };
 
 export default function CookiesPage() {
   return (
     <ContentPage
       eyebrow="Cookies"
-      title="Politique de cookies"
-      description="Cette page explique comment Global South Watch utilise les cookies et technologies similaires."
+      title="Cookie policy"
+      description="This page explains how Global South Watch uses cookies and similar technologies."
     >
-      <ContentSection title="Qu'est-ce qu'un cookie ?">
+      <ContentSection title="What is a cookie?">
         <p>
-          Un cookie est un petit fichier texte déposé sur votre appareil lors de la visite d&apos;un site.
-          Il permet de mémoriser vos préférences et d&apos;améliorer votre expérience de navigation.
+          A cookie is a small text file placed on your device when you visit a website.
+          It helps remember your preferences and improve your browsing experience.
         </p>
       </ContentSection>
 
-      <ContentSection title="Cookies utilisés">
+      <ContentSection title="Cookies we use">
         <ul className="space-y-4 not-prose">
           <li className="p-4 border border-border rounded-sm">
-            <strong className="text-charcoal">Cookies essentiels</strong>
+            <strong className="text-charcoal">Essential cookies</strong>
             <p className="text-sm text-muted mt-1">
-              Session utilisateur, authentification, sécurité. Indispensables au fonctionnement du site.
+              User session, authentication, security. Required for the site to function.
             </p>
           </li>
           <li className="p-4 border border-border rounded-sm">
-            <strong className="text-charcoal">Cookies analytiques</strong>
+            <strong className="text-charcoal">Analytics cookies</strong>
             <p className="text-sm text-muted mt-1">
-              Mesure d&apos;audience anonymisée pour comprendre comment nos lecteurs utilisent le site.
+              Anonymized audience measurement to understand how readers use the site.
             </p>
           </li>
           <li className="p-4 border border-border rounded-sm">
-            <strong className="text-charcoal">Cookies de préférences</strong>
+            <strong className="text-charcoal">Preference cookies</strong>
             <p className="text-sm text-muted mt-1">
-              Mémorisation de vos choix (langue, newsletter, articles sauvegardés).
+              Remembering your choices (language, newsletter, saved articles).
             </p>
           </li>
         </ul>
       </ContentSection>
 
-      <ContentSection title="Gérer vos cookies">
+      <ContentSection title="Managing your cookies">
         <p>
-          Vous pouvez configurer votre navigateur pour refuser les cookies non essentiels.
-          La désactivation des cookies essentiels peut limiter certaines fonctionnalités (connexion, abonnement).
+          You can configure your browser to refuse non-essential cookies.
+          Disabling essential cookies may limit certain features (sign-in, subscription).
         </p>
       </ContentSection>
 
       <p className="text-sm text-muted pt-8 border-t border-border">
         <Link href="/confidentialite" className="text-accent hover:underline">
-          Politique de confidentialité complète →
+          Full privacy policy →
         </Link>
       </p>
     </ContentPage>

@@ -7,7 +7,7 @@ import { canManageArticles } from "@/lib/permissions";
 export async function GET() {
   const session = await auth();
   if (!session?.user || !canManageArticles(session.user.role)) {
-    return NextResponse.json({ error: "Non autorisé" }, { status: 403 });
+    return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   }
 
   try {
@@ -42,13 +42,13 @@ export async function GET() {
 export async function PATCH(request: NextRequest) {
   const session = await auth();
   if (!session?.user || !canManageArticles(session.user.role)) {
-    return NextResponse.json({ error: "Non autorisé" }, { status: 403 });
+    return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   }
 
   try {
     const { commentId, action } = await request.json();
     if (!commentId || !["approve", "reject", "delete"].includes(action)) {
-      return NextResponse.json({ error: "Action invalide" }, { status: 400 });
+      return NextResponse.json({ error: "Invalid action" }, { status: 400 });
     }
 
     await connectDB();

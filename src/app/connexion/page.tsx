@@ -24,7 +24,7 @@ export default function LoginPage() {
     });
 
     if (result?.error) {
-      setError("Email ou mot de passe incorrect");
+      setError("Incorrect email or password");
       setLoading(false);
     } else {
       window.location.href = "/";
@@ -36,7 +36,7 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         <div className="text-center mb-10">
           <BrandLogo variant="auth" />
-          <p className="text-muted mt-4">Connectez-vous à votre compte</p>
+          <p className="text-muted mt-4">Sign in to your account</p>
         </div>
 
         <div className="bg-surface border border-border rounded-sm p-8 shadow-card">
@@ -56,7 +56,7 @@ export default function LoginPage() {
             </div>
             <div>
               <label htmlFor="password" className="block text-xs font-medium tracking-wider uppercase text-muted mb-2">
-                Mot de passe
+                Password
               </label>
               <input
                 id="password"
@@ -69,7 +69,7 @@ export default function LoginPage() {
             </div>
             {error && <p className="text-sm text-accent">{error}</p>}
             <Button type="submit" variant="gold" className="w-full" disabled={loading}>
-              {loading ? "Connexion..." : "Se connecter"}
+              {loading ? "Signing in..." : "Sign in"}
             </Button>
           </form>
 
@@ -78,7 +78,7 @@ export default function LoginPage() {
               <div className="w-full border-t border-border" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-surface px-4 text-muted">ou</span>
+              <span className="bg-surface px-4 text-muted">or</span>
             </div>
           </div>
 
@@ -92,13 +92,13 @@ export default function LoginPage() {
               <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
               <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
             </svg>
-            Continuer avec Google
+            Continue with Google
           </button>
 
           <p className="text-center text-sm text-muted mt-8">
-            Pas encore de compte ?{" "}
+            Don&apos;t have an account yet?{" "}
             <Link href="/inscription" className="text-accent hover:text-accent-hover font-medium">
-              S&apos;inscrire
+              Sign up
             </Link>
           </p>
         </div>

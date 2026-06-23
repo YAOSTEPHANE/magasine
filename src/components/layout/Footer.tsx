@@ -7,24 +7,24 @@ import { Button } from "@/components/ui/Button";
 
 const footerLinks = {
   rubriques: [
-    { label: "Actualités", href: "/categorie/actualites" },
-    { label: "Monde", href: "/categorie/monde" },
+    { label: "News", href: "/categorie/actualites" },
+    { label: "World", href: "/categorie/monde" },
     { label: "Finance", href: "/categorie/finance" },
-    { label: "Technologie", href: "/categorie/technologie" },
+    { label: "Technology", href: "/categorie/technologie" },
     { label: "Sports", href: "/categorie/sports" },
-    { label: "Santé", href: "/categorie/sante" },
+    { label: "Health", href: "/categorie/sante" },
   ],
   magazine: [
-    { label: "Choix de la Rédaction", href: "/#editors-choice" },
+    { label: "Editor's Choice", href: "/#editors-choice" },
     { label: "Investigations", href: "/categorie/investigations" },
-    { label: "Reportages Spéciaux", href: "/categorie/reportages-speciaux" },
+    { label: "Special Reports", href: "/categorie/reportages-speciaux" },
     { label: "Opinion", href: "/categorie/opinion" },
-    { label: "Multimédia", href: "/categorie/multimedia" },
+    { label: "Multimedia", href: "/categorie/multimedia" },
   ],
   legal: [
-    { label: "Mentions légales", href: "/mentions-legales" },
-    { label: "Politique de confidentialité", href: "/confidentialite" },
-    { label: "CGU", href: "/cgu" },
+    { label: "Legal notice", href: "/mentions-legales" },
+    { label: "Privacy policy", href: "/confidentialite" },
+    { label: "Terms of use", href: "/cgu" },
     { label: "Contact", href: "/contact" },
   ],
 };
@@ -74,8 +74,8 @@ export function Footer() {
               </span>
             </Link>
             <p className="text-white/60 text-sm leading-relaxed mb-6">
-              Votre portail magazine premium. Information de qualité, analyses
-              approfondies et reportages d&apos;exception.
+              Your premium magazine portal. Quality journalism, in-depth analysis,
+              and exceptional reporting.
             </p>
             <div className="flex gap-3">
               {socialLinks.map(({ href, label, letter }) => (
@@ -93,7 +93,7 @@ export function Footer() {
 
           <div>
             <h4 className="text-[11px] font-bold tracking-[0.2em] uppercase text-gold mb-6">
-              Rubriques
+              Sections
             </h4>
             <ul className="space-y-3">
               {footerLinks.rubriques.map((link) => (
@@ -111,7 +111,7 @@ export function Footer() {
 
           <div>
             <h4 className="text-[11px] font-bold tracking-[0.2em] uppercase text-gold mb-6">
-              Le Magazine
+              The Magazine
             </h4>
             <ul className="space-y-3">
               {footerLinks.magazine.map((link) => (
@@ -132,7 +132,7 @@ export function Footer() {
               Newsletter
             </h4>
             <p className="text-sm text-white/60 mb-4">
-              Recevez chaque matin l&apos;essentiel de l&apos;actualité.
+              Get the day&apos;s essential headlines every morning.
             </p>
             <form onSubmit={handleNewsletter} className="space-y-3">
               <div className="relative">
@@ -141,7 +141,7 @@ export function Footer() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="votre@email.com"
+                  placeholder="you@email.com"
                   required
                   className="w-full pl-10 pr-4 py-3 bg-white/5 border border-white/10 rounded-sm text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-gold"
                 />
@@ -153,13 +153,13 @@ export function Footer() {
                 className="w-full"
                 disabled={status === "loading"}
               >
-                {status === "loading" ? "Inscription..." : "S'abonner"}
+                {status === "loading" ? "Subscribing..." : "Subscribe"}
               </Button>
               {status === "success" && (
-                <p className="text-xs text-gold">Inscription réussie !</p>
+                <p className="text-xs text-gold">Successfully subscribed!</p>
               )}
               {status === "error" && (
-                <p className="text-xs text-accent">Une erreur est survenue.</p>
+                <p className="text-xs text-accent">Something went wrong.</p>
               )}
             </form>
           </div>
@@ -168,7 +168,7 @@ export function Footer() {
         <div className="gold-line my-10 opacity-30" />
 
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-white/40">
-          <p>© {new Date().getFullYear()} Global South Watch — Digitalpro Solutions. Tous droits réservés.</p>
+          <p>© {new Date().getFullYear()} Global South Watch — Digitalpro Solutions. All rights reserved.</p>
           <div className="flex gap-6">
             {footerLinks.legal.map((link) => (
               <Link

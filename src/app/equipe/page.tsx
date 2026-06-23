@@ -4,8 +4,8 @@ import Link from "next/link";
 import { getAllAuthors } from "@/lib/data";
 
 export const metadata: Metadata = {
-  title: "Notre équipe",
-  description: "Les journalistes, correspondants et chroniqueurs de Global South Watch.",
+  title: "Our team",
+  description: "The journalists, correspondents and columnists of Global South Watch.",
 };
 
 export default async function EquipePage() {
@@ -14,11 +14,11 @@ export default async function EquipePage() {
   return (
     <div className="max-w-[1320px] mx-auto px-4 lg:px-6 py-16">
       <div className="text-center mb-14">
-        <span className="text-[10px] font-bold tracking-[0.25em] uppercase text-gold">Rédaction</span>
-        <h1 className="font-serif text-4xl font-bold text-charcoal mt-2 mb-4">Notre équipe</h1>
+        <span className="text-[10px] font-bold tracking-[0.25em] uppercase text-gold">Editorial</span>
+        <h1 className="font-serif text-4xl font-bold text-charcoal mt-2 mb-4">Our team</h1>
         <p className="text-muted max-w-2xl mx-auto">
-          Des journalistes passionnés, ancrés sur le terrain, au service d&apos;une information
-          fiable et engagée pour le Sud global.
+          Passionate journalists, rooted in the field, delivering reliable and committed
+          reporting for the Global South.
         </p>
       </div>
 
@@ -47,7 +47,7 @@ export default async function EquipePage() {
               <p className="text-sm text-muted mt-2 line-clamp-3 leading-relaxed">{author.bio}</p>
             )}
             <span className="inline-block mt-4 text-xs font-bold tracking-wider uppercase text-accent">
-              Voir les articles →
+              View articles →
             </span>
           </Link>
         ))}

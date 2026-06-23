@@ -20,13 +20,13 @@ export function SiteFooter() {
               />
             </Link>
             <p className="footer-brand-desc">
-              Global South Watch — le portail d&apos;information de référence pour l&apos;Afrique et le Sud global. Journalisme indépendant, rigoureux et engagé.
+              Global South Watch — the leading news portal for Africa and the Global South. Independent, rigorous, and committed journalism.
             </p>
             <SocialLinks />
           </div>
           <div className="footer-cols">
             <div className="footer-col">
-              <div className="footer-col-title">Rubriques</div>
+              <div className="footer-col-title">Sections</div>
               <ul>
                 {FOOTER_COLS.rubriques.map((l) => (
                   <li key={l.label}><Link href={l.href}>{l.label}</Link></li>
@@ -50,7 +50,7 @@ export function SiteFooter() {
               </ul>
             </div>
             <div className="footer-col">
-              <div className="footer-col-title">Légal</div>
+              <div className="footer-col-title">Legal</div>
               <ul>
                 {FOOTER_COLS.legal.map((l) => (
                   <li key={l.label}><Link href={l.href}>{l.label}</Link></li>
@@ -60,11 +60,11 @@ export function SiteFooter() {
           </div>
         </div>
         <div className="footer-bottom">
-          <span>© {new Date().getFullYear()} Global South Watch — Digitalpro Solutions. Tous droits réservés.</span>
+          <span>© {new Date().getFullYear()} Global South Watch — Digitalpro Solutions. All rights reserved.</span>
           <div className="footer-bottom-links">
             <Link href="/sitemap.xml">Sitemap</Link>
             <a href="/api/feed">RSS</a>
-            <Link href="/accessibilite">Accessibilité</Link>
+            <Link href="/accessibilite">Accessibility</Link>
           </div>
         </div>
       </div>

@@ -78,14 +78,14 @@ export default function NewArticlePage() {
           <Link href="/admin/articles" className="text-white/60 hover:text-white">
             <ArrowLeft className="w-5 h-5" />
           </Link>
-          <h1 className="font-serif text-xl font-bold">Nouvel article</h1>
+          <h1 className="font-serif text-xl font-bold">New article</h1>
         </div>
       </div>
 
       <form onSubmit={handleSubmit} className="max-w-4xl mx-auto px-6 py-8 space-y-6">
         <div className="bg-surface border border-border rounded-sm p-6 space-y-5">
           <div>
-            <label className={labelClass}>Titre</label>
+            <label className={labelClass}>Title</label>
             <input
               className={inputClass}
               value={form.title}
@@ -94,7 +94,7 @@ export default function NewArticlePage() {
             />
           </div>
           <div>
-            <label className={labelClass}>Sous-titre</label>
+            <label className={labelClass}>Subtitle</label>
             <input
               className={inputClass}
               value={form.subtitle}
@@ -102,7 +102,7 @@ export default function NewArticlePage() {
             />
           </div>
           <div>
-            <label className={labelClass}>Chapô / Extrait</label>
+            <label className={labelClass}>Lead / Excerpt</label>
             <textarea
               className={`${inputClass} resize-none`}
               rows={3}
@@ -112,7 +112,7 @@ export default function NewArticlePage() {
             />
           </div>
           <div>
-            <label className={labelClass}>Contenu (HTML)</label>
+            <label className={labelClass}>Content (HTML)</label>
             <textarea
               className={`${inputClass} resize-y font-mono text-sm`}
               rows={12}
@@ -122,7 +122,7 @@ export default function NewArticlePage() {
             />
           </div>
           <div>
-            <label className={labelClass}>Image à la une (URL)</label>
+            <label className={labelClass}>Featured image (URL)</label>
             <input
               className={inputClass}
               value={form.featuredImage}
@@ -134,35 +134,35 @@ export default function NewArticlePage() {
 
         <div className="bg-surface border border-border rounded-sm p-6 grid grid-cols-1 md:grid-cols-2 gap-5">
           <div>
-            <label className={labelClass}>Catégorie</label>
+            <label className={labelClass}>Category</label>
             <select
               className={inputClass}
               value={form.categoryId}
               onChange={(e) => setForm({ ...form, categoryId: e.target.value })}
               required
             >
-              <option value="">Sélectionner</option>
+              <option value="">Select</option>
               {categories.map((c) => (
                 <option key={c._id} value={c._id}>{c.name}</option>
               ))}
             </select>
           </div>
           <div>
-            <label className={labelClass}>Auteur</label>
+            <label className={labelClass}>Author</label>
             <select
               className={inputClass}
               value={form.authorId}
               onChange={(e) => setForm({ ...form, authorId: e.target.value })}
               required
             >
-              <option value="">Sélectionner</option>
+              <option value="">Select</option>
               {authors.map((a) => (
                 <option key={a._id} value={a._id}>{a.name}</option>
               ))}
             </select>
           </div>
           <div>
-            <label className={labelClass}>Tags (séparés par virgule)</label>
+            <label className={labelClass}>Tags (comma-separated)</label>
             <input
               className={inputClass}
               value={form.tags}
@@ -170,28 +170,28 @@ export default function NewArticlePage() {
             />
           </div>
           <div>
-            <label className={labelClass}>Statut</label>
+            <label className={labelClass}>Status</label>
             <select
               className={inputClass}
               value={form.status}
               onChange={(e) => setForm({ ...form, status: e.target.value })}
             >
-              <option value="draft">Brouillon</option>
-              <option value="review">En révision</option>
-              <option value="published">Publié</option>
-              <option value="archived">Archivé</option>
+              <option value="draft">Draft</option>
+              <option value="review">In review</option>
+              <option value="published">Published</option>
+              <option value="archived">Archived</option>
             </select>
           </div>
         </div>
 
         <div className="bg-surface border border-border rounded-sm p-6">
-          <label className={labelClass}>Options éditoriales</label>
+          <label className={labelClass}>Editorial options</label>
           <div className="flex flex-wrap gap-4 mt-2">
             {[
-              { key: "isFeatured", label: "À la une" },
+              { key: "isFeatured", label: "Featured" },
               { key: "isTopStory", label: "Top Story" },
               { key: "isUrgent", label: "🔥 Urgent" },
-              { key: "isEditorsChoice", label: "Choix rédaction" },
+              { key: "isEditorsChoice", label: "Editor's choice" },
               { key: "isPremium", label: "Premium" },
             ].map(({ key, label }) => (
               <label key={key} className="flex items-center gap-2 text-sm text-charcoal cursor-pointer">
@@ -209,10 +209,10 @@ export default function NewArticlePage() {
 
         <div className="flex gap-4">
           <Button type="submit" variant="gold" disabled={loading}>
-            {loading ? "Enregistrement..." : "Enregistrer l'article"}
+            {loading ? "Saving..." : "Save article"}
           </Button>
           <Button href="/admin/articles" variant="outline">
-            Annuler
+            Cancel
           </Button>
         </div>
       </form>

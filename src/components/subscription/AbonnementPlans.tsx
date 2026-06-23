@@ -5,41 +5,41 @@ import { SubscribeButton } from "@/components/subscription/SubscribeButton";
 import { Button } from "@/components/ui/Button";
 
 const features = [
-  "Accès illimité aux articles premium",
-  "Lecture sans publicité",
-  "Newsletters exclusives par rubrique",
-  "Articles sauvegardés et historique de lecture",
-  "Accès anticipé aux enquêtes et reportages",
-  "Support prioritaire",
+  "Unlimited access to premium articles",
+  "Ad-free reading",
+  "Exclusive newsletters by section",
+  "Saved articles and reading history",
+  "Early access to investigations and reports",
+  "Priority support",
 ];
 
 const plans = [
   {
-    name: "Gratuit",
+    name: "Free",
     price: "0",
-    period: "pour toujours",
-    features: ["Articles publics", "Newsletter hebdomadaire", "Commentaires"],
-    cta: "Commencer gratuitement",
+    period: "forever",
+    features: ["Public articles", "Weekly newsletter", "Comments"],
+    cta: "Get started for free",
     href: "/inscription",
     highlighted: false,
     subscribe: false as const,
   },
   {
     name: "Premium",
-    price: "9,99",
-    period: "/ mois",
+    price: "9.99",
+    period: "/ month",
     features,
-    cta: "S'abonner maintenant",
+    cta: "Subscribe now",
     plan: "monthly" as const,
     highlighted: true,
     subscribe: true as const,
   },
   {
-    name: "Premium Annuel",
-    price: "89,99",
-    period: "/ an",
-    features: [...features, "2 mois offerts"],
-    cta: "Économiser 30%",
+    name: "Premium Annual",
+    price: "89.99",
+    period: "/ year",
+    features: [...features, "2 months free"],
+    cta: "Save 30%",
     plan: "yearly" as const,
     highlighted: false,
     subscribe: true as const,
@@ -60,7 +60,7 @@ export function AbonnementPlans() {
         >
           {plan.highlighted && (
             <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-gold text-white text-[10px] font-bold tracking-widest uppercase rounded-sm">
-              Populaire
+              Popular
             </span>
           )}
           <h3 className={`font-serif text-xl font-bold mb-2 ${plan.highlighted ? "text-white" : "text-charcoal"}`}>
@@ -68,7 +68,7 @@ export function AbonnementPlans() {
           </h3>
           <div className="mb-6">
             <span className={`text-4xl font-bold ${plan.highlighted ? "text-gold" : "text-charcoal"}`}>
-              {plan.price}€
+              €{plan.price}
             </span>
             <span className={`text-sm ${plan.highlighted ? "text-white/60" : "text-muted"}`}>
               {plan.period}

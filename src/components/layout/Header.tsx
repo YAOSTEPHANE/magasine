@@ -42,7 +42,7 @@ export function Header({ categories }: { categories: Category[] }) {
               Depth<span className="text-gold">Mag</span>
             </span>
             <span className="hidden lg:block text-[9px] tracking-[0.35em] uppercase text-muted mt-0.5">
-              Magazine & Presse en Ligne
+              Online Magazine & News
             </span>
           </Link>
 
@@ -53,7 +53,7 @@ export function Header({ categories }: { categories: Category[] }) {
               onMouseLeave={() => setMegaOpen(false)}
             >
               <button className="flex items-center gap-1 px-4 py-2 text-sm font-medium text-charcoal hover:text-accent transition-colors">
-                Rubriques
+                Sections
                 <ChevronDown className={cn("w-4 h-4 transition-transform", megaOpen && "rotate-180")} />
               </button>
 
@@ -89,7 +89,7 @@ export function Header({ categories }: { categories: Category[] }) {
             <button
               onClick={() => setSearchOpen(!searchOpen)}
               className="p-2.5 hover:bg-muted-bg rounded-sm transition-colors"
-              aria-label="Rechercher"
+              aria-label="Search"
             >
               <Search className="w-5 h-5" />
             </button>
@@ -101,7 +101,7 @@ export function Header({ categories }: { categories: Category[] }) {
               <User className="w-5 h-5" />
             </Link>
             <Button href="/abonnement" variant="gold" size="sm" className="hidden sm:inline-flex">
-              S&apos;abonner
+              Subscribe
             </Button>
           </div>
         </div>
@@ -114,7 +114,7 @@ export function Header({ categories }: { categories: Category[] }) {
                 type="search"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Rechercher un article, une rubrique, un auteur..."
+                placeholder="Search articles, sections, authors..."
                 className="w-full pl-12 pr-4 py-3.5 bg-muted-bg border border-border rounded-sm text-charcoal placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold"
                 autoFocus
               />
@@ -138,10 +138,10 @@ export function Header({ categories }: { categories: Category[] }) {
             ))}
             <div className="pt-4 border-t border-border flex gap-2">
               <Button href="/connexion" variant="outline" size="sm" className="flex-1">
-                Connexion
+                Sign in
               </Button>
               <Button href="/abonnement" variant="gold" size="sm" className="flex-1">
-                Abonnement
+                Subscribe
               </Button>
             </div>
           </nav>

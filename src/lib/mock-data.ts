@@ -31,7 +31,7 @@ const catBySlug = Object.fromEntries(categories.map((c) => [c.slug, c]));
 const now = Date.now();
 
 const articles: ArticleDetail[] = SEED_ARTICLES.map((article, i) => {
-  const slug = slugify(article.title, { lower: true, strict: true });
+  const slug = article.slug ?? slugify(article.title, { lower: true, strict: true });
   const words = article.content.replace(/<[^>]*>/g, "").split(/\s+/).length;
   const authorIndex = article.authorIndex ?? i % authors.length;
   const category = catBySlug[article.category];
@@ -42,7 +42,7 @@ const articles: ArticleDetail[] = SEED_ARTICLES.map((article, i) => {
     subtitle: article.subtitle,
     slug,
     excerpt: article.excerpt,
-    content: resolveArticleContent(article.title, article.excerpt, article.content),
+    content: resolveArticleContent(article.title, article.excerpt, article.content, slug),
     featuredImage: resolveFeaturedImage(article.image),
     featuredImageAlt: article.title,
     category: {

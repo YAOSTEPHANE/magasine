@@ -2,52 +2,52 @@ import type { Metadata } from "next";
 import { ContentPage, ContentSection, ContentCta } from "@/components/layout/ContentPage";
 
 export const metadata: Metadata = {
-  title: "Charte éditoriale",
-  description: "Les principes éditoriaux et déontologiques de Global South Watch.",
+  title: "Editorial charter",
+  description: "The editorial and ethical principles of Global South Watch.",
 };
 
 export default function CharteEditorialePage() {
   return (
     <ContentPage
-      eyebrow="Éthique"
-      title="Charte éditoriale"
-      description="Global South Watch s'engage à respecter les plus hauts standards déontologiques du journalisme. Cette charte guide chaque publication de notre rédaction."
+      eyebrow="Ethics"
+      title="Editorial charter"
+      description="Global South Watch is committed to the highest ethical standards in journalism. This charter guides every publication from our newsroom."
     >
-      <ContentSection title="Indépendance">
+      <ContentSection title="Independence">
         <p>
-          Nos contenus sont produits en toute indépendance. Les annonceurs, partenaires institutionnels
-          et actionnaires n&apos;interviennent jamais dans le choix des sujets, l&apos;angle éditorial
-          ou la ligne d&apos;un article.
+          Our content is produced with full independence. Advertisers, institutional partners,
+          and shareholders never influence topic selection, editorial angle,
+          or the line of an article.
         </p>
       </ContentSection>
 
-      <ContentSection title="Exactitude et vérification">
+      <ContentSection title="Accuracy and verification">
         <p>
-          Chaque information publiée fait l&apos;objet d&apos;une vérification rigoureuse. Les sources
-          sont croisées, les données chiffrées contrôlées. En cas d&apos;erreur avérée, une correction
-          visible est publiée dans les meilleurs délais.
+          Every published fact is rigorously verified. Sources are cross-checked and
+          figures are validated. When a proven error occurs, a visible correction
+          is published as soon as possible.
         </p>
       </ContentSection>
 
-      <ContentSection title="Pluralité et équité">
+      <ContentSection title="Pluralism and fairness">
         <p>
-          Nous donnons la parole à toutes les parties prenantes d&apos;un sujet et veillons à représenter
-          la diversité des opinions légitimes. Nos enquêtes respectent le droit de réponse et la présomption
-          d&apos;innocence.
+          We give voice to all stakeholders on a subject and strive to represent
+          the diversity of legitimate opinions. Our investigations respect the right of reply
+          and the presumption of innocence.
         </p>
       </ContentSection>
 
-      <ContentSection title="Protection des sources">
+      <ContentSection title="Source protection">
         <p>
-          La confidentialité des sources est un principe intangible. Nous ne divulguons jamais l&apos;identité
-          d&apos;une source protégée sans son accord explicite.
+          Source confidentiality is a non-negotiable principle. We never disclose the identity
+          of a protected source without their explicit consent.
         </p>
       </ContentSection>
 
-      <ContentSection title="Signalement">
+      <ContentSection title="Reporting">
         <p>
-          Pour signaler une erreur, un contenu inapproprié ou une violation de cette charte, contactez
-          notre déontologue à{" "}
+          To report an error, inappropriate content, or a violation of this charter, contact
+          our ombudsman at{" "}
           <a href="mailto:deontologie@globalsouthwatch.com" className="text-accent hover:underline">
             deontologie@globalsouthwatch.com
           </a>
@@ -56,9 +56,9 @@ export default function CharteEditorialePage() {
       </ContentSection>
 
       <ContentCta
-        text="Vous souhaitez rejoindre notre rédaction ?"
+        text="Want to join our newsroom?"
         href="/carrieres"
-        label="Voir les offres"
+        label="View openings"
       />
     </ContentPage>
   );

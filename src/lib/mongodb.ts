@@ -23,7 +23,7 @@ if (!global.mongooseCache) {
 
 export async function connectDB() {
   if (!MONGODB_URI) {
-    throw new Error("Veuillez définir MONGODB_URI dans .env.local");
+    throw new Error("Please set MONGODB_URI in .env.local");
   }
 
   if (cached.conn) return cached.conn;

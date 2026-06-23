@@ -3,48 +3,48 @@ import Link from "next/link";
 import { ContentPage, ContentSection, ContentCta } from "@/components/layout/ContentPage";
 
 export const metadata: Metadata = {
-  title: "Carrières",
-  description: "Rejoignez Global South Watch — offres d'emploi et stages en journalisme.",
+  title: "Careers",
+  description: "Join Global South Watch — journalism jobs and internships.",
 };
 
 const OFFERS = [
   {
-    title: "Journaliste reporter d'actualités",
+    title: "News reporter",
     location: "Abidjan, Côte d'Ivoire",
-    type: "CDI",
-    description: "Couverture de l'actualité politique et institutionnelle en Afrique de l'Ouest.",
+    type: "Permanent",
+    description: "Coverage of political and institutional news in West Africa.",
   },
   {
-    title: "Rédacteur web / SEO",
-    location: "Télétravail — fuseau GMT",
-    type: "CDD 12 mois",
-    description: "Optimisation éditoriale, titraille et animation des réseaux sociaux.",
+    title: "Web editor / SEO",
+    location: "Remote — GMT timezone",
+    type: "12-month contract",
+    description: "Editorial optimization, headlines, and social media management.",
   },
   {
-    title: "Stagiaire enquête & investigation",
+    title: "Investigation intern",
     location: "Abidjan",
-    type: "Stage 6 mois",
-    description: "Appui aux grands reportages et enquêtes de la cellule investigation.",
+    type: "6-month internship",
+    description: "Support for major reports and investigations by the investigation desk.",
   },
 ];
 
 export default function CarrieresPage() {
   return (
     <ContentPage
-      eyebrow="Recrutement"
-      title="Carrières"
-      description="Global South Watch recrute des talents passionnés par le journalisme d'impact. Rejoignez une rédaction en pleine croissance."
+      eyebrow="Recruitment"
+      title="Careers"
+      description="Global South Watch hires talent passionate about impact journalism. Join a fast-growing newsroom."
     >
-      <ContentSection title="Pourquoi nous rejoindre ?">
+      <ContentSection title="Why join us?">
         <ul className="list-disc pl-6 space-y-2">
-          <li>Environnement éditorial exigeant et bienveillant</li>
-          <li>Liberté créative sur les sujets du Sud global</li>
-          <li>Formation continue et mentorat senior</li>
-          <li>Couverture mutuelle et télétravail partiel possible</li>
+          <li>Demanding and supportive editorial environment</li>
+          <li>Creative freedom on Global South topics</li>
+          <li>Ongoing training and senior mentorship</li>
+          <li>Health coverage and partial remote work possible</li>
         </ul>
       </ContentSection>
 
-      <ContentSection title="Offres ouvertes">
+      <ContentSection title="Open positions">
         <div className="space-y-4 not-prose">
           {OFFERS.map((offer) => (
             <article
@@ -64,10 +64,10 @@ export default function CarrieresPage() {
         </div>
       </ContentSection>
 
-      <ContentSection title="Candidature spontanée">
+      <ContentSection title="Unsolicited applications">
         <p>
-          Aucune offre ne correspond à votre profil ? Envoyez votre CV et quelques lignes sur vos
-          motivations à{" "}
+          No open role fits your profile? Send your CV and a few lines about your
+          motivation to{" "}
           <a href="mailto:carrieres@globalsouthwatch.com" className="text-accent hover:underline">
             carrieres@globalsouthwatch.com
           </a>
@@ -75,7 +75,7 @@ export default function CarrieresPage() {
         </p>
       </ContentSection>
 
-      <ContentCta text="Découvrez qui compose notre rédaction." href="/equipe" label="Notre équipe" />
+      <ContentCta text="Meet the people behind our newsroom." href="/equipe" label="Our team" />
     </ContentPage>
   );
 }

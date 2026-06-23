@@ -94,7 +94,7 @@ export function HeroCarousel({ slides }: HeroCarouselProps) {
                 {slide.isPremium && (
                   <span className="premium-badge premium-badge-glow">★ Premium</span>
                 )}
-                {isVideo && <span className="hero-video-badge">▶ Vidéo</span>}
+                {isVideo && <span className="hero-video-badge">▶ Video</span>}
               </div>
               <div className="hero-img-title">
                 {slide.title}
@@ -102,7 +102,7 @@ export function HeroCarousel({ slides }: HeroCarouselProps) {
               </div>
               <div className="hero-img-meta">
                 <span>
-                  Par <strong>{slide.author}</strong>
+                  By <strong>{slide.author}</strong>
                 </span>
                 <span aria-hidden>·</span>
                 <span>{slide.readingTime}</span>
@@ -130,7 +130,7 @@ export function HeroCarousel({ slides }: HeroCarouselProps) {
                 e.stopPropagation();
                 prev();
               }}
-              aria-label="Article précédent"
+              aria-label="Previous article"
             >
               ‹
             </button>
@@ -142,20 +142,20 @@ export function HeroCarousel({ slides }: HeroCarouselProps) {
                 e.stopPropagation();
                 next();
               }}
-              aria-label="Article suivant"
+              aria-label="Next article"
             >
               ›
             </button>
           </div>
 
-          <div className="hero-carousel-dots" role="tablist" aria-label="Articles à la une">
+          <div className="hero-carousel-dots" role="tablist" aria-label="Featured articles">
             {slides.map((s, i) => (
               <button
                 key={s.slug}
                 type="button"
                 role="tab"
                 aria-selected={i === active}
-                aria-label={`Slide ${i + 1} : ${s.title}`}
+                aria-label={`Slide ${i + 1}: ${s.title}`}
                 className={`hero-carousel-dot${i === active ? " active" : ""}`}
                 onClick={() => goTo(i)}
               />
@@ -176,7 +176,7 @@ export function HeroCarousel({ slides }: HeroCarouselProps) {
         <div className="hero-caption-top">
           <span className="tag outline">{slide.category}</span>
           <Link href={`/article/${slide.slug}`} className="hero-cta">
-            Lire maintenant
+            Read now
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
               <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>

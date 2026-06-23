@@ -2,31 +2,31 @@ import type { Metadata } from "next";
 import { ContentPage, ContentSection, ContentCta } from "@/components/layout/ContentPage";
 
 export const metadata: Metadata = {
-  title: "Publicité",
-  description: "Solutions publicitaires et partenariats médias — Global South Watch.",
+  title: "Advertising",
+  description: "Advertising solutions and media partnerships — Global South Watch.",
 };
 
 const FORMATS = [
-  { name: "Bannière Mega", desc: "Emplacement premium en tête d'accueil — forte visibilité" },
-  { name: "Article sponsorisé", desc: "Contenu éditorialisé, clairement identifié comme partenaire" },
-  { name: "Newsletter dédiée", desc: "Message ciblé auprès de nos 145 000 abonnés" },
-  { name: "Partenariat rubrique", desc: "Visibilité sur une thématique (finance, tech, sport…)" },
+  { name: "Mega banner", desc: "Premium homepage placement — high visibility" },
+  { name: "Sponsored article", desc: "Editorial-style content, clearly labeled as partner content" },
+  { name: "Dedicated newsletter", desc: "Targeted message to our 145,000 subscribers" },
+  { name: "Section partnership", desc: "Visibility on a topic (finance, tech, sports…)" },
 ];
 
 export default function PublicitePage() {
   return (
     <ContentPage
-      eyebrow="Annonceurs"
-      title="Publicité & partenariats"
-      description="Touchez une audience qualifiée, engagée et en pleine croissance sur l'actualité africaine et du Sud global."
+      eyebrow="Advertisers"
+      title="Advertising & partnerships"
+      description="Reach a qualified, engaged, and fast-growing audience following African and Global South news."
     >
-      <ContentSection title="Notre audience">
+      <ContentSection title="Our audience">
         <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 not-prose">
           {[
-            ["2M+", "Lecteurs mensuels"],
-            ["65%", "Lecteurs 25-45 ans"],
-            ["78%", "Lecture mobile"],
-            ["12", "Pays couverts"],
+            ["2M+", "Monthly readers"],
+            ["65%", "Readers aged 25–45"],
+            ["78%", "Mobile reading"],
+            ["12", "Countries covered"],
           ].map(([v, l]) => (
             <li key={l} className="p-4 bg-muted-bg rounded-sm text-center border border-border">
               <span className="block font-serif text-2xl font-bold text-charcoal">{v}</span>
@@ -36,7 +36,7 @@ export default function PublicitePage() {
         </ul>
       </ContentSection>
 
-      <ContentSection title="Formats disponibles">
+      <ContentSection title="Available formats">
         <div className="space-y-3 not-prose">
           {FORMATS.map((f) => (
             <div key={f.name} className="p-4 border border-border rounded-sm">
@@ -47,18 +47,18 @@ export default function PublicitePage() {
         </div>
       </ContentSection>
 
-      <ContentSection title="Charte publicitaire">
+      <ContentSection title="Advertising charter">
         <p>
-          Tous les contenus sponsorisés sont clairement identifiés. Global South Watch se réserve le droit
-          de refuser toute campagne incompatible avec ses valeurs éditoriales. Consultez notre{" "}
-          <a href="/charte-editoriale" className="text-accent hover:underline">charte éditoriale</a>.
+          All sponsored content is clearly identified. Global South Watch reserves the right
+          to refuse any campaign incompatible with its editorial values. See our{" "}
+          <a href="/charte-editoriale" className="text-accent hover:underline">editorial charter</a>.
         </p>
       </ContentSection>
 
       <ContentCta
-        text="Demandez notre media kit et un devis personnalisé."
+        text="Request our media kit and a personalized quote."
         href="/contact"
-        label="Contacter la régie"
+        label="Contact sales"
       />
     </ContentPage>
   );

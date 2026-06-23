@@ -9,7 +9,7 @@ export function HeroSection({ articles }: { articles: ArticleListItem[] }) {
 
   return (
     <section className="mb-16">
-      <SectionTitle title="Actualités Nationales" subtitle="À la une" />
+      <SectionTitle title="National News" subtitle="Front page" />
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         <div className="lg:col-span-8">
           <ArticleCard article={hero} variant="hero" priority />

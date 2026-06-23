@@ -31,28 +31,28 @@ function SearchResults() {
       <div className="text-center mb-12">
         <Search className="w-10 h-10 text-gold mx-auto mb-4" />
         <h1 className="font-serif text-3xl lg:text-4xl font-bold text-charcoal mb-2">
-          Recherche
+          Search
         </h1>
         {query && (
           <p className="text-muted">
-            Résultats pour &ldquo;<span className="text-charcoal font-medium">{query}</span>&rdquo;
+            Results for &ldquo;<span className="text-charcoal font-medium">{query}</span>&rdquo;
           </p>
         )}
       </div>
 
       {loading && (
-        <p className="text-center text-muted py-20">Recherche en cours...</p>
+        <p className="text-center text-muted py-20">Searching...</p>
       )}
 
       {!loading && searched && results.length === 0 && (
         <p className="text-center text-muted py-20">
-          Aucun résultat trouvé. Essayez avec d&apos;autres mots-clés.
+          No results found. Try different keywords.
         </p>
       )}
 
       {!loading && results.length > 0 && (
         <>
-          <p className="text-sm text-muted mb-8">{results.length} article(s) trouvé(s)</p>
+          <p className="text-sm text-muted mb-8">{results.length} article(s) found</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {results.map((article) => (
               <ArticleCard key={article._id} article={article} />
@@ -63,7 +63,7 @@ function SearchResults() {
 
       {!query && (
         <p className="text-center text-muted py-20">
-          Utilisez la barre de recherche pour trouver des articles.
+          Use the search bar to find articles.
         </p>
       )}
     </div>
@@ -72,7 +72,7 @@ function SearchResults() {
 
 export default function SearchPage() {
   return (
-    <Suspense fallback={<p className="text-center py-20 text-muted">Chargement...</p>}>
+    <Suspense fallback={<p className="text-center py-20 text-muted">Loading...</p>}>
       <SearchResults />
     </Suspense>
   );

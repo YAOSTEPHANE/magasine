@@ -14,7 +14,7 @@ const createSchema = z.object({
 export async function GET(request: NextRequest) {
   const articleId = request.nextUrl.searchParams.get("articleId");
   if (!articleId) {
-    return NextResponse.json({ error: "articleId requis" }, { status: 400 });
+    return NextResponse.json({ error: "articleId required" }, { status: 400 });
   }
 
   try {
@@ -36,27 +36,27 @@ export async function GET(request: NextRequest) {
       }),
     });
   } catch {
-    return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }
 
 export async function POST(request: NextRequest) {
   const session = await auth();
   if (!session?.user) {
-    return NextResponse.json({ error: "Connexion requise" }, { status: 401 });
+    return NextResponse.json({ error: "Sign in required" }, { status: 401 });
   }
 
   try {
     const body = await request.json();
     const parsed = createSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: "Données invalides" }, { status: 400 });
+      return NextResponse.json({ error: "Invalid data" }, { status: 400 });
     }
 
     await connectDB();
     const article = await Article.findById(parsed.data.articleId);
     if (!article) {
-      return NextResponse.json({ error: "Article introuvable" }, { status: 404 });
+      return NextResponse.json({ error: "Article not found" }, { status: 404 });
     }
 
     const comment = await Comment.create({
@@ -68,6 +68,6 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ _id: String(comment._id) }, { status: 201 });
   } catch {
-    return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }

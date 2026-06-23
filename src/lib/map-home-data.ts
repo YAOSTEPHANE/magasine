@@ -41,15 +41,15 @@ const RUBRIQUE_SOURCES: {
   title: string;
   key: keyof HomeDataSource;
 }[] = [
-  { slug: "actualites", title: "Actualités", key: "nationalNews" },
+  { slug: "actualites", title: "News", key: "nationalNews" },
   { slug: "finance", title: "Finance", key: "financeNews" },
-  { slug: "sante", title: "Santé", key: "santeNews" },
-  { slug: "divertissement", title: "Divertissement", key: "divertissementNews" },
+  { slug: "sante", title: "Health", key: "santeNews" },
+  { slug: "divertissement", title: "Entertainment", key: "divertissementNews" },
   { slug: "local", title: "Local", key: "localNews" },
-  { slug: "monde", title: "Monde", key: "worldNews" },
+  { slug: "monde", title: "World", key: "worldNews" },
   { slug: "investigations", title: "Investigations", key: "investigations" },
-  { slug: "reportages-speciaux", title: "Reportages Spéciaux", key: "specialReports" },
-  { slug: "multimedia", title: "Multimédia", key: "multimedia" },
+  { slug: "reportages-speciaux", title: "Special Reports", key: "specialReports" },
+  { slug: "multimedia", title: "Multimedia", key: "multimedia" },
 ];
 
 function articlePath(slug: string): string {
@@ -82,7 +82,7 @@ function toHeroSlide(a: ArticleListItem): HeroSlide {
     badge: articleBadge(a),
     category: a.category.name,
     excerpt: a.excerpt,
-    author: author?.name ?? "Rédaction",
+    author: author?.name ?? "Editorial Desk",
     authorRole: author?.bio?.split("—")[0]?.trim() ?? "Global South Watch",
     authorInitials: author ? authorInitials(author.name) : "GS",
     readingTime: formatReadingTime(a.readingTime),
@@ -110,16 +110,16 @@ function buildHeroSlides(source: HomeDataSource): HeroSlide[] {
       {
         slug: HERO_MINI_CARDS[0]?.slug.replace("/article/", "") ?? "",
         image: IMG.finance,
-        title: "La grande réforme fiscale ouest-africaine :",
-        titleEm: "qui gagne, qui perd dans l'UEMOA ?",
-        badge: "Enquête Exclusive",
-        category: "Économie",
+        title: "West Africa's major tax reform:",
+        titleEm: "who wins and who loses in WAEMU?",
+        badge: "Exclusive Investigation",
+        category: "Economy",
         excerpt: "",
         author: "Ama Kouassi",
-        authorRole: "Correspondante Économique",
+        authorRole: "Economics Correspondent",
         authorInitials: "AK",
-        readingTime: "7 min de lecture",
-        timeAgo: "Il y a 2 h",
+        readingTime: "7 min read",
+        timeAgo: "2 hours ago",
         date: "",
         isPremium: true,
       },
@@ -173,7 +173,7 @@ function buildEditorsChoice(source: HomeDataSource): HomeEditorsChoice {
     return {
       featured: {
         ...toHomeCard(featured),
-        tags: ["Reportage", featured.isPremium ? "★ Premium" : "★ À la Une"],
+        tags: ["Report", featured.isPremium ? "★ Premium" : "★ Top Story"],
         excerpt: featured.excerpt,
       },
       rows: rows.map((a) => toHomeCard(a)),
@@ -277,7 +277,7 @@ function buildOpinions(source: HomeDataSource): HomeOpinion[] {
       return {
         accent: i === 0,
         text: a.excerpt,
-        name: author?.name ?? "Contributeur",
+        name: author?.name ?? "Contributor",
         role: author?.bio ?? a.category.name,
         avatar: author?.avatar ?? IMG.portrait1,
         slug: articlePath(a.slug),

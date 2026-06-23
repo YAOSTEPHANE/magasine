@@ -50,14 +50,14 @@ export function ShareButtons({ url, title }: ShareButtonsProps) {
 
   return (
     <div className="flex items-center gap-2">
-      <span className="text-xs text-muted tracking-wider uppercase mr-2">Partager</span>
+      <span className="text-xs text-muted tracking-wider uppercase mr-2">Share</span>
       {shareLinks.map(({ icon: Icon, href, label, brand }) => (
         <a
           key={label}
           href={href}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label={`Partager sur ${label}`}
+          aria-label={`Share on ${label}`}
           className={`social-link social-link--${brand} w-9 h-9 flex items-center justify-center rounded-md hover:scale-110 transition-transform`}
         >
           <Icon className="w-4 h-4" />
@@ -66,7 +66,7 @@ export function ShareButtons({ url, title }: ShareButtonsProps) {
       <button
         type="button"
         onClick={copyLink}
-        aria-label="Copier le lien"
+        aria-label="Copy link"
         className="w-9 h-9 flex items-center justify-center rounded-sm border border-border hover:bg-gold hover:text-white hover:border-gold transition-all duration-300"
       >
         <Link2 className="w-4 h-4" />

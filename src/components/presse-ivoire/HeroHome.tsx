@@ -19,9 +19,9 @@ export function HeroHome({ data }: HeroHomeProps) {
 
             <div className="hero-sub-section">
               <div className="hero-sub-header">
-                <h3 className="hero-sub-title">À lire aussi</h3>
+                <h3 className="hero-sub-title">Also read</h3>
                 <Link href="/recherche" className="hero-sub-link">
-                  Toute l&apos;actualité
+                  All news
                 </Link>
               </div>
               <div className="hero-sub-articles">
@@ -54,7 +54,7 @@ export function HeroHome({ data }: HeroHomeProps) {
                   <span className="sidebar-live-dot" />
                   Top Stories
                 </span>
-                <Link href="/recherche">Tout voir</Link>
+                <Link href="/recherche">View all</Link>
               </div>
 
               {data.topStories.map((story) => (
@@ -73,7 +73,7 @@ export function HeroHome({ data }: HeroHomeProps) {
             </div>
 
             <div className="sidebar-panel sidebar-tags-panel sidebar-panel--accent">
-              <div className="sidebar-section-title">Tags populaires</div>
+              <div className="sidebar-section-title">Popular tags</div>
               <div className="tags-cloud">
                 {data.popularTags.map((tag) => (
                   <Link
@@ -88,12 +88,12 @@ export function HeroHome({ data }: HeroHomeProps) {
             </div>
 
             <div className="sidebar-premium-cta">
-              <span className="sidebar-premium-cta-label">Abonnement</span>
+              <span className="sidebar-premium-cta-label">Subscription</span>
               <p className="sidebar-premium-cta-text">
-                Accédez aux enquêtes exclusives et analyses approfondies.
+                Access exclusive investigations and in-depth analysis.
               </p>
               <Link href="/abonnement" className="sidebar-premium-cta-btn">
-                Découvrir Premium
+                Discover Premium
               </Link>
             </div>
           </aside>

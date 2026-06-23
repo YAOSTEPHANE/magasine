@@ -1,10 +1,10 @@
 import { format } from "date-fns";
-import { fr } from "date-fns/locale";
+import { enUS } from "date-fns/locale";
 
 export function HomeMasthead() {
   const today = new Date();
-  const weekday = format(today, "EEEE", { locale: fr });
-  const dayMonth = format(today, "d MMMM yyyy", { locale: fr });
+  const weekday = format(today, "EEEE", { locale: enUS });
+  const dayMonth = format(today, "MMMM d, yyyy", { locale: enUS });
   const weekdayCap = weekday.charAt(0).toUpperCase() + weekday.slice(1);
 
   return (
@@ -13,7 +13,7 @@ export function HomeMasthead() {
       <div className="container">
         <div className="home-masthead-bar">
           <div className="home-masthead-left">
-            <span className="home-masthead-badge">Édition du jour</span>
+            <span className="home-masthead-badge">Today&apos;s Edition</span>
             <span className="home-masthead-volume">Vol. XII · N° 1847</span>
           </div>
 
@@ -28,7 +28,7 @@ export function HomeMasthead() {
           <div className="home-masthead-right">
             <span className="home-masthead-live">
               <span className="home-masthead-live-dot" />
-              En direct
+              Live
             </span>
             <span className="home-masthead-divider" aria-hidden />
             <span className="home-masthead-stat">
@@ -41,7 +41,7 @@ export function HomeMasthead() {
           <span className="home-masthead-diamond" aria-hidden>
             ◆
           </span>
-          La voix du Sud global — journalisme indépendant &amp; engagé
+          The voice of the Global South — independent &amp; committed journalism
           <span className="home-masthead-diamond" aria-hidden>
             ◆
           </span>

@@ -10,14 +10,14 @@ export function HomeRubriquesBand({ rubriques }: HomeRubriquesBandProps) {
   if (rubriques.length === 0) return null;
 
   return (
-    <section className="home-band home-band--rubriques" aria-label="Rubriques éditoriales">
+    <section className="home-band home-band--rubriques" aria-label="Editorial sections">
       <div className="container">
         <SectionHeader
           number="06"
-          eyebrow="Par rubrique"
-          title="Toutes les Rubriques"
+          eyebrow="By section"
+          title="All Sections"
           linkHref="/recherche"
-          linkLabel="Explorer"
+          linkLabel="Explore"
         />
         <div className="rubriques-stack">
           {rubriques.map((block, index) => (

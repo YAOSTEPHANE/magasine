@@ -48,8 +48,8 @@ export async function GET() {
   <channel>
     <title>Global South Watch</title>
     <link>${baseUrl}</link>
-    <description>Journalisme indépendant pour l'Afrique et le Sud global</description>
-    <language>fr</language>
+    <description>Independent journalism for Africa and the Global South</description>
+    <language>en</language>
     <atom:link href="${baseUrl}/api/feed" rel="self" type="application/rss+xml"/>
     ${items
       .map(

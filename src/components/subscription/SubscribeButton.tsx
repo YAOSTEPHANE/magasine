@@ -49,7 +49,7 @@ export function SubscribeButton({ plan, label, variant = "gold", className }: Su
   if (session?.user?.isPremium || done) {
     return (
       <Button href="/profil" variant="outline" className={className}>
-        Abonnement actif ✓
+        Active subscription ✓
       </Button>
     );
   }
@@ -62,7 +62,7 @@ export function SubscribeButton({ plan, label, variant = "gold", className }: Su
       onClick={handleSubscribe}
       disabled={loading}
     >
-      {loading ? "Activation..." : label}
+      {loading ? "Activating..." : label}
     </Button>
   );
 }

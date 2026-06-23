@@ -9,7 +9,7 @@ import { HeaderAuth } from "@/components/presse-ivoire/HeaderAuth";
 
 function HeaderNavLinks({ className }: { className: string }) {
   return (
-    <nav className={className} aria-label="Navigation principale">
+    <nav className={className} aria-label="Main navigation">
       {HEADER_NAV.map((item) => (
         <Link
           key={item.label}
@@ -47,17 +47,17 @@ export function SiteHeader() {
           <button
             type="button"
             className="btn-search"
-            title="Rechercher"
+            title="Search"
             onClick={() => setSearchOpen(!searchOpen)}
-            aria-label="Rechercher"
+            aria-label="Search"
           >
             <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
               <circle cx="6.5" cy="6.5" r="4.5" stroke="currentColor" strokeWidth="1.5" />
               <path d="M10.5 10.5L13.5 13.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
             </svg>
           </button>
-          <Link href="/abonnement" className="btn-subscribe" aria-label="S'abonner">
-            <span className="btn-subscribe-full">S&apos;abonner</span>
+          <Link href="/abonnement" className="btn-subscribe" aria-label="Subscribe">
+            <span className="btn-subscribe-full">Subscribe</span>
             <span className="btn-subscribe-short">Pro</span>
           </Link>
           <HeaderAuth />
@@ -72,7 +72,7 @@ export function SiteHeader() {
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Rechercher un article, une rubrique, un auteur..."
+            placeholder="Search for an article, section, or author..."
             className="nl-input"
             style={{ width: "100%", background: "var(--cream)", color: "var(--ink)", borderColor: "var(--rule)" }}
             autoFocus

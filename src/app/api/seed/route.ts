@@ -38,7 +38,7 @@ export async function GET(request: NextRequest) {
 
     if (existing > 0 && !force) {
       return NextResponse.json({
-        message: "Base déjà initialisée. Ajoutez ?force=true pour réinitialiser.",
+        message: "Database already initialized. Add ?force=true to reset.",
         seeded: false,
       });
     }
@@ -66,12 +66,14 @@ export async function GET(request: NextRequest) {
       const publishedAt = new Date(now.getTime() - i * 3600000 * 4);
       const authorIndex = article.authorIndex ?? i % createdAuthors.length;
 
+      const slug = article.slug ?? slugify(article.title, { lower: true, strict: true });
+
       return {
         title: article.title,
         subtitle: article.subtitle,
-        slug: slugify(article.title, { lower: true, strict: true }),
+        slug,
         excerpt: article.excerpt,
-        content: resolveArticleContent(article.title, article.excerpt, article.content),
+        content: resolveArticleContent(article.title, article.excerpt, article.content, slug),
         featuredImage: article.image,
         featuredImageAlt: article.title,
         category: catMap[article.category],
@@ -97,14 +99,14 @@ export async function GET(request: NextRequest) {
 
     const adminPassword = await bcrypt.hash("Admin123!", 12);
     await User.create({
-      name: "Administrateur",
+      name: "Administrator",
       email: "admin@globalsouthwatch.com",
       password: adminPassword,
       role: "super_admin",
     });
 
     return NextResponse.json({
-      message: "Base de données initialisée avec succès",
+      message: "Database initialized successfully",
       seeded: true,
       stats: {
         categories: SEED_CATEGORIES.length,
@@ -122,8 +124,8 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(
       {
         error: atlasLimit
-          ? "Limite Atlas atteinte (500 collections). Supprimez les bases inutilisées (ex. « magazine » avec espace) dans MongoDB Atlas, ou utilisez une base locale."
-          : "Erreur lors de l'initialisation",
+          ? "Atlas limit reached (500 collections). Delete unused databases (e.g. « magazine » with a space) in MongoDB Atlas, or use a local database."
+          : "Initialization error",
         details: message,
       },
       { status: 500 }

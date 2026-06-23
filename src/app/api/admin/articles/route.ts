@@ -26,14 +26,14 @@ const schema = z.object({
 export async function POST(request: NextRequest) {
   const session = await auth();
   if (!session?.user || !["super_admin", "admin", "editor", "author"].includes(session.user.role)) {
-    return NextResponse.json({ error: "Non autorisé" }, { status: 403 });
+    return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   }
 
   try {
     const body = await request.json();
     const parsed = schema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: "Données invalides" }, { status: 400 });
+      return NextResponse.json({ error: "Invalid data" }, { status: 400 });
     }
 
     await connectDB();
@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
 
     const existing = await Article.findOne({ slug });
     if (existing) {
-      return NextResponse.json({ error: "Un article avec ce titre existe déjà" }, { status: 409 });
+      return NextResponse.json({ error: "An article with this title already exists" }, { status: 409 });
     }
 
     const article = await Article.create({

@@ -3,49 +3,49 @@ import Link from "next/link";
 import { ContentPage, ContentSection } from "@/components/layout/ContentPage";
 
 export const metadata: Metadata = {
-  title: "Accessibilité",
-  description: "Engagements et ressources d'accessibilité numérique — Global South Watch.",
+  title: "Accessibility",
+  description: "Digital accessibility commitments and resources — Global South Watch.",
 };
 
 export default function AccessibilitePage() {
   return (
     <ContentPage
       eyebrow="Inclusion"
-      title="Accessibilité"
-      description="Global South Watch s'engage à rendre ses contenus accessibles au plus grand nombre, conformément aux bonnes pratiques du web accessible."
+      title="Accessibility"
+      description="Global South Watch is committed to making its content accessible to as many people as possible, in line with web accessibility best practices."
     >
-      <ContentSection title="Nos engagements">
+      <ContentSection title="Our commitments">
         <ul className="list-disc pl-6 space-y-2">
-          <li>Structure sémantique HTML pour les lecteurs d&apos;écran</li>
-          <li>Textes alternatifs sur les images éditoriales</li>
-          <li>Contrastes de couleurs conformes aux recommandations WCAG 2.1 niveau AA</li>
-          <li>Navigation au clavier sur les pages principales</li>
-          <li>Titres hiérarchisés et liens explicites</li>
+          <li>Semantic HTML structure for screen readers</li>
+          <li>Alternative text on editorial images</li>
+          <li>Color contrasts meeting WCAG 2.1 Level AA recommendations</li>
+          <li>Keyboard navigation on main pages</li>
+          <li>Hierarchical headings and descriptive links</li>
         </ul>
       </ContentSection>
 
-      <ContentSection title="Amélioration continue">
+      <ContentSection title="Continuous improvement">
         <p>
-          Nous travaillons activement à l&apos;amélioration de l&apos;accessibilité de notre site.
-          Un audit complet est prévu chaque année. Vos retours nous aident à progresser.
+          We are actively working to improve the accessibility of our site.
+          A full audit is planned each year. Your feedback helps us progress.
         </p>
       </ContentSection>
 
-      <ContentSection title="Signaler un problème">
+      <ContentSection title="Report an issue">
         <p>
-          Si vous rencontrez une difficulté d&apos;accès à nos contenus, écrivez-nous à{" "}
+          If you encounter difficulty accessing our content, write to us at{" "}
           <a href="mailto:accessibilite@globalsouthwatch.com" className="text-accent hover:underline">
             accessibilite@globalsouthwatch.com
           </a>
-          {" "}en précisant la page concernée et le type de difficulté rencontrée.
+          {" "}specifying the page concerned and the type of difficulty encountered.
         </p>
       </ContentSection>
 
       <p className="text-sm text-muted pt-8 border-t border-border">
-        Voir aussi :{" "}
-        <Link href="/mentions-legales" className="text-accent hover:underline">Mentions légales</Link>
+        See also:{" "}
+        <Link href="/mentions-legales" className="text-accent hover:underline">Legal notice</Link>
         {" · "}
-        <Link href="/confidentialite" className="text-accent hover:underline">Confidentialité</Link>
+        <Link href="/confidentialite" className="text-accent hover:underline">Privacy</Link>
       </p>
     </ContentPage>
   );

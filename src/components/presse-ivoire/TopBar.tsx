@@ -1,6 +1,6 @@
 import { TICKER_ITEMS } from "@/data/presse-ivoire-home";
 import { format } from "date-fns";
-import { fr } from "date-fns/locale";
+import { enUS } from "date-fns/locale";
 import { SocialLinks } from "@/components/ui/SocialIcons";
 
 interface TopBarProps {
@@ -13,7 +13,7 @@ export function TopBar({ alerts }: TopBarProps) {
     : TICKER_ITEMS;
 
   const doubled = [...items, ...items];
-  const today = format(new Date(), "EEEE d MMMM yyyy", { locale: fr });
+  const today = format(new Date(), "EEEE, MMMM d, yyyy", { locale: enUS });
   const formattedDate = today.charAt(0).toUpperCase() + today.slice(1);
 
   return (
@@ -21,7 +21,7 @@ export function TopBar({ alerts }: TopBarProps) {
       <div className="top-bar-inner container">
         <div className="top-bar-label">
           <span className="breaking-dot" />
-          En Direct
+          Live
         </div>
         <div className="ticker-wrap">
           <div className="ticker-track">

@@ -8,11 +8,11 @@ import { formatDate } from "@/lib/utils";
 import { Plus, ArrowLeft } from "lucide-react";
 
 const statusLabels: Record<string, string> = {
-  draft: "Brouillon",
-  review: "En révision",
-  scheduled: "Planifié",
-  published: "Publié",
-  archived: "Archivé",
+  draft: "Draft",
+  review: "In review",
+  scheduled: "Scheduled",
+  published: "Published",
+  archived: "Archived",
 };
 
 export default async function AdminArticlesPage() {
@@ -36,14 +36,14 @@ export default async function AdminArticlesPage() {
             <Link href="/admin" className="text-white/60 hover:text-white transition-colors">
               <ArrowLeft className="w-5 h-5" />
             </Link>
-            <h1 className="font-serif text-xl font-bold">Gestion des articles</h1>
+            <h1 className="font-serif text-xl font-bold">Article management</h1>
           </div>
           <Link
             href="/admin/articles/nouveau"
             className="flex items-center gap-2 px-4 py-2 bg-gold text-white text-sm rounded-sm hover:bg-gold-dark transition-colors"
           >
             <Plus className="w-4 h-4" />
-            Nouvel article
+            New article
           </Link>
         </div>
       </div>
@@ -53,9 +53,9 @@ export default async function AdminArticlesPage() {
           <table className="w-full">
             <thead className="bg-muted-bg border-b border-border">
               <tr>
-                <th className="text-left px-6 py-4 text-xs font-bold tracking-wider uppercase text-muted">Titre</th>
-                <th className="text-left px-6 py-4 text-xs font-bold tracking-wider uppercase text-muted hidden md:table-cell">Catégorie</th>
-                <th className="text-left px-6 py-4 text-xs font-bold tracking-wider uppercase text-muted hidden lg:table-cell">Statut</th>
+                <th className="text-left px-6 py-4 text-xs font-bold tracking-wider uppercase text-muted">Title</th>
+                <th className="text-left px-6 py-4 text-xs font-bold tracking-wider uppercase text-muted hidden md:table-cell">Category</th>
+                <th className="text-left px-6 py-4 text-xs font-bold tracking-wider uppercase text-muted hidden lg:table-cell">Status</th>
                 <th className="text-left px-6 py-4 text-xs font-bold tracking-wider uppercase text-muted hidden lg:table-cell">Date</th>
                 <th className="text-right px-6 py-4 text-xs font-bold tracking-wider uppercase text-muted">Actions</th>
               </tr>
@@ -85,7 +85,7 @@ export default async function AdminArticlesPage() {
                       href={`/admin/articles/${article._id}`}
                       className="text-sm text-accent hover:text-accent-hover"
                     >
-                      Modifier
+                      Edit
                     </Link>
                   </td>
                 </tr>
@@ -93,7 +93,7 @@ export default async function AdminArticlesPage() {
             </tbody>
           </table>
           {articles.length === 0 && (
-            <p className="p-12 text-center text-muted">Aucun article. Créez votre premier article.</p>
+            <p className="p-12 text-center text-muted">No articles. Create your first article.</p>
           )}
         </div>
       </div>

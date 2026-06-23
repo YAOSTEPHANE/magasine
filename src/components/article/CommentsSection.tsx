@@ -32,7 +32,7 @@ export function CommentsSection({ articleId }: { articleId: string }) {
     e.preventDefault();
     if (!content.trim()) return;
     if (!session?.user) {
-      setError("Connectez-vous pour commenter.");
+      setError("Sign in to comment.");
       return;
     }
     setLoading(true);
@@ -48,7 +48,7 @@ export function CommentsSection({ articleId }: { articleId: string }) {
         await loadComments();
       } else {
         const data = await res.json();
-        setError(data.error ?? "Impossible de publier le commentaire");
+        setError(data.error ?? "Unable to publish comment");
       }
     } finally {
       setLoading(false);
@@ -61,7 +61,7 @@ export function CommentsSection({ articleId }: { articleId: string }) {
         onClick={loadComments}
         className="text-sm text-accent hover:text-accent-hover font-medium"
       >
-        Afficher les commentaires
+        Show comments
       </button>
     );
   }
@@ -69,20 +69,20 @@ export function CommentsSection({ articleId }: { articleId: string }) {
   return (
     <div className="mt-12 pt-8 border-t border-border">
       <h3 className="font-serif text-2xl font-bold text-charcoal mb-6">
-        Commentaires ({comments.length})
+        Comments ({comments.length})
       </h3>
 
       <form onSubmit={handleSubmit} className="mb-8">
         {!session?.user && (
           <p className="text-sm text-muted mb-3">
-            <Link href="/connexion" className="text-accent hover:underline">Connectez-vous</Link>
-            {" "}pour laisser un commentaire.
+            <Link href="/connexion" className="text-accent hover:underline">Sign in</Link>
+            {" "}to leave a comment.
           </p>
         )}
         <textarea
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          placeholder="Partagez votre avis..."
+          placeholder="Share your thoughts..."
           rows={3}
           className="w-full p-4 bg-muted-bg border border-border rounded-sm text-charcoal placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-gold/30 resize-none"
         />
@@ -92,7 +92,7 @@ export function CommentsSection({ articleId }: { articleId: string }) {
           disabled={loading || !session?.user}
           className="mt-3 px-6 py-2.5 bg-charcoal text-white text-sm rounded-sm hover:bg-charcoal/90 transition-colors disabled:opacity-50"
         >
-          {loading ? "Publication..." : "Publier"}
+          {loading ? "Publishing..." : "Publish"}
         </button>
       </form>
 
@@ -115,7 +115,7 @@ export function CommentsSection({ articleId }: { articleId: string }) {
         ))}
         {comments.length === 0 && (
           <p className="text-sm text-muted text-center py-8">
-            Soyez le premier à commenter cet article.
+            Be the first to comment on this article.
           </p>
         )}
       </div>

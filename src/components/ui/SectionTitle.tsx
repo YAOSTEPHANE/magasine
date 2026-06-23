@@ -16,7 +16,7 @@ export function SectionTitle({ title, subtitle, href, id, className }: SectionTi
           <div className="flex items-center gap-3 mb-2">
             <div className="w-8 h-px bg-gold" />
             <span className="text-[10px] font-bold tracking-[0.25em] uppercase text-gold">
-              {subtitle ?? "À la une"}
+              {subtitle ?? "Front page"}
             </span>
           </div>
           <h2 className="font-serif text-2xl lg:text-3xl font-bold text-charcoal">
@@ -28,7 +28,7 @@ export function SectionTitle({ title, subtitle, href, id, className }: SectionTi
             href={href}
             className="text-sm text-accent hover:text-accent-hover font-medium whitespace-nowrap transition-colors"
           >
-            Voir tout →
+            View all →
           </a>
         )}
       </div>

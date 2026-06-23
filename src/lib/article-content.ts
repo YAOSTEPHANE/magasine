@@ -43,73 +43,73 @@ const ARTICLE_BODIES: Record<string, ArticleBodySpec> = {
   "la-grande-reforme-fiscale-ouest-africaine-qui-gagne-qui-perd-dans-luemoa": {
     sections: [
       {
-        heading: "Un tournant fiscal pour l'UEMOA",
+        heading: "A fiscal turning point for WAEMU",
         paragraphs: [
-          "Les huit États membres de l'Union économique et monétaire ouest-africaine viennent d'adopter un paquet de réformes fiscales coordonnées, la plus vaste depuis la création de l'union monétaire. Le texte harmonise la TVA, révise l'impôt sur les sociétés et redéfinit les exonérations sectorielles qui, pendant des décennies, ont structuré l'attractivité régionale.",
-          "Pour les entreprises transfrontalières, la mesure la plus attendue concerne l'alignement des taux de TVA sur les services numériques et la simplification des déclarations via une plateforme unique BCEAO-UEMOA, dont le déploiement est prévu sur dix-huit mois.",
+          "The eight member states of the West African Economic and Monetary Union have just adopted a package of coordinated tax reforms—the largest since the monetary union was created. The legislation harmonizes VAT, revises corporate income tax, and redefines sectoral exemptions that, for decades, have shaped regional competitiveness.",
+          "For cross-border businesses, the most anticipated measure concerns the alignment of VAT rates on digital services and the simplification of filings through a single BCEAO-WAEMU platform, scheduled for rollout over eighteen months.",
         ],
       },
       {
-        heading: "Qui gagne, qui perd ?",
+        heading: "Who wins, who loses?",
         paragraphs: [
-          "Les PME agroalimentaires bénéficient d'allègements ciblés sur les investissements en transformation locale. À l'inverse, les secteurs extractifs et certains grands importateurs voient leurs régimes dérogatoires réduits progressivement sur cinq ans, avec un calendrier échelonné pour limiter les chocs sur l'emploi.",
-          "Nos simulations, réalisées avec des données douanières 2020-2025, montrent un gain net pour les ménages urbains à revenus moyens grâce à la baisse de certaines taxes indirectes. En revanche, les zones frontalières où le commerce informel reste structurant pourraient subir des tensions à court terme.",
+          "Agri-food SMEs benefit from targeted relief on local processing investments. Conversely, extractive sectors and certain large importers see their preferential regimes gradually reduced over five years, with a phased timetable to limit shocks to employment.",
+          "Our simulations, based on customs data from 2020–2025, show a net gain for urban middle-income households thanks to lower indirect taxes. However, border areas where informal trade remains structural could face short-term tensions.",
         ],
       },
       {
-        heading: "La réaction des capitales",
+        heading: "Reaction from the capitals",
         paragraphs: [
-          "À Abidjan, le gouvernement ivoirien a salué une « modernisation nécessaire » tout en annonçant un fonds de transition de 120 milliards FCFA pour accompagner les TPE. À Dakar et à Lomé, les oppositions réclament des études d'impact parlementaires plus transparentes avant la ratification finale.",
+          "In Abidjan, the Ivorian government welcomed a \"necessary modernization\" while announcing a 120 billion FCFA transition fund to support micro-enterprises. In Dakar and Lomé, opposition parties are calling for more transparent parliamentary impact studies before final ratification.",
         ],
       },
     ],
     quote: {
-      text: "Cette réforme vise à rendre le système plus équitable tout en préservant la compétitivité régionale.",
-      author: "Commission UEMOA",
+      text: "This reform aims to make the system fairer while preserving regional competitiveness.",
+      author: "WAEMU Commission",
     },
     list: {
-      title: "Points clés du texte",
+      title: "Key points of the legislation",
       items: [
-        "Harmonisation progressive de la TVA sur les services numériques",
-        "Réduction des exonérations extractives sur cinq ans",
-        "Plateforme unique de déclaration fiscale régionale",
-        "Fonds de transition pour les PME agroalimentaires",
+        "Gradual harmonization of VAT on digital services",
+        "Reduction of extractive-sector exemptions over five years",
+        "Single regional tax filing platform",
+        "Transition fund for agri-food SMEs",
       ],
     },
   },
   "wave-et-orange-money-annoncent-leur-fusion-naissance-du-premier-super-portefeuille-africain": {
     sections: [
       {
-        heading: "Une consolidation historique",
+        heading: "A historic consolidation",
         paragraphs: [
-          "Wave et Orange Money ont officialisé leur projet de fusion, qui créerait la plus grande entité de mobile money du continent avec plus de 180 millions d'utilisateurs actifs dans 24 pays. Valorisation annoncée : plus de 8 milliards de dollars.",
-          "L'opération répond à une pression réglementaire croissante de la BCEAO et à la concurrence des acteurs globaux du paiement digital qui cherchent à s'implanter en Afrique de l'Ouest.",
+          "Wave and Orange Money have formalized their merger plan, which would create the continent's largest mobile money entity with more than 180 million active users across 24 countries. Announced valuation: over $8 billion.",
+          "The deal responds to growing regulatory pressure from the BCEAO and competition from global digital payment players seeking to establish themselves in West Africa.",
         ],
       },
       {
-        heading: "Enjeux pour les utilisateurs",
+        heading: "What's at stake for users",
         paragraphs: [
-          "Les transferts transfrontaliers, aujourd'hui coûteux et lents, pourraient être simplifiés avec un réseau unique. Les analystes estiment une baisse moyenne de 15 à 25 % des frais sur les corridors UEMOA d'ici deux ans, si l'autorité de la concurrence valide les engagements proposés.",
+          "Cross-border transfers, which are costly and slow today, could be simplified through a single network. Analysts estimate an average 15–25% reduction in fees on WAEMU corridors within two years, if competition authorities approve the proposed commitments.",
         ],
       },
     ],
     quote: {
-      text: "Nous construisons l'infrastructure de paiement que l'Afrique de l'Ouest mérite.",
+      text: "We are building the payment infrastructure that West Africa deserves.",
     },
   },
   "can-2027-le-stade-felix-houphouet-boigny-accueillera-la-finale-capacite-portee-a-60-000": {
     sections: [
       {
-        heading: "Abidjan au centre du continent",
+        heading: "Abidjan at the heart of the continent",
         paragraphs: [
-          "La CAF a confirmé qu'Abidjan accueillera la finale de la CAN 2027. Le stade Félix Houphouët-Boigny verra sa capacité portée de 45 000 à 60 000 places après des travaux estimés à 120 millions d'euros.",
-          "Cette décision consacre la Côte d'Ivoire comme hub sportif majeur, après l'organisation réussie de la CAN 2024 et les investissements massifs dans les infrastructures de transport autour du plateau d'Abidjan.",
+          "CAF has confirmed that Abidjan will host the 2027 AFCON final. Félix Houphouët-Boigny Stadium will see its capacity increase from 45,000 to 60,000 seats after renovations estimated at €120 million.",
+          "This decision cements Côte d'Ivoire as a major sports hub, following the successful hosting of AFCON 2024 and massive investments in transport infrastructure around the Abidjan plateau.",
         ],
       },
       {
-        heading: "Retombées économiques attendues",
+        heading: "Expected economic impact",
         paragraphs: [
-          "Le ministère des Sports projette 250 000 visiteurs additionnels sur la période du tournoi et un impact direct de 180 milliards FCFA sur l'hôtellerie, la restauration et les services. Les autorités locales préparent déjà un plan de mobilité spécifique incluant navettes fluviales et extension du métro d'Abidjan.",
+          "The Ministry of Sports projects 250,000 additional visitors during the tournament and a direct impact of 180 billion FCFA on hospitality, restaurants, and services. Local authorities are already preparing a dedicated mobility plan including river shuttles and an extension of the Abidjan metro.",
         ],
       },
     ],
@@ -117,16 +117,16 @@ const ARTICLE_BODIES: Record<string, ArticleBodySpec> = {
   "abidjan-tech-valley-40-startups-selectionnees-pour-laccelerateur-continental-2026": {
     sections: [
       {
-        heading: "Une promotion panafricaine",
+        heading: "A pan-African cohort",
         paragraphs: [
-          "Quarante startups issues de quinze pays ont été retenues pour la promotion 2026 d'Abidjan Tech Valley. Le programme offre douze mois d'accompagnement, un fonds de 2 millions de dollars et un accès privilégié aux investisseurs de la diaspora tech.",
-          "Les secteurs dominants cette année : agritech, santé numérique et énergie propre — un reflet des priorités de développement de la région.",
+          "Forty startups from fifteen countries have been selected for the 2026 Abidjan Tech Valley cohort. The program offers twelve months of mentoring, a $2 million fund, and privileged access to investors from the tech diaspora.",
+          "Dominant sectors this year: agritech, digital health, and clean energy—a reflection of the region's development priorities.",
         ],
       },
       {
-        heading: "Focus sur trois lauréates",
+        heading: "Spotlight on three winners",
         paragraphs: [
-          "AgroVoice (Côte d'Ivoire) propose des conseils agricoles par SMS vocal en langues locales. MedConnect (Sénégal) digitalise le parcours de soins en zone rurale. SolarGrid (Ghana) déploie des micro-réseaux solaires pour les marchés alimentaires.",
+          "AgroVoice (Côte d'Ivoire) provides agricultural advice via voice SMS in local languages. MedConnect (Senegal) digitizes the care pathway in rural areas. SolarGrid (Ghana) deploys solar microgrids for food markets.",
         ],
       },
     ],
@@ -134,15 +134,15 @@ const ARTICLE_BODIES: Record<string, ArticleBodySpec> = {
   "sommet-de-lua-le-continent-adopte-une-feuille-de-route-pour-l-autonomie-alimentaire": {
     sections: [
       {
-        heading: "Un plan quinquennal ambitieux",
+        heading: "An ambitious five-year plan",
         paragraphs: [
-          "Les chefs d'État africains ont adopté une feuille de route visant à réduire de 50 % les importations alimentaires d'ici 2031. Le plan mobilise 25 milliards de dollars d'investissements publics et privés, avec un accent sur les semences locales, l'irrigation et la transformation agroalimentaire.",
+          "African heads of state have adopted a roadmap aiming to reduce food imports by 50% by 2031. The plan mobilizes $25 billion in public and private investment, with a focus on local seeds, irrigation, and agri-food processing.",
         ],
       },
       {
-        heading: "Défis de mise en œuvre",
+        heading: "Implementation challenges",
         paragraphs: [
-          "Les experts soulignent l'écart entre les annonces et les capacités de financement réelles. La sécurisation des terres, l'accès au crédit agricole et la résilience climatique restent les trois verrous identifiés par la FAO dans son rapport d'accompagnement.",
+          "Experts highlight the gap between announcements and actual financing capacity. Land tenure security, access to agricultural credit, and climate resilience remain the three bottlenecks identified by the FAO in its supporting report.",
         ],
       },
     ],
@@ -150,37 +150,37 @@ const ARTICLE_BODIES: Record<string, ArticleBodySpec> = {
   "detournement-de-fonds-publics-trois-ministres-mis-en-examen-dans-laffaire-des-marches-de-construction": {
     sections: [
       {
-        heading: "Huit mois d'investigation",
+        heading: "Eight months of investigation",
         paragraphs: [
-          "Notre enquête a documenté un système de surfacturation massif sur les grands chantiers d'infrastructure lancés entre 2019 et 2024. Trois anciens ministres ont été mis en examen ; le préjudice estimé dépasse 400 millions d'euros.",
-          "Des sociétés écrans basées à Dubaï et Genève auraient servi à blanchir les fonds détournés via des factures de prestations fictives et des contrats de sous-traitance gonflés.",
+          "Our investigation documented a system of massive overbilling on major infrastructure projects launched between 2019 and 2024. Three former ministers have been placed under formal investigation; estimated losses exceed €400 million.",
+          "Shell companies based in Dubai and Geneva allegedly laundered misappropriated funds through fictitious service invoices and inflated subcontracting contracts.",
         ],
       },
       {
-        heading: "Le mécanisme",
+        heading: "The mechanism",
         paragraphs: [
-          "Le schéma repose sur la multiplication des avenants contractuels après attribution des marchés, une pratique difficile à détecter sans audit indépendant. Les documents que nous avons pu consulter montrent des écarts de 30 à 70 % entre les devis initiaux et les montants finalement payés.",
+          "The scheme relies on multiplying contract amendments after awards—a practice difficult to detect without independent audits. Documents we were able to review show gaps of 30–70% between initial estimates and amounts ultimately paid.",
         ],
       },
     ],
     quote: {
-      text: "La transparence sur les marchés publics n'est pas un luxe démocratique — c'est une condition de souveraineté économique.",
-      author: "Magistrat instructeur",
+      text: "Transparency in public procurement is not a democratic luxury—it is a condition of economic sovereignty.",
+      author: "Investigating magistrate",
     },
   },
   "ces-agriculteurs-ivoiriens-qui-transforment-le-cacao-en-chocolat-haut-de-gamme": {
     sections: [
       {
-        heading: "Du bean au barreau",
+        heading: "From bean to bar",
         paragraphs: [
-          "Dans la région du Bélier, des coopératives familiales produisent, fermentent et exportent leur propre chocolat bean-to-bar vers l'Europe et l'Asie. Ce modèle remet en question la domination des grands transformateurs qui captent la majeure partie de la valeur ajoutée du cacao ivoirien.",
-          "« Nous ne vendons plus une matière première — nous vendons une histoire, un terroir et une qualité », explique Kouamé N'Guessan, président du collectif Bélier Cacao.",
+          "In the Bélier region, family cooperatives produce, ferment, and export their own bean-to-bar chocolate to Europe and Asia. This model challenges the dominance of large processors who capture most of the added value from Ivorian cocoa.",
+          "\"We no longer sell a raw material—we sell a story, a terroir, and quality,\" explains Kouamé N'Guessan, president of the Bélier Cacao collective.",
         ],
       },
       {
-        heading: "Des défis logistiques",
+        heading: "Logistical challenges",
         paragraphs: [
-          "Le froid et la certification bio restent des obstacles. Pourtant, les barres premium se vendent jusqu'à 12 euros en boutique spécialisée à Paris, soit dix fois le prix du cacao brut au kilo.",
+          "Cold chain and organic certification remain obstacles. Yet premium bars sell for up to €12 in specialty shops in Paris—ten times the price of raw cocoa per kilo.",
         ],
       },
     ],
@@ -188,15 +188,15 @@ const ARTICLE_BODIES: Record<string, ArticleBodySpec> = {
   "vaccin-antipaludisme-rtss-la-cote-divoire-lance-sa-campagne-nationale-de-vaccination-de-masse": {
     sections: [
       {
-        heading: "Une première régionale",
+        heading: "A regional first",
         paragraphs: [
-          "La Côte d'Ivoire devient le premier pays francophone d'Afrique de l'Ouest à lancer une campagne de vaccination de masse contre le paludisme avec le vaccin RTS,S. Objectif : 2,5 millions d'enfants vaccinés en six mois.",
+          "Côte d'Ivoire becomes the first Francophone country in West Africa to launch a mass malaria vaccination campaign with the RTS,S vaccine. Goal: 2.5 million children vaccinated in six months.",
         ],
       },
       {
-        heading: "Organisation sur le terrain",
+        heading: "Operations on the ground",
         paragraphs: [
-          "Le ministère de la Santé a mobilisé 3 200 équipes mobiles et renforcé la chaîne du froid dans 82 districts. Les autorités insistent sur la complémentarité vaccin / moustiquaire / diagnostic précoce.",
+          "The Ministry of Health has mobilized 3,200 mobile teams and strengthened the cold chain in 82 districts. Authorities stress the complementary role of vaccination, bed nets, and early diagnosis.",
         ],
       },
     ],
@@ -204,15 +204,15 @@ const ARTICLE_BODIES: Record<string, ArticleBodySpec> = {
   "google-devoile-son-premier-data-center-dafrique-subsaharienne-installe-a-accra": {
     sections: [
       {
-        heading: "600 millions de dollars investis",
+        heading: "$600 million invested",
         paragraphs: [
-          "Google a inauguré son premier data center en Afrique subsaharienne à Accra. L'installation alimentera les services cloud pour l'ensemble de la région ouest-africaine et créera 1 200 emplois directs et indirects.",
+          "Google has inaugurated its first data center in sub-Saharan Africa in Accra. The facility will power cloud services for the entire West African region and create 1,200 direct and indirect jobs.",
         ],
       },
       {
-        heading: "Souveraineté numérique",
+        heading: "Digital sovereignty",
         paragraphs: [
-          "Le Ghana se positionne comme hub numérique régional, mais les débats sur la localisation des données sensibles et la consommation énergétique des centres de calcul restent vifs dans la société civile.",
+          "Ghana is positioning itself as a regional digital hub, but debates over the localization of sensitive data and the energy consumption of data centers remain heated within civil society.",
         ],
       },
     ],
@@ -220,16 +220,16 @@ const ARTICLE_BODIES: Record<string, ArticleBodySpec> = {
   "le-parlement-vote-la-loi-sur-la-protection-des-donnees-personnelles": {
     sections: [
       {
-        heading: "Un cadre inédit en zone francophone",
+        heading: "An unprecedented framework in the Francophone zone",
         paragraphs: [
-          "Le Parlement a adopté à une large majorité la loi sur la protection des données personnelles, transposant les standards internationaux et créant une autorité de contrôle indépendante.",
-          "Les entreprises disposeront de dix-huit mois pour se mettre en conformité. Les sanctions peuvent atteindre 5 % du chiffre d'affaires annuel pour les manquements les plus graves.",
+          "Parliament adopted the personal data protection law by a wide majority, transposing international standards and creating an independent supervisory authority.",
+          "Businesses will have eighteen months to comply. Penalties can reach 5% of annual revenue for the most serious violations.",
         ],
       },
       {
-        heading: "Impact sur la tech",
+        heading: "Impact on tech",
         paragraphs: [
-          "Les acteurs du mobile money et de la publicité ciblée sont particulièrement concernés. Les juristes recommandent des audits internes immédiats et la nomination d'un délégué à la protection des données.",
+          "Mobile money and targeted advertising players are particularly affected. Legal experts recommend immediate internal audits and the appointment of a data protection officer.",
         ],
       },
     ],
@@ -237,15 +237,15 @@ const ARTICLE_BODIES: Record<string, ArticleBodySpec> = {
   "lia-au-service-de-lagriculture-agrotech-ci-deploie-son-assistant-vocal-en-dioula-et-baoule": {
     sections: [
       {
-        heading: "L'IA en langues locales",
+        heading: "AI in local languages",
         paragraphs: [
-          "Agrotech CI lance un assistant vocal multilingue destiné aux petits producteurs. L'outil fonctionne hors connexion sur téléphones basiques et couvre douze cultures principales, de l'anacarde au cacao.",
+          "Agrotech CI is launching a multilingual voice assistant for smallholder farmers. The tool works offline on basic phones and covers twelve main crops, from cashew to cocoa.",
         ],
       },
       {
-        heading: "Résultats pilotes",
+        heading: "Pilot results",
         paragraphs: [
-          "Dans le centre du pays, les rendements de maïs ont progressé de 18 % sur la saison pilote grâce à des conseils personnalisés sur les dates de semis et les doses d'engrais.",
+          "In the central region, maize yields increased by 18% during the pilot season thanks to personalized advice on planting dates and fertilizer doses.",
         ],
       },
     ],
@@ -253,35 +253,35 @@ const ARTICLE_BODIES: Record<string, ArticleBodySpec> = {
   "faut-il-repenser-le-modele-de-la-dette-publique-en-afrique-francophone": {
     sections: [
       {
-        heading: "Une dette qui a doublé",
+        heading: "Debt that has doubled",
         paragraphs: [
-          "La dette publique africaine a doublé en dix ans. Les taux d'intérêt globaux et la dépréciation de certaines monnaies locales aggravent le service de la dette, au détriment des dépenses sociales.",
+          "African public debt has doubled in ten years. Global interest rates and the depreciation of certain local currencies are worsening debt service, to the detriment of social spending.",
         ],
       },
       {
-        heading: "Vers de nouveaux instruments",
+        heading: "Toward new instruments",
         paragraphs: [
-          "L'auteure plaide pour des clauses de suspension en cas de choc climatique, une meilleure transparence sur les prêts garantis par des ressources naturelles et un renforcement des capacités fiscales plutôt que de nouveaux emprunts commerciaux.",
+          "The author argues for suspension clauses in the event of climate shocks, greater transparency on loans backed by natural resources, and strengthening fiscal capacity rather than taking on new commercial borrowing.",
         ],
       },
     ],
     quote: {
-      text: "Endetter l'avenir climatique du continent pour financer des infrastructures d'hier n'est plus tenable.",
+      text: "Indebtedness for the continent's climate future to finance yesterday's infrastructure is no longer sustainable.",
       author: "Prof. Adjoua Mensah",
     },
   },
   "ivoiriens-de-france-comment-la-deuxieme-generation-reinvente-le-lien-avec-le-pays": {
     sections: [
       {
-        heading: "Huit parcours de retour",
+        heading: "Eight return journeys",
         paragraphs: [
-          "Ils ont grandi en banlieue parisienne et ont choisi de revenir à Abidjan pour lancer leur startup ou reprendre une exploitation familiale. Huit portraits croisés d'une diaspora en mutation.",
+          "They grew up in the Paris suburbs and chose to return to Abidjan to launch their startup or take over a family farm. Eight intersecting portraits of a diaspora in transition.",
         ],
       },
       {
-        heading: "Entre deux cultures",
+        heading: "Between two cultures",
         paragraphs: [
-          "Le retour n'est jamais simple : reconnaissance des diplômes, bureaucratie, attentes familiales. Pourtant, beaucoup y voient une opportunité de contribuer à la transformation économique du pays avec des compétences acquises en Europe.",
+          "Returning is never simple: diploma recognition, bureaucracy, family expectations. Yet many see an opportunity to contribute to the country's economic transformation with skills acquired in Europe.",
         ],
       },
     ],
@@ -289,15 +289,15 @@ const ARTICLE_BODIES: Record<string, ArticleBodySpec> = {
   "le-port-dabidjan-comment-il-est-devenu-le-premier-hub-logistique-dafrique-de-louest": {
     sections: [
       {
-        heading: "25 millions de tonnes par an",
+        heading: "25 million tonnes per year",
         paragraphs: [
-          "Avec 25 millions de tonnes de fret traitées par an, le port d'Abidjan s'impose comme la porte d'entrée commerciale de l'hinterland ouest-africain, desservant le Mali, le Burkina Faso et le Niger.",
+          "With 25 million tonnes of freight handled annually, the Port of Abidjan has established itself as the commercial gateway to the West African hinterland, serving Mali, Burkina Faso, and Niger.",
         ],
       },
       {
-        heading: "Modernisation en cours",
+        heading: "Modernization underway",
         paragraphs: [
-          "Le terminal à conteneurs du Vridi a doublé de capacité. Un corridor logistique numérique permet désormais le suivi en temps réel des cargaisons, réduisant les délais de dédouanement de 40 % pour les opérateurs agréés.",
+          "The Vridi container terminal has doubled its capacity. A digital logistics corridor now enables real-time cargo tracking, reducing customs clearance times by 40% for accredited operators.",
         ],
       },
     ],
@@ -305,15 +305,15 @@ const ARTICLE_BODIES: Record<string, ArticleBodySpec> = {
   "grand-bassam-classee-au-patrimoine-mondial-lunesco-officialise-lextension-du-site-colonial": {
     sections: [
       {
-        heading: "Extension du site UNESCO",
+        heading: "UNESCO site extension",
         paragraphs: [
-          "L'UNESCO a officialisé l'extension du site historique de Grand-Bassam, incluant de nouveaux bâtiments coloniaux restaurés et le quartier France, cœur touristique de la ville.",
+          "UNESCO has formalized the extension of the Grand-Bassam historic site, including newly restored colonial buildings and the Quartier France, the city's tourist heart.",
         ],
       },
       {
-        heading: "Tourisme et mémoire",
+        heading: "Tourism and memory",
         paragraphs: [
-          "Les autorités locales espèrent doubler la fréquentation touristique d'ici 2030 tout en préservant la authenticité architecturale. Un plan de gestion des flux visiteurs entre en vigueur dès la prochaine haute saison.",
+          "Local authorities hope to double tourist visits by 2030 while preserving architectural authenticity. A visitor flow management plan takes effect from the next high season.",
         ],
       },
     ],
@@ -321,15 +321,15 @@ const ARTICLE_BODIES: Record<string, ArticleBodySpec> = {
   "lonu-adopte-une-resolution-historique-sur-la-dette-souveraine-des-pays-en-developpement": {
     sections: [
       {
-        heading: "Un vote symbolique fort",
+        heading: "A strong symbolic vote",
         paragraphs: [
-          "L'Assemblée générale de l'ONU a adopté une résolution appelant à une restructuration coordonnée de la dette des pays les plus vulnérables, ouvrant la voie à des mécanismes plus équitables pour le Sud global.",
+          "The UN General Assembly adopted a resolution calling for coordinated restructuring of debt for the most vulnerable countries, paving the way for fairer mechanisms for the Global South.",
         ],
       },
       {
-        heading: "Limites du texte",
+        heading: "Limits of the text",
         paragraphs: [
-          "La résolution n'est pas contraignante pour les créanciers privés. Les ONG saluent néanmoins un changement de narratif qui pourrait faciliter des négociations futures.",
+          "The resolution is not binding on private creditors. NGOs nevertheless welcome a narrative shift that could facilitate future negotiations.",
         ],
       },
     ],
@@ -337,15 +337,15 @@ const ARTICLE_BODIES: Record<string, ArticleBodySpec> = {
   "ligue-1-ci-lasec-remporte-le-derby-dabidjan-3-1": {
     sections: [
       {
-        heading: "Un derby bouillant",
+        heading: "A heated derby",
         paragraphs: [
-          "L'ASEC Mimosas s'est imposée 3-1 face à l'Africa Sports au stade Robert-Champroux devant 25 000 spectateurs. Un doublé de l'attaquant ivoirien a renversé le match après une entame difficile des Mimosas.",
+          "ASEC Mimosas beat Africa Sports 3–1 at Robert-Champroux Stadium before 25,000 spectators. A brace from an Ivorian striker turned the match around after a difficult start for the Mimosas.",
         ],
       },
       {
-        heading: "Course au titre",
+        heading: "Title race",
         paragraphs: [
-          "Ce succès permet à l'ASEC de reprendre la tête du championnat avec deux points d'avance sur le WAC, à trois journées de la fin de la phase régulière.",
+          "This win puts ASEC back on top of the league table, two points ahead of WAC with three matchdays left in the regular season.",
         ],
       },
     ],
@@ -353,15 +353,15 @@ const ARTICLE_BODIES: Record<string, ArticleBodySpec> = {
   "deforestation-du-sassandra-lenquete-qui-revele-lampleur-reelle-des-pertes-forestieres": {
     sections: [
       {
-        heading: "Des images satellite accablantes",
+        heading: "Damning satellite imagery",
         paragraphs: [
-          "Notre enquête croise imagerie satellite, données douanières et témoignages de villageois pour quantifier les pertes forestières dans la région du Sassandra depuis 2020 : plus de 47 000 hectares déforestés, soit une hausse de 34 % par rapport à la décennie précédente.",
+          "Our investigation cross-references satellite imagery, customs data, and villager testimonies to quantify forest losses in the Sassandra region since 2020: more than 47,000 hectares deforested—a 34% increase compared to the previous decade.",
         ],
       },
       {
-        heading: "Filières impliquées",
+        heading: "Industries involved",
         paragraphs: [
-          "L'expansion des plantations de palmier à huile et l'exploitation illégale de bois précieux alimentent la déforestation. Les autorités annoncent un renforcement des patrouilles, mais les habitants restent sceptiques face à l'ampleur des réseaux.",
+          "The expansion of oil palm plantations and illegal exploitation of precious timber are driving deforestation. Authorities announce strengthened patrols, but residents remain skeptical given the scale of the networks involved.",
         ],
       },
     ],
@@ -369,9 +369,9 @@ const ARTICLE_BODIES: Record<string, ArticleBodySpec> = {
   "global-south-talks-la-dette-africaine-sous-le-microscope-des-economistes": {
     sections: [
       {
-        heading: "Épisode spécial podcast",
+        heading: "Special podcast episode",
         paragraphs: [
-          "Dans cet épisode de Global South Talks, trois économistes débattent des mécanismes de restructuration, du rôle du FMI et des alternatives proposées par les pays du Sud global pour sortir de l'ornière de la dette.",
+          "In this episode of Global South Talks, three economists debate restructuring mechanisms, the role of the IMF, and alternatives proposed by Global South countries to break out of the debt trap.",
         ],
       },
     ],
@@ -379,10 +379,10 @@ const ARTICLE_BODIES: Record<string, ArticleBodySpec> = {
   "la-bad-annonce-un-financement-de-800m-pour-les-pme-ivoiriennes-dans-le-secteur-agroalimentaire": {
     sections: [
       {
-        heading: "800 millions pour l'agroalimentaire",
+        heading: "$800 million for agri-food",
         paragraphs: [
-          "La Banque africaine de développement débloque une enveloppe destinée aux PME ivoiriennes de transformation agroalimentaire, avec un accent sur l'anacarde, le cacao et les fruits tropicaux à export.",
-          "Le dispositif prévoit des taux préférentiels et un accompagnement technique pour la certification qualité et l'accès aux marchés européens.",
+          "The African Development Bank is unlocking a package for Ivorian agri-food processing SMEs, with a focus on cashew, cocoa, and tropical fruits for export.",
+          "The scheme provides preferential rates and technical support for quality certification and access to European markets.",
         ],
       },
     ],
@@ -390,9 +390,9 @@ const ARTICLE_BODIES: Record<string, ArticleBodySpec> = {
   "nations-unies-le-conseil-de-securite-se-reunit-en-urgence-sur-la-situation-au-sahel": {
     sections: [
       {
-        heading: "Session extraordinaire",
+        heading: "Extraordinary session",
         paragraphs: [
-          "Le Conseil de sécurité de l'ONU se réunit en urgence alors que la situation sécuritaire et humanitaire se dégrade dans plusieurs pays du Sahel. Les États du Sud global demandent un renforcement des opérations de maintien de la paix et un accès humanitaire élargi.",
+          "The UN Security Council is meeting urgently as the security and humanitarian situation deteriorates in several Sahel countries. Global South states are calling for strengthened peacekeeping operations and expanded humanitarian access.",
         ],
       },
     ],
@@ -400,9 +400,9 @@ const ARTICLE_BODIES: Record<string, ArticleBodySpec> = {
   "meta-deploie-son-service-whatsapp-pay-en-cote-divoire-avec-integration-cinetpay-native": {
     sections: [
       {
-        heading: "Paiement intégré dans WhatsApp",
+        heading: "Payments built into WhatsApp",
         paragraphs: [
-          "Meta lance WhatsApp Pay en Côte d'Ivoire via un partenariat avec CinetPay, permettant des paiements P2P et marchands directement dans l'application de messagerie la plus utilisée du pays.",
+          "Meta is launching WhatsApp Pay in Côte d'Ivoire through a partnership with CinetPay, enabling P2P and merchant payments directly in the country's most widely used messaging app.",
         ],
       },
     ],
@@ -410,9 +410,9 @@ const ARTICLE_BODIES: Record<string, ArticleBodySpec> = {
   "nouveaux-cas-de-meningite-a-bouake-le-ministere-de-la-sante-active-le-protocole-durgence-regional": {
     sections: [
       {
-        heading: "Protocole d'urgence",
+        heading: "Emergency protocol",
         paragraphs: [
-          "Après une recrudescence des cas de méningite à Bouaké, le ministère de la Santé active un protocole d'urgence régional incluant vaccination ciblée, surveillance épidémiologique renforcée et campagne de sensibilisation.",
+          "Following a resurgence of meningitis cases in Bouaké, the Ministry of Health has activated a regional emergency protocol including targeted vaccination, strengthened epidemiological surveillance, and an awareness campaign.",
         ],
       },
     ],
@@ -420,9 +420,9 @@ const ARTICLE_BODIES: Record<string, ArticleBodySpec> = {
   "interview-exclusive-le-premier-ministre-repond-aux-critiques-sur-la-reforme-de-leducation": {
     sections: [
       {
-        heading: "Réforme éducative",
+        heading: "Education reform",
         paragraphs: [
-          "Dans cet entretien exclusif, le Premier Ministre répond aux critiques sur la réforme de l'éducation et détaille le calendrier de déploiement dans les établissements publics.",
+          "In this exclusive interview, the Prime Minister responds to criticism of the education reform and details the rollout schedule in public institutions.",
         ],
       },
     ],
@@ -430,9 +430,9 @@ const ARTICLE_BODIES: Record<string, ArticleBodySpec> = {
   "les-elephants-en-route-pour-la-can-reportage-dans-le-centre-de-preparation-de-la-fif": {
     sections: [
       {
-        heading: "Préparation CAN",
+        heading: "AFCON preparation",
         paragraphs: [
-          "Reportage au centre de préparation de la Fédération ivoirienne de football où les Éléphants peaufinent leur collectif à quelques mois de la CAN 2027.",
+          "Report from the Ivorian Football Federation's training center, where the Elephants are fine-tuning their squad ahead of AFCON 2027.",
         ],
       },
     ],
@@ -440,9 +440,9 @@ const ARTICLE_BODIES: Record<string, ArticleBodySpec> = {
   "orpaillage-illegal-dans-le-nord-le-grand-documentaire-sur-les-filieres-clandestines": {
     sections: [
       {
-        heading: "Documentaire d'investigation",
+        heading: "Investigative documentary",
         paragraphs: [
-          "Notre équipe a suivi pendant six mois les filières clandestines d'orpaillage dans le nord du pays, documentant l'impact environnemental et les réseaux d'exportation parallèles.",
+          "Our team spent six months following clandestine gold-mining networks in the north of the country, documenting environmental impact and parallel export channels.",
         ],
       },
     ],
@@ -452,9 +452,10 @@ const ARTICLE_BODIES: Record<string, ArticleBodySpec> = {
 export function resolveArticleContent(
   title: string,
   excerpt: string,
-  fallbackHtml: string
+  fallbackHtml: string,
+  slugOverride?: string
 ): string {
-  const slug = slugify(title, { lower: true, strict: true });
+  const slug = slugOverride ?? slugify(title, { lower: true, strict: true });
   const spec = ARTICLE_BODIES[slug];
   if (!spec) return fallbackHtml;
   return renderBody(excerpt, spec);

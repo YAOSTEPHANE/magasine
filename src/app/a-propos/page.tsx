@@ -2,47 +2,47 @@ import type { Metadata } from "next";
 import { ContentPage, ContentSection, ContentCta, ContentSocialBlock } from "@/components/layout/ContentPage";
 
 export const metadata: Metadata = {
-  title: "À propos",
-  description: "Global South Watch — notre mission, nos valeurs et notre engagement pour le journalisme du Sud global.",
+  title: "About",
+  description: "Global South Watch — our mission, values and commitment to journalism from the Global South.",
 };
 
 export default function AProposPage() {
   return (
     <ContentPage
       eyebrow="Global South Watch"
-      title="À propos de nous"
-      description="Global South Watch est le portail d'information de référence pour l'Afrique et le Sud global. Nous racontons le continent avec rigueur, indépendance et proximité."
+      title="About us"
+      description="Global South Watch is the leading news portal for Africa and the Global South. We cover the continent with rigor, independence and proximity."
     >
       <p>
-        Fondé par Digitalpro Solutions et édité depuis Abidjan, Global South Watch couvre l&apos;actualité
-        politique, économique, sociale et culturelle de l&apos;Afrique et des pays du Sud. Notre rédaction
-        réunit journalistes, correspondants et experts basés sur le continent et dans la diaspora.
+        Founded by Digitalpro Solutions and published from Abidjan, Global South Watch covers political,
+        economic, social and cultural news from Africa and the Global South. Our editorial team
+        brings together journalists, correspondents and experts based across the continent and in the diaspora.
       </p>
 
-      <ContentSection title="Notre mission">
+      <ContentSection title="Our mission">
         <p>
-          Informer, analyser et donner la parole aux acteurs du changement. Nous croyons qu&apos;un journalisme
-          de qualité, ancré dans les réalités locales, est essentiel pour comprendre les transformations
-          du Sud global et construire des débats publics éclairés.
+          To inform, analyze and give voice to agents of change. We believe quality journalism,
+          rooted in local realities, is essential to understanding transformations
+          in the Global South and building informed public debate.
         </p>
       </ContentSection>
 
-      <ContentSection title="Nos valeurs">
+      <ContentSection title="Our values">
         <ul className="list-disc pl-6 space-y-2">
-          <li><strong>Indépendance éditoriale</strong> — aucune ingérence politique ou commerciale dans nos enquêtes</li>
-          <li><strong>Rigueur factuelle</strong> — vérification systématique des sources et transparence sur nos méthodes</li>
-          <li><strong>Pluralité</strong> — diversité des voix, des regards et des territoires couverts</li>
-          <li><strong>Accessibilité</strong> — contenus gratuits, formats variés et couverture en continu</li>
+          <li><strong>Editorial independence</strong> — no political or commercial interference in our investigations</li>
+          <li><strong>Factual rigor</strong> — systematic source verification and transparency about our methods</li>
+          <li><strong>Pluralism</strong> — diversity of voices, perspectives and territories covered</li>
+          <li><strong>Accessibility</strong> — free content, varied formats and continuous coverage</li>
         </ul>
       </ContentSection>
 
-      <ContentSection title="Chiffres clés">
+      <ContentSection title="Key figures">
         <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 not-prose">
           {[
-            ["2M+", "Lecteurs mensuels"],
-            ["145k", "Abonnés newsletter"],
-            ["12+", "Rubriques éditoriales"],
-            ["48h", "Couverture continue"],
+            ["2M+", "Monthly readers"],
+            ["145k", "Newsletter subscribers"],
+            ["12+", "Editorial sections"],
+            ["48h", "Continuous coverage"],
           ].map(([num, label]) => (
             <li key={label} className="p-4 bg-muted-bg border border-border rounded-sm text-center">
               <span className="block font-serif text-3xl font-bold text-charcoal">{num}</span>
@@ -53,9 +53,9 @@ export default function AProposPage() {
       </ContentSection>
 
       <ContentCta
-        text="Découvrez les journalistes qui composent notre rédaction."
+        text="Meet the journalists who make up our editorial team."
         href="/equipe"
-        label="Notre équipe"
+        label="Our team"
       />
       <ContentSocialBlock />
     </ContentPage>

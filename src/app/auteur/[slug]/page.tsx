@@ -11,10 +11,10 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const data = await getAuthorBySlug(slug);
-  if (!data) return { title: "Auteur introuvable" };
+  if (!data) return { title: "Author not found" };
   return {
     title: `${data.author.name} — Global South Watch`,
-    description: data.author.bio ?? `Articles de ${data.author.name}`,
+    description: data.author.bio ?? `Articles by ${data.author.name}`,
   };
 }
 
@@ -36,12 +36,12 @@ export default async function AuteurPage({ params }: Props) {
           )}
         </div>
         <div className="text-center sm:text-left">
-          <span className="text-[10px] font-bold tracking-[0.25em] uppercase text-gold">Auteur</span>
+          <span className="text-[10px] font-bold tracking-[0.25em] uppercase text-gold">Author</span>
           <h1 className="font-serif text-4xl font-bold text-charcoal mt-2 mb-4">{author.name}</h1>
           {author.bio && (
             <p className="text-muted max-w-2xl leading-relaxed">{author.bio}</p>
           )}
-          <p className="text-sm text-muted mt-4">{articles.length} article(s) publié(s)</p>
+          <p className="text-sm text-muted mt-4">{articles.length} published article(s)</p>
         </div>
       </div>
 
@@ -52,7 +52,7 @@ export default async function AuteurPage({ params }: Props) {
           ))}
         </div>
       ) : (
-        <p className="text-center text-muted py-16">Aucun article publié pour le moment.</p>
+        <p className="text-center text-muted py-16">No published articles yet.</p>
       )}
     </div>
   );

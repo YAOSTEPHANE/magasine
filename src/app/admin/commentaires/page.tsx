@@ -41,12 +41,12 @@ export default function AdminCommentairesPage() {
 
   return (
     <div className="min-h-screen bg-muted-bg">
-      <AdminPageHeader title="Modération des commentaires" />
+      <AdminPageHeader title="Comment moderation" />
       <div className="max-w-7xl mx-auto px-6 py-8">
         {loading ? (
-          <p className="text-muted text-center py-12">Chargement...</p>
+          <p className="text-muted text-center py-12">Loading...</p>
         ) : comments.length === 0 ? (
-          <p className="text-muted text-center py-12">Aucun commentaire.</p>
+          <p className="text-muted text-center py-12">No comments.</p>
         ) : (
           <div className="space-y-4">
             {comments.map((c) => (
@@ -66,7 +66,7 @@ export default function AdminCommentairesPage() {
                 <p className="text-sm text-charcoal/80 mb-3">{c.content}</p>
                 {c.article?.slug && (
                   <Link href={`/article/${c.article.slug}`} className="text-xs text-accent hover:underline">
-                    Sur : {c.article.title}
+                    On: {c.article.title}
                   </Link>
                 )}
                 <div className="flex gap-3 mt-4 pt-4 border-t border-border">
@@ -76,7 +76,7 @@ export default function AdminCommentairesPage() {
                       onClick={() => moderate(c._id, "approve")}
                       className="text-xs text-green-700 hover:underline"
                     >
-                      Approuver
+                      Approve
                     </button>
                   )}
                   {c.isApproved && (
@@ -85,7 +85,7 @@ export default function AdminCommentairesPage() {
                       onClick={() => moderate(c._id, "reject")}
                       className="text-xs text-amber-700 hover:underline"
                     >
-                      Masquer
+                      Hide
                     </button>
                   )}
                   <button
@@ -93,7 +93,7 @@ export default function AdminCommentairesPage() {
                     onClick={() => moderate(c._id, "delete")}
                     className="text-xs text-red-600 hover:underline"
                   >
-                    Supprimer
+                    Delete
                   </button>
                 </div>
               </div>

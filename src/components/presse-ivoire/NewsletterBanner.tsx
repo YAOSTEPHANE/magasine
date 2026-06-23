@@ -3,9 +3,9 @@
 import { useState } from "react";
 
 const BENEFITS = [
-  "Briefing matinal exclusif",
-  "Enquêtes en avant-première",
-  "Analyses sans publicité",
+  "Exclusive morning briefing",
+  "Early access to investigations",
+  "Ad-free analysis",
 ];
 
 export function NewsletterBanner() {
@@ -40,15 +40,15 @@ export function NewsletterBanner() {
       <div className="newsletter-inner">
         <div className="newsletter-copy">
           <div className="nl-emblem" aria-hidden>GSW</div>
-          <div className="nl-label">Newsletter exclusive</div>
+          <div className="nl-label">Exclusive newsletter</div>
           <h2 className="nl-title">
-            L&apos;essentiel chaque matin,
+            The essentials every morning,
             <br />
-            <em>directement dans votre boîte mail.</em>
+            <em>delivered straight to your inbox.</em>
           </h2>
           <p className="nl-desc">
-            Une sélection éditoriale des informations les plus importantes d&apos;Afrique
-            et du Sud global, rédigée par notre rédaction.
+            An editorial selection of the most important news from Africa
+            and the Global South, curated by our newsroom.
           </p>
           <ul className="nl-benefits">
             {BENEFITS.map((b) => (
@@ -68,30 +68,30 @@ export function NewsletterBanner() {
               <input
                 className="nl-input"
                 type="email"
-                placeholder="votre@email.com"
+                placeholder="you@email.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
               <button type="submit" className="nl-btn" disabled={status === "loading"}>
                 {status === "loading" ? (
-                  "Inscription..."
+                  "Signing up..."
                 ) : (
                   <>
-                    <span className="nl-btn-full">S&apos;abonner gratuitement</span>
-                    <span className="nl-btn-short">S&apos;abonner</span>
+                    <span className="nl-btn-full">Subscribe for free</span>
+                    <span className="nl-btn-short">Subscribe</span>
                   </>
                 )}
               </button>
             </form>
             {status === "success" && (
-              <p className="nl-note nl-note-success">Inscription réussie. Merci !</p>
+              <p className="nl-note nl-note-success">Successfully subscribed. Thank you!</p>
             )}
             {status === "error" && (
-              <p className="nl-note nl-note-error">Une erreur est survenue. Réessayez.</p>
+              <p className="nl-note nl-note-error">Something went wrong. Please try again.</p>
             )}
             {status === "idle" && (
-              <p className="nl-note">Gratuit · Sans spam · Désinscription en un clic</p>
+              <p className="nl-note">Free · No spam · Unsubscribe in one click</p>
             )}
           </div>
         </div>

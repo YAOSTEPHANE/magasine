@@ -44,10 +44,10 @@ export default async function AdminDashboard() {
   }
 
   const cards = [
-    { label: "Articles publiés", value: stats.articles, icon: FileText, color: "text-accent" },
-    { label: "Utilisateurs", value: stats.users, icon: Users, color: "text-gold" },
-    { label: "Commentaires", value: stats.comments, icon: MessageSquare, color: "text-charcoal" },
-    { label: "Abonnés newsletter", value: stats.subscribers, icon: Mail, color: "text-accent" },
+    { label: "Published articles", value: stats.articles, icon: FileText, color: "text-accent" },
+    { label: "Users", value: stats.users, icon: Users, color: "text-gold" },
+    { label: "Comments", value: stats.comments, icon: MessageSquare, color: "text-charcoal" },
+    { label: "Newsletter subscribers", value: stats.subscribers, icon: Mail, color: "text-accent" },
   ];
 
   return (
@@ -67,7 +67,7 @@ export default async function AdminDashboard() {
                 Admin
               </span>
             </Link>
-            <p className="text-white/50 text-sm mt-2">Tableau de bord éditorial</p>
+            <p className="text-white/50 text-sm mt-2">Editorial dashboard</p>
           </div>
           <div className="flex items-center gap-4">
             <Link
@@ -75,10 +75,10 @@ export default async function AdminDashboard() {
               className="flex items-center gap-2 px-4 py-2 bg-gold text-white text-sm rounded-sm hover:bg-gold-dark transition-colors"
             >
               <Plus className="w-4 h-4" />
-              Nouvel article
+              New article
             </Link>
             <Link href="/" className="text-sm text-white/60 hover:text-white transition-colors">
-              Voir le site →
+              View site →
             </Link>
           </div>
         </div>
@@ -100,10 +100,10 @@ export default async function AdminDashboard() {
         {stats.pendingReview > 0 && (
           <div className="bg-gold-light border border-gold/30 rounded-sm p-4 mb-8 flex items-center justify-between">
             <p className="text-sm text-gold-dark">
-              <strong>{stats.pendingReview}</strong> article(s) en attente de validation
+              <strong>{stats.pendingReview}</strong> article(s) awaiting review
             </p>
             <Link href="/admin/articles?status=review" className="text-sm text-accent font-medium">
-              Voir →
+              View →
             </Link>
           </div>
         )}
@@ -111,8 +111,8 @@ export default async function AdminDashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 bg-surface border border-border rounded-sm">
             <div className="p-6 border-b border-border flex items-center justify-between">
-              <h2 className="font-serif text-lg font-bold text-charcoal">Activité récente</h2>
-              <Link href="/admin/articles" className="text-sm text-accent">Tous les articles</Link>
+              <h2 className="font-serif text-lg font-bold text-charcoal">Recent activity</h2>
+              <Link href="/admin/articles" className="text-sm text-accent">All articles</Link>
             </div>
             <div className="divide-y divide-border">
               {stats.recentArticles.map((article) => (
@@ -127,12 +127,12 @@ export default async function AdminDashboard() {
                     href={`/admin/articles/${article._id}`}
                     className="text-xs text-accent hover:text-accent-hover"
                   >
-                    Modifier
+                    Edit
                   </Link>
                 </div>
               ))}
               {stats.recentArticles.length === 0 && (
-                <p className="p-8 text-center text-muted text-sm">Aucun article pour le moment.</p>
+                <p className="p-8 text-center text-muted text-sm">No articles yet.</p>
               )}
             </div>
           </div>
@@ -140,16 +140,16 @@ export default async function AdminDashboard() {
           <div className="bg-surface border border-border rounded-sm p-6">
             <h2 className="font-serif text-lg font-bold text-charcoal mb-6 flex items-center gap-2">
               <Settings className="w-5 h-5" />
-              Gestion
+              Management
             </h2>
             <nav className="space-y-2">
               {[
                 { label: "Articles", href: "/admin/articles" },
-                { label: "Catégories", href: "/admin/categories" },
-                { label: "Auteurs", href: "/admin/auteurs" },
+                { label: "Categories", href: "/admin/categories" },
+                { label: "Authors", href: "/admin/auteurs" },
                 { label: "Newsletter", href: "/admin/newsletter" },
-                { label: "Commentaires", href: "/admin/commentaires" },
-                { label: "Paramètres", href: "/admin/parametres" },
+                { label: "Comments", href: "/admin/commentaires" },
+                { label: "Settings", href: "/admin/parametres" },
               ].map((item) => (
                 <Link
                   key={item.href}

@@ -7,7 +7,7 @@ import { Author } from "@/models/Author";
 export async function GET() {
   const session = await auth();
   if (!session?.user || !["super_admin", "admin", "editor"].includes(session.user.role)) {
-    return NextResponse.json({ error: "Non autorisé" }, { status: 403 });
+    return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   }
 
   await connectDB();

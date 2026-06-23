@@ -9,7 +9,7 @@ const articleSelect = "title slug excerpt featuredImage publishedAt readingTime"
 export async function GET() {
   const session = await auth();
   if (!session?.user) {
-    return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
+    return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
   }
 
   try {
@@ -20,7 +20,7 @@ export async function GET() {
       .lean();
 
     if (!user) {
-      return NextResponse.json({ error: "Utilisateur introuvable" }, { status: 404 });
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
     const mapArticle = (a: Record<string, unknown>) => ({
@@ -50,6 +50,6 @@ export async function GET() {
         .map(mapArticle),
     });
   } catch {
-    return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }

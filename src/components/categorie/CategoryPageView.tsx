@@ -15,7 +15,7 @@ interface CategoryPageViewProps {
 }
 
 function formatMeta(article: ArticleListItem) {
-  const author = article.authors[0]?.name ?? "Rédaction";
+  const author = article.authors[0]?.name ?? "Editorial";
   const date = article.publishedAt ? formatRelativeDate(article.publishedAt) : "";
   return `${author} · ${date} · ${article.readingTime} min`;
 }
@@ -28,18 +28,18 @@ export function CategoryPageView({ category, articles }: CategoryPageViewProps) 
       <PageBackdrop />
 
       <div className="container category-page-inner">
-        <nav className="category-breadcrumb" aria-label="Fil d'Ariane">
-          <Link href="/">Accueil</Link>
+        <nav className="category-breadcrumb" aria-label="Breadcrumb">
+          <Link href="/">Home</Link>
           <span aria-hidden>/</span>
           <span>{category.name}</span>
         </nav>
 
         <SectionHeader
           number={category.slug.slice(0, 2).toUpperCase()}
-          eyebrow="Rubrique"
+          eyebrow="Section"
           title={category.name}
           linkHref="/recherche"
-          linkLabel="Toutes les rubriques"
+          linkLabel="All sections"
         />
 
         {category.description && (
@@ -48,8 +48,8 @@ export function CategoryPageView({ category, articles }: CategoryPageViewProps) 
 
         {articles.length === 0 ? (
           <p className="category-empty">
-            Aucun article publié dans cette rubrique pour le moment.{" "}
-            <Link href="/">Retour à l&apos;accueil</Link>
+            No articles published in this section yet.{" "}
+            <Link href="/">Back to home</Link>
           </p>
         ) : (
           <>
@@ -87,7 +87,7 @@ export function CategoryPageView({ category, articles }: CategoryPageViewProps) 
             {rest.length > 0 && (
               <>
                 <div className="category-section-label article-reveal article-reveal--delay-1">
-                  <span>Tous les articles</span>
+                  <span>All articles</span>
                   <span className="category-count">{rest.length} article{rest.length > 1 ? "s" : ""}</span>
                 </div>
 

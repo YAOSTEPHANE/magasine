@@ -17,7 +17,7 @@ export function BrandLogo({ variant = "header", className, showTagline }: BrandL
     <Link
       href="/"
       className={className ?? (variant === "auth" ? "logo logo-auth" : "logo")}
-      aria-label="Global South Watch — Accueil"
+      aria-label="Global South Watch — Home"
     >
       <Image
         src={SITE_LOGO}
@@ -28,7 +28,7 @@ export function BrandLogo({ variant = "header", className, showTagline }: BrandL
         style={{ height, width: "auto", maxWidth: width }}
       />
       {displayTagline && (
-        <div className="logo-tagline">L&apos;information au cœur du Sud global</div>
+        <div className="logo-tagline">News at the heart of the Global South</div>
       )}
     </Link>
   );

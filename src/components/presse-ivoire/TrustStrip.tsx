@@ -4,10 +4,10 @@ export function TrustStrip() {
   const partners = [...TRUST_PARTNERS, ...TRUST_PARTNERS];
 
   return (
-    <div className="trust-strip" role="region" aria-label="Médias partenaires">
+    <div className="trust-strip" role="region" aria-label="Partner media">
       <div className="container trust-strip-inner">
         <div className="trust-strip-label-wrap">
-          <span className="trust-strip-label">Ils nous citent</span>
+          <span className="trust-strip-label">As seen in</span>
         </div>
         <div className="trust-strip-viewport">
           <div className="trust-strip-track">

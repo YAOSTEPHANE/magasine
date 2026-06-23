@@ -19,7 +19,7 @@ export function ArticleCard({
   className,
   priority = false,
 }: ArticleCardProps) {
-  const authorName = article.authors[0]?.name ?? "Rédaction";
+  const authorName = article.authors[0]?.name ?? "Editorial";
 
   if (variant === "hero") {
     return (
@@ -140,7 +140,7 @@ export function ArticleCard({
             </div>
           </div>
         </div>
-        <Badge variant="gold" className="mb-2">Vidéo</Badge>
+        <Badge variant="gold" className="mb-2">Video</Badge>
         <h3 className="font-serif text-base font-semibold text-charcoal line-clamp-2 group-hover:text-accent transition-colors">
           {article.title}
         </h3>

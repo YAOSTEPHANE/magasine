@@ -21,7 +21,7 @@ export function Sidebar({ topStories, popularTags }: SidebarProps) {
 
       <div className="bg-surface-elevated border border-border-gold rounded-sm p-6">
         <h3 className="text-[11px] font-bold tracking-[0.2em] uppercase text-gold-dark mb-4">
-          Tags Populaires
+          Popular Tags
         </h3>
         <div className="flex flex-wrap gap-2">
           {popularTags.map((tag) => (
@@ -37,7 +37,7 @@ export function Sidebar({ topStories, popularTags }: SidebarProps) {
       </div>
 
       <div className="bg-charcoal text-white rounded-sm p-6 text-center">
-        <p className="text-[10px] tracking-[0.2em] uppercase text-gold mb-2">Publicité</p>
+        <p className="text-[10px] tracking-[0.2em] uppercase text-gold mb-2">Advertisement</p>
         <div className="aspect-[300/250] bg-white/5 border border-white/10 rounded-sm flex items-center justify-center">
           <span className="text-xs text-white/30">300 × 250</span>
         </div>
@@ -52,8 +52,8 @@ export function EditorsChoice({ articles }: { articles: ArticleListItem[] }) {
   return (
     <section id="editors-choice" className="mb-16">
       <SectionTitle
-        title="Choix de la Rédaction"
-        subtitle="Sélection éditoriale"
+        title="Editor's Choice"
+        subtitle="Editorial selection"
       />
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {articles.map((article, i) => (
@@ -73,7 +73,7 @@ export function LatestUpdates({ articles }: { articles: ArticleListItem[] }) {
 
   return (
     <section className="mb-16">
-      <SectionTitle title="Dernières Mises à Jour" subtitle="En continu" />
+      <SectionTitle title="Latest Updates" subtitle="Live feed" />
       <div className="space-y-3">
         {articles.map((article) => (
           <ArticleCard key={article._id} article={article} variant="horizontal" />
@@ -89,7 +89,7 @@ export function AdBanner({ size = "728x90" }: { size?: "728x90" | "300x250" }) {
   return (
     <div className={`${dimensions} max-w-full mx-auto bg-muted-bg border border-dashed border-border rounded-sm flex items-center justify-center mb-16`}>
       <span className="text-xs text-muted tracking-wider uppercase">
-        Espace publicitaire {size}
+        Ad space {size}
       </span>
     </div>
   );
@@ -101,8 +101,8 @@ export function VideoSection({ articles }: { articles: ArticleListItem[] }) {
   return (
     <section className="mb-16 luxury-gradient rounded-sm p-8 lg:p-10 border border-border-gold/30">
       <SectionTitle
-        title="Vidéos en Vedette"
-        subtitle="Multimédia"
+        title="Featured Videos"
+        subtitle="Multimedia"
         href="/categorie/multimedia"
       />
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">

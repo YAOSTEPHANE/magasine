@@ -34,15 +34,15 @@ export default async function AdminNewsletterPage() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
           <div className="bg-surface border border-border rounded-sm p-6">
             <p className="text-3xl font-bold text-charcoal">{total}</p>
-            <p className="text-sm text-muted mt-1">Abonnés actifs</p>
+            <p className="text-sm text-muted mt-1">Active subscribers</p>
           </div>
           <div className="bg-surface border border-border rounded-sm p-6">
             <p className="text-3xl font-bold text-charcoal">{subscribers.length}</p>
-            <p className="text-sm text-muted mt-1">Inscriptions récentes</p>
+            <p className="text-sm text-muted mt-1">Recent sign-ups</p>
           </div>
           <div className="bg-surface border border-border rounded-sm p-6">
-            <p className="text-sm text-muted">Envoi d&apos;emails</p>
-            <p className="text-sm text-charcoal mt-2">Connectez SendGrid ou Resend en production.</p>
+            <p className="text-sm text-muted">Email delivery</p>
+            <p className="text-sm text-charcoal mt-2">Connect SendGrid or Resend in production.</p>
           </div>
         </div>
 
@@ -51,8 +51,8 @@ export default async function AdminNewsletterPage() {
             <thead className="bg-muted-bg border-b border-border">
               <tr>
                 <th className="text-left px-6 py-4 text-xs font-bold uppercase text-muted">Email</th>
-                <th className="text-left px-6 py-4 text-xs font-bold uppercase text-muted hidden md:table-cell">Préférences</th>
-                <th className="text-left px-6 py-4 text-xs font-bold uppercase text-muted">Statut</th>
+                <th className="text-left px-6 py-4 text-xs font-bold uppercase text-muted hidden md:table-cell">Preferences</th>
+                <th className="text-left px-6 py-4 text-xs font-bold uppercase text-muted">Status</th>
                 <th className="text-left px-6 py-4 text-xs font-bold uppercase text-muted hidden lg:table-cell">Date</th>
               </tr>
             </thead>
@@ -65,9 +65,9 @@ export default async function AdminNewsletterPage() {
                   </td>
                   <td className="px-6 py-4 text-sm">
                     {sub.isActive ? (
-                      <span className="text-green-700">Actif</span>
+                      <span className="text-green-700">Active</span>
                     ) : (
-                      <span className="text-muted">Désinscrit</span>
+                      <span className="text-muted">Unsubscribed</span>
                     )}
                   </td>
                   <td className="px-6 py-4 text-sm text-muted hidden lg:table-cell">
@@ -78,7 +78,7 @@ export default async function AdminNewsletterPage() {
             </tbody>
           </table>
           {subscribers.length === 0 && (
-            <p className="p-12 text-center text-muted text-sm">Aucun abonné newsletter pour le moment.</p>
+            <p className="p-12 text-center text-muted text-sm">No newsletter subscribers yet.</p>
           )}
         </div>
       </div>

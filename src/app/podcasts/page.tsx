@@ -4,7 +4,7 @@ import { ArticleCard } from "@/components/article/ArticleCard";
 
 export const metadata: Metadata = {
   title: "Podcasts",
-  description: "Émissions audio et podcasts — Global South Watch.",
+  description: "Audio shows and podcasts — Global South Watch.",
 };
 
 export default async function PodcastsPage() {
@@ -16,7 +16,7 @@ export default async function PodcastsPage() {
         <span className="text-[10px] font-bold tracking-[0.25em] uppercase text-gold">Audio</span>
         <h1 className="font-serif text-4xl font-bold text-charcoal mt-2 mb-4">Podcasts</h1>
         <p className="text-muted max-w-2xl mx-auto">
-          Analyses, débats et récits audio pour comprendre les enjeux du continent.
+          Analysis, debates and audio stories to understand the continent&apos;s key issues.
         </p>
       </div>
 
@@ -28,11 +28,11 @@ export default async function PodcastsPage() {
         </div>
       ) : (
         <div className="text-center py-16 max-w-lg mx-auto">
-          <p className="text-muted mb-4">Nos podcasts arrivent bientôt.</p>
+          <p className="text-muted mb-4">Our podcasts are coming soon.</p>
           <p className="text-sm text-muted">
-            En attendant, explorez nos{" "}
-            <a href="/videos" className="text-accent hover:underline">reportages vidéo</a>
-            {" "}et nos articles d&apos;opinion.
+            In the meantime, explore our{" "}
+            <a href="/videos" className="text-accent hover:underline">video reports</a>
+            {" "}and opinion pieces.
           </p>
         </div>
       )}

@@ -39,7 +39,7 @@ export default async function AdminAuteursPage() {
 
   return (
     <div className="min-h-screen bg-muted-bg">
-      <AdminPageHeader title="Auteurs" />
+      <AdminPageHeader title="Authors" />
       <div className="max-w-7xl mx-auto px-6 py-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {authors.map((author) => (
@@ -53,7 +53,7 @@ export default async function AdminAuteursPage() {
                 href={`/auteur/${author.slug}`}
                 className="inline-block mt-4 text-sm text-accent hover:underline"
               >
-                Voir la page auteur →
+                View author page →
               </Link>
             </div>
           ))}

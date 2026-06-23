@@ -11,16 +11,16 @@ export default async function AdminParametresPage() {
   }
 
   const settings = [
-    { label: "Nom du site", value: "Global South Watch" },
+    { label: "Site name", value: "Global South Watch" },
     { label: "URL", value: process.env.NEXTAUTH_URL ?? "http://localhost:3000" },
-    { label: "Email contact", value: "contact@globalsouthwatch.com" },
-    { label: "Mode seed", value: "GET /api/seed?force=true" },
-    { label: "Flux RSS", value: "/api/feed" },
+    { label: "Contact email", value: "contact@globalsouthwatch.com" },
+    { label: "Seed mode", value: "GET /api/seed?force=true" },
+    { label: "RSS feed", value: "/api/feed" },
   ];
 
   return (
     <div className="min-h-screen bg-muted-bg">
-      <AdminPageHeader title="Paramètres" />
+      <AdminPageHeader title="Settings" />
       <div className="max-w-3xl mx-auto px-6 py-8 space-y-8">
         <div className="bg-surface border border-border rounded-sm divide-y divide-border">
           {settings.map((s) => (
@@ -32,23 +32,23 @@ export default async function AdminParametresPage() {
         </div>
 
         <div className="bg-surface border border-border rounded-sm p-6">
-          <h2 className="font-serif text-lg font-bold text-charcoal mb-4">Actions rapides</h2>
+          <h2 className="font-serif text-lg font-bold text-charcoal mb-4">Quick actions</h2>
           <div className="space-y-3">
             <Link href="/api/seed?force=true" className="block text-sm text-accent hover:underline">
-              Relancer le seed des données →
+              Re-run data seed →
             </Link>
             <Link href="/api/feed" className="block text-sm text-accent hover:underline">
-              Vérifier le flux RSS →
+              Check RSS feed →
             </Link>
             <Link href="/sitemap.xml" className="block text-sm text-accent hover:underline">
-              Voir le sitemap →
+              View sitemap →
             </Link>
           </div>
         </div>
 
         <p className="text-xs text-muted">
-          Les paramètres avancés (Stripe, SendGrid, Google OAuth) se configurent via les variables
-          d&apos;environnement dans <code>.env.local</code>.
+          Advanced settings (Stripe, SendGrid, Google OAuth) are configured via environment
+          variables in <code>.env.local</code>.
         </p>
       </div>
     </div>

@@ -12,11 +12,11 @@ export const revalidate = 60;
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const data = await getCategoryBySlug(slug);
-  if (!data) return { title: "Rubrique introuvable" };
+  if (!data) return { title: "Section not found" };
 
   return {
     title: data.category.name,
-    description: data.category.description ?? `Articles de la rubrique ${data.category.name}`,
+    description: data.category.description ?? `Articles in the ${data.category.name} section`,
   };
 }
 

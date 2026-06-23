@@ -1,5 +1,5 @@
 import { format, formatDistanceToNow } from "date-fns";
-import { fr } from "date-fns/locale";
+import { enUS } from "date-fns/locale";
 import type { ArticleListItem } from "@/types";
 
 export function authorInitials(name: string): string {
@@ -12,24 +12,23 @@ export function authorInitials(name: string): string {
 }
 
 export function formatReadingTime(minutes: number): string {
-  return `${minutes} min de lecture`;
+  return `${minutes} min read`;
 }
 
 export function formatTimeAgo(iso?: string): string {
-  if (!iso) return "Récemment";
-  return formatDistanceToNow(new Date(iso), { addSuffix: true, locale: fr });
+  if (!iso) return "Recently";
+  return formatDistanceToNow(new Date(iso), { addSuffix: true, locale: enUS });
 }
 
 export function formatPublishedDate(iso?: string): string {
   if (!iso) return "";
-  const d = format(new Date(iso), "d MMMM yyyy, HH'h'mm", { locale: fr });
-  return d.charAt(0).toUpperCase() + d.slice(1);
+  return format(new Date(iso), "MMMM d, yyyy, h:mm a", { locale: enUS });
 }
 
 export function formatViews(views?: number): string {
-  if (!views) return "Nouveau";
-  if (views >= 1000) return `${(views / 1000).toFixed(1).replace(".", ",")}k vues`;
-  return `${views} vues`;
+  if (!views) return "New";
+  if (views >= 1000) return `${(views / 1000).toFixed(1)}k views`;
+  return `${views} views`;
 }
 
 export function splitHeroTitle(title: string, subtitle?: string): { main: string; em: string } {
@@ -47,12 +46,12 @@ export function splitHeroTitle(title: string, subtitle?: string): { main: string
 }
 
 export function articleBadge(article: ArticleListItem): string {
-  if (article.isUrgent) return "🔥 Urgent";
-  if (article.contentType === "video") return "Reportage Vidéo";
-  if (article.isPremium) return "Enquête Exclusive";
-  if (article.isEditorsChoice) return "Choix Rédaction";
-  if (article.isTopStory) return "À la Une";
-  return "Actualité";
+  if (article.isUrgent) return "🔥 Breaking";
+  if (article.contentType === "video") return "Video Report";
+  if (article.isPremium) return "Exclusive Investigation";
+  if (article.isEditorsChoice) return "Editor's Pick";
+  if (article.isTopStory) return "Top Story";
+  return "News";
 }
 
 export function toVideoEmbedUrl(url: string): string | null {

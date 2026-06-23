@@ -5,15 +5,15 @@ export default function AbonnementPage() {
     <div className="max-w-[1320px] mx-auto px-4 lg:px-6 py-16">
       <div className="text-center mb-16">
         <span className="text-[10px] font-bold tracking-[0.25em] uppercase text-gold">
-          Abonnement
+          Subscription
         </span>
         <h1 className="font-serif text-4xl lg:text-5xl font-bold text-charcoal mt-2 mb-4">
-          L&apos;excellence éditoriale,{" "}
-          <span className="text-gradient-gold">à portée de main</span>
+          Editorial excellence,{" "}
+          <span className="text-gradient-gold">within reach</span>
         </h1>
         <p className="text-muted max-w-2xl mx-auto">
-          Rejoignez notre communauté de lecteurs exigeants et accédez à
-          l&apos;intégralité de nos contenus premium.
+          Join our community of discerning readers and access
+          all our premium content.
         </p>
         <div className="gold-line max-w-xs mx-auto mt-8" />
       </div>
@@ -21,8 +21,8 @@ export default function AbonnementPage() {
       <AbonnementPlans />
 
       <p className="text-center text-xs text-muted mt-12 max-w-lg mx-auto">
-        Mode démo : l&apos;abonnement Premium s&apos;active sans paiement réel.
-        En production, l&apos;intégration Stripe sera connectée ici.
+        Demo mode: Premium subscription activates without real payment.
+        In production, Stripe integration will be connected here.
       </p>
     </div>
   );

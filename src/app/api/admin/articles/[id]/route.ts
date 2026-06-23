@@ -31,14 +31,14 @@ interface RouteContext {
 export async function GET(_request: NextRequest, context: RouteContext) {
   const session = await auth();
   if (!session?.user || !canManageArticles(session.user.role)) {
-    return NextResponse.json({ error: "Non autorisé" }, { status: 403 });
+    return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   }
 
   const { id } = await context.params;
   await connectDB();
   const article = await Article.findById(id).lean();
   if (!article) {
-    return NextResponse.json({ error: "Article introuvable" }, { status: 404 });
+    return NextResponse.json({ error: "Article not found" }, { status: 404 });
   }
 
   return NextResponse.json({
@@ -64,20 +64,20 @@ export async function GET(_request: NextRequest, context: RouteContext) {
 export async function PATCH(request: NextRequest, context: RouteContext) {
   const session = await auth();
   if (!session?.user || !canManageArticles(session.user.role)) {
-    return NextResponse.json({ error: "Non autorisé" }, { status: 403 });
+    return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   }
 
   const { id } = await context.params;
   const body = await request.json();
   const parsed = updateSchema.safeParse(body);
   if (!parsed.success) {
-    return NextResponse.json({ error: "Données invalides" }, { status: 400 });
+    return NextResponse.json({ error: "Invalid data" }, { status: 400 });
   }
 
   await connectDB();
   const article = await Article.findById(id);
   if (!article) {
-    return NextResponse.json({ error: "Article introuvable" }, { status: 404 });
+    return NextResponse.json({ error: "Article not found" }, { status: 404 });
   }
 
   const data = parsed.data;
@@ -114,14 +114,14 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
 export async function DELETE(_request: NextRequest, context: RouteContext) {
   const session = await auth();
   if (!session?.user || !canManageArticles(session.user.role)) {
-    return NextResponse.json({ error: "Non autorisé" }, { status: 403 });
+    return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   }
 
   const { id } = await context.params;
   await connectDB();
   const result = await Article.findByIdAndDelete(id);
   if (!result) {
-    return NextResponse.json({ error: "Article introuvable" }, { status: 404 });
+    return NextResponse.json({ error: "Article not found" }, { status: 404 });
   }
 
   return NextResponse.json({ success: true });

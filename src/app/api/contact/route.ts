@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const parsed = schema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: "Formulaire invalide" }, { status: 400 });
+      return NextResponse.json({ error: "Invalid form" }, { status: 400 });
     }
 
     await connectDB();
@@ -23,9 +23,9 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      message: "Votre message a bien été envoyé. Nous vous répondrons sous 48h.",
+      message: "Your message has been sent. We will reply within 48 hours.",
     });
   } catch {
-    return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }

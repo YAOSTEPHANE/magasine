@@ -15,10 +15,10 @@ export function VideoSectionHome({ data }: VideoSectionHomeProps) {
       <div className="container">
         <SectionHeader
           number="03"
-          eyebrow="Multimédia"
-          title="Vidéos en Vedette"
+          eyebrow="Multimedia"
+          title="Featured Videos"
           linkHref="/categorie/multimedia"
-          linkLabel="Vidéothèque complète"
+          linkLabel="Full video library"
         />
         <div className="video-row">
           {data.map((video, i) => {

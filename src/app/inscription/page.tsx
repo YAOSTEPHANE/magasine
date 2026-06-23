@@ -26,7 +26,7 @@ export default function RegisterPage() {
 
     if (!res.ok) {
       const data = await res.json();
-      setError(data.error ?? "Erreur lors de l'inscription");
+      setError(data.error ?? "Registration error");
       setLoading(false);
       return;
     }
@@ -39,14 +39,14 @@ export default function RegisterPage() {
       <div className="w-full max-w-md">
         <div className="text-center mb-10">
           <BrandLogo variant="auth" />
-          <p className="text-muted mt-4">Créez votre compte lecteur</p>
+          <p className="text-muted mt-4">Create your reader account</p>
         </div>
 
         <div className="bg-surface border border-border rounded-sm p-8 shadow-card">
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label htmlFor="name" className="block text-xs font-medium tracking-wider uppercase text-muted mb-2">
-                Nom complet
+                Full name
               </label>
               <input
                 id="name"
@@ -72,7 +72,7 @@ export default function RegisterPage() {
             </div>
             <div>
               <label htmlFor="password" className="block text-xs font-medium tracking-wider uppercase text-muted mb-2">
-                Mot de passe (8 caractères min.)
+                Password (8 characters min.)
               </label>
               <input
                 id="password"
@@ -86,14 +86,14 @@ export default function RegisterPage() {
             </div>
             {error && <p className="text-sm text-accent">{error}</p>}
             <Button type="submit" variant="gold" className="w-full" disabled={loading}>
-              {loading ? "Création..." : "Créer mon compte"}
+              {loading ? "Creating..." : "Create my account"}
             </Button>
           </form>
 
           <p className="text-center text-sm text-muted mt-8">
-            Déjà inscrit ?{" "}
+            Already registered?{" "}
             <Link href="/connexion" className="text-accent hover:text-accent-hover font-medium">
-              Se connecter
+              Sign in
             </Link>
           </p>
         </div>

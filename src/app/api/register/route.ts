@@ -15,13 +15,13 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const parsed = schema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: "Données invalides" }, { status: 400 });
+      return NextResponse.json({ error: "Invalid data" }, { status: 400 });
     }
 
     await connectDB();
     const existing = await User.findOne({ email: parsed.data.email });
     if (existing) {
-      return NextResponse.json({ error: "Email déjà utilisé" }, { status: 409 });
+      return NextResponse.json({ error: "Email already in use" }, { status: 409 });
     }
 
     const hashed = await bcrypt.hash(parsed.data.password, 12);
@@ -32,8 +32,8 @@ export async function POST(request: NextRequest) {
       role: "reader",
     });
 
-    return NextResponse.json({ message: "Compte créé" }, { status: 201 });
+    return NextResponse.json({ message: "Account created" }, { status: 201 });
   } catch {
-    return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }

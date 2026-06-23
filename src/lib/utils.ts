@@ -1,18 +1,18 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { format, formatDistanceToNow } from "date-fns";
-import { fr } from "date-fns/locale";
+import { enUS } from "date-fns/locale";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
 export function formatDate(date: Date | string) {
-  return format(new Date(date), "d MMMM yyyy", { locale: fr });
+  return format(new Date(date), "MMMM d, yyyy", { locale: enUS });
 }
 
 export function formatRelativeDate(date: Date | string) {
-  return formatDistanceToNow(new Date(date), { addSuffix: true, locale: fr });
+  return formatDistanceToNow(new Date(date), { addSuffix: true, locale: enUS });
 }
 
 export function estimateReadingTime(content: string): number {

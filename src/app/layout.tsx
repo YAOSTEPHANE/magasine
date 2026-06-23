@@ -36,15 +36,15 @@ const newsreader = Newsreader({
 
 export const metadata: Metadata = {
   title: {
-    default: "Global South Watch — Portail Magazine & Presse en Ligne",
+    default: "Global South Watch — Online Magazine & News Portal",
     template: "%s | Global South Watch",
   },
   description:
-    "Global South Watch — le portail d'information de référence pour l'Afrique et le Sud global. Journalisme indépendant, rigoureux et engagé.",
-  keywords: ["Global South", "Afrique", "actualités", "magazine", "presse", "Sud global"],
+    "Global South Watch — the leading news portal for Africa and the Global South. Independent, rigorous, and committed journalism.",
+  keywords: ["Global South", "Africa", "news", "magazine", "journalism", "current affairs"],
   openGraph: {
     type: "website",
-    locale: "fr_FR",
+    locale: "en_US",
     siteName: "Global South Watch",
     images: ["/images/logo-global-south-watch.png"],
   },
@@ -71,7 +71,7 @@ export default async function RootLayout({
   const { categories, alerts } = await getLayoutData();
 
   return (
-    <html lang="fr" className={`${syne.variable} ${dmSans.variable} ${newsreader.variable}`}>
+    <html lang="en" className={`${syne.variable} ${dmSans.variable} ${newsreader.variable}`}>
       <body>
         <Providers>
           <ProgressBar />
