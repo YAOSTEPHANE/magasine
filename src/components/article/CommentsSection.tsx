@@ -1,0 +1,124 @@
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { formatRelativeDate } from "@/lib/utils";
+
+interface Comment {
+  _id: string;
+  content: string;
+  user: { name: string; image?: string };
+  createdAt: string;
+  replies?: Comment[];
+}
+
+export function CommentsSection({ articleId }: { articleId: string }) {
+  const { data: session } = useSession();
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [content, setContent] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+  const [error, setError] = useState("");
+
+  const loadComments = async () => {
+    const res = await fetch(`/api/comments?articleId=${articleId}`);
+    const data = await res.json();
+    setComments(data.comments ?? []);
+    setLoaded(true);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!content.trim()) return;
+    if (!session?.user) {
+      setError("Connectez-vous pour commenter.");
+      return;
+    }
+    setLoading(true);
+    setError("");
+    try {
+      const res = await fetch("/api/comments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ articleId, content }),
+      });
+      if (res.ok) {
+        setContent("");
+        await loadComments();
+      } else {
+        const data = await res.json();
+        setError(data.error ?? "Impossible de publier le commentaire");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (!loaded) {
+    return (
+      <button
+        onClick={loadComments}
+        className="text-sm text-accent hover:text-accent-hover font-medium"
+      >
+        Afficher les commentaires
+      </button>
+    );
+  }
+
+  return (
+    <div className="mt-12 pt-8 border-t border-border">
+      <h3 className="font-serif text-2xl font-bold text-charcoal mb-6">
+        Commentaires ({comments.length})
+      </h3>
+
+      <form onSubmit={handleSubmit} className="mb-8">
+        {!session?.user && (
+          <p className="text-sm text-muted mb-3">
+            <Link href="/connexion" className="text-accent hover:underline">Connectez-vous</Link>
+            {" "}pour laisser un commentaire.
+          </p>
+        )}
+        <textarea
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          placeholder="Partagez votre avis..."
+          rows={3}
+          className="w-full p-4 bg-muted-bg border border-border rounded-sm text-charcoal placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-gold/30 resize-none"
+        />
+        {error && <p className="text-sm text-red-600 mt-2">{error}</p>}
+        <button
+          type="submit"
+          disabled={loading || !session?.user}
+          className="mt-3 px-6 py-2.5 bg-charcoal text-white text-sm rounded-sm hover:bg-charcoal/90 transition-colors disabled:opacity-50"
+        >
+          {loading ? "Publication..." : "Publier"}
+        </button>
+      </form>
+
+      <div className="space-y-6">
+        {comments.map((comment) => (
+          <div key={comment._id} className="p-4 bg-surface border border-border rounded-sm">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-8 h-8 rounded-full bg-gold-light flex items-center justify-center text-xs font-bold text-gold-dark">
+                {comment.user.name.charAt(0)}
+              </div>
+              <div>
+                <span className="text-sm font-medium text-charcoal">{comment.user.name}</span>
+                <span className="text-xs text-muted ml-2">
+                  {formatRelativeDate(comment.createdAt)}
+                </span>
+              </div>
+            </div>
+            <p className="text-sm text-charcoal/80 leading-relaxed">{comment.content}</p>
+          </div>
+        ))}
+        {comments.length === 0 && (
+          <p className="text-sm text-muted text-center py-8">
+            Soyez le premier à commenter cet article.
+          </p>
+        )}
+      </div>
+    </div>
+  );
+}

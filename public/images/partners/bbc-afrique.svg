@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 28" role="img" aria-label="BBC Afrique">
+  <rect x="0" y="4" width="16" height="16" fill="#000"/>
+  <rect x="18" y="4" width="16" height="16" fill="#000"/>
+  <rect x="9" y="12" width="16" height="16" fill="#000"/>
+  <text x="40" y="19" fill="#000" font-family="Arial, sans-serif" font-size="13" font-weight="700">BBC</text>
+  <text x="72" y="19" fill="#BB1919" font-family="Arial, sans-serif" font-size="11" font-weight="600">Afrique</text>
+</svg>

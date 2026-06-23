@@ -1,0 +1,213 @@
+import slugify from "slugify";
+import type { ArticleDetail, ArticleListItem } from "@/types";
+import {
+  SEED_ALERTS,
+  SEED_ARTICLES,
+  SEED_AUTHORS,
+  SEED_CATEGORIES,
+} from "@/lib/seed-data";
+import { resolveArticleContent } from "@/lib/article-content";
+import { getAuthorAvatarUrl, resolveFeaturedImage } from "@/lib/images";
+
+const categories = SEED_CATEGORIES.map((c, i) => ({
+  _id: `mock-cat-${i}`,
+  name: c.name,
+  slug: c.slug,
+  color: c.color,
+  description: c.description,
+  order: c.order,
+  isActive: true,
+}));
+
+const authors = SEED_AUTHORS.map((a, i) => ({
+  _id: `mock-author-${i}`,
+  name: a.name,
+  slug: a.slug,
+  bio: a.bio,
+  avatar: getAuthorAvatarUrl(a.slug),
+}));
+
+const catBySlug = Object.fromEntries(categories.map((c) => [c.slug, c]));
+const now = Date.now();
+
+const articles: ArticleDetail[] = SEED_ARTICLES.map((article, i) => {
+  const slug = slugify(article.title, { lower: true, strict: true });
+  const words = article.content.replace(/<[^>]*>/g, "").split(/\s+/).length;
+  const authorIndex = article.authorIndex ?? i % authors.length;
+  const category = catBySlug[article.category];
+
+  return {
+    _id: `mock-article-${i}`,
+    title: article.title,
+    subtitle: article.subtitle,
+    slug,
+    excerpt: article.excerpt,
+    content: resolveArticleContent(article.title, article.excerpt, article.content),
+    featuredImage: resolveFeaturedImage(article.image),
+    featuredImageAlt: article.title,
+    category: {
+      _id: category._id,
+      name: category.name,
+      slug: category.slug,
+      color: category.color,
+    },
+    authors: [
+      {
+        _id: authors[authorIndex]._id,
+        name: authors[authorIndex].name,
+        slug: authors[authorIndex].slug,
+        avatar: authors[authorIndex].avatar,
+      },
+    ],
+    publishedAt: new Date(now - i * 3600000 * 4).toISOString(),
+    readingTime: Math.max(1, Math.ceil(words / 200)),
+    isFeatured: article.isFeatured ?? false,
+    isTopStory: article.isTopStory ?? false,
+    isUrgent: article.isUrgent ?? false,
+    isEditorsChoice: article.isEditorsChoice ?? false,
+    isPremium: article.isPremium ?? false,
+    contentType: article.contentType ?? "article",
+    videoUrl: article.videoUrl,
+    views: Math.floor(Math.random() * 8000) + 200,
+    tags: article.tags,
+    shareCount: 0,
+  };
+});
+
+const articlesBySlug = Object.fromEntries(articles.map((a) => [a.slug, a]));
+
+export const mockAlerts = SEED_ALERTS.map((a, i) => ({
+  _id: `mock-alert-${i}`,
+  text: a.text,
+  link: a.link,
+}));
+
+export const mockCategories = categories.map((c) => ({
+  name: c.name,
+  slug: c.slug,
+}));
+
+export function getMockArticles(): ArticleListItem[] {
+  return articles;
+}
+
+export function getMockArticleBySlug(slug: string) {
+  const article = articlesBySlug[slug];
+  if (!article) return null;
+
+  const sameCategory = articles.filter(
+    (a) => a.category.slug === article.category.slug && a._id !== article._id
+  );
+  const sorted = articles
+    .filter((a) => a.category.slug === article.category.slug)
+    .sort(
+      (a, b) =>
+        new Date(b.publishedAt ?? 0).getTime() -
+        new Date(a.publishedAt ?? 0).getTime()
+    );
+  const pos = sorted.findIndex((a) => a.slug === slug);
+  const prev = pos < sorted.length - 1 ? sorted[pos + 1] : null;
+  const next = pos > 0 ? sorted[pos - 1] : null;
+
+  return {
+    article,
+    related: sameCategory.slice(0, 4),
+    navigation: {
+      prev: prev ? { title: prev.title, slug: prev.slug } : null,
+      next: next ? { title: next.title, slug: next.slug } : null,
+    },
+  };
+}
+
+export function getMockCategoryBySlug(slug: string) {
+  const category = categories.find((c) => c.slug === slug);
+  if (!category) return null;
+
+  const categoryArticles = articles
+    .filter((a) => a.category.slug === slug)
+    .sort(
+      (a, b) =>
+        new Date(b.publishedAt ?? 0).getTime() -
+        new Date(a.publishedAt ?? 0).getTime()
+    );
+
+  return {
+    category: {
+      _id: category._id,
+      name: category.name,
+      slug: category.slug,
+      description: category.description,
+      color: category.color,
+    },
+    articles: categoryArticles,
+  };
+}
+
+export function searchMockArticles(query: string) {
+  const q = query.toLowerCase();
+  return articles.filter(
+    (a) =>
+      a.title.toLowerCase().includes(q) ||
+      a.excerpt.toLowerCase().includes(q) ||
+      a.tags?.some((t) => t.toLowerCase().includes(q))
+  );
+}
+
+export function getMockSearchSuggestions(query: string) {
+  if (!query || query.length < 2) return [];
+  return searchMockArticles(query)
+    .slice(0, 6)
+    .map((a) => ({ title: a.title, slug: a.slug }));
+}
+
+export function getMockHomePageData() {
+  const by = (fn: (a: ArticleDetail) => boolean) =>
+    articles.filter(fn).slice(0, 6);
+
+  const tagCounts = new Map<string, number>();
+  for (const a of articles) {
+    for (const tag of a.tags ?? []) {
+      tagCounts.set(tag, (tagCounts.get(tag) ?? 0) + 1);
+    }
+  }
+
+  return {
+    alerts: mockAlerts,
+    categories: categories.map((c) => ({
+      _id: c._id,
+      name: c.name,
+      slug: c.slug,
+      color: c.color,
+    })),
+    heroArticles: by((a) => !!a.isFeatured),
+    topStories: by((a) => !!a.isTopStory),
+    editorsChoice: by((a) => !!a.isEditorsChoice).slice(0, 3),
+    latestUpdates: articles.slice(0, 5),
+    featuredVideos: articles.filter((a) => a.contentType === "video").slice(0, 4),
+    nationalNews: articles.filter((a) => a.category.slug === "actualites").slice(0, 6),
+    worldNews: articles.filter((a) => a.category.slug === "monde").slice(0, 4),
+    multimedia: articles.filter((a) => a.category.slug === "multimedia").slice(0, 4),
+    opinion: articles.filter((a) => a.category.slug === "opinion").slice(0, 3),
+    investigations: articles.filter((a) => a.category.slug === "investigations").slice(0, 3),
+    specialReports: articles
+      .filter((a) => a.category.slug === "reportages-speciaux")
+      .slice(0, 3),
+    popularTags: [...tagCounts.entries()]
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 12)
+      .map(([name, count]) => ({ name, count })),
+    techNews: articles.filter((a) => a.category.slug === "technologie").slice(0, 4),
+    sportsNews: articles.filter((a) => a.category.slug === "sports").slice(0, 4),
+    financeNews: articles.filter((a) => a.category.slug === "finance").slice(0, 4),
+    santeNews: articles.filter((a) => a.category.slug === "sante").slice(0, 4),
+    divertissementNews: articles.filter((a) => a.category.slug === "divertissement").slice(0, 4),
+    localNews: articles.filter((a) => a.category.slug === "local").slice(0, 4),
+    urgentArticles: articles.filter((a) => a.isUrgent || a.isTopStory).slice(0, 8),
+  };
+}
+
+/** Slugs utiles pour lier la page d'accueil statique */
+export const MOCK_SLUGS = {
+  hero: articles[0]?.slug ?? "",
+  mini: articles.slice(1, 5).map((a) => a.slug),
+} as const;
