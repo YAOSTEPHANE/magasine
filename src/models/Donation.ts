@@ -1,0 +1,29 @@
+import mongoose, { Schema, type Model } from "mongoose";
+
+export interface IDonation {
+  _id: mongoose.Types.ObjectId;
+  name: string;
+  email: string;
+  amount: number;
+  currency: string;
+  frequency: "one-time" | "monthly";
+  message?: string;
+  status: "pledged" | "completed" | "failed";
+  createdAt: Date;
+}
+
+const DonationSchema = new Schema<IDonation>(
+  {
+    name: { type: String, required: true, trim: true },
+    email: { type: String, required: true, trim: true, lowercase: true },
+    amount: { type: Number, required: true, min: 1 },
+    currency: { type: String, default: "EUR" },
+    frequency: { type: String, enum: ["one-time", "monthly"], default: "one-time" },
+    message: { type: String, trim: true, maxlength: 500 },
+    status: { type: String, enum: ["pledged", "completed", "failed"], default: "pledged" },
+  },
+  { timestamps: true }
+);
+
+export const Donation: Model<IDonation> =
+  mongoose.models.Donation ?? mongoose.model<IDonation>("Donation", DonationSchema);

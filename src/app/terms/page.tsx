@@ -1,51 +1,61 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ContentPage, ContentSection } from "@/components/layout/ContentPage";
 
 export const metadata: Metadata = {
   title: "Terms of use",
   description: "Terms of use — Global South Watch",
 };
 
-export default function CguPage() {
+export default function TermsPage() {
   return (
-    <div className="max-w-3xl mx-auto px-4 lg:px-6 py-16">
-      <h1 className="font-serif text-4xl font-bold text-charcoal mb-8">Terms of use</h1>
-      <div className="prose prose-charcoal space-y-6 text-charcoal/80 leading-relaxed">
-        <p>
-          Access to and use of the Global South Watch website implies full acceptance
-          of these terms of use.
-        </p>
-        <h2 className="font-serif text-2xl font-bold text-charcoal mt-8">Purpose of the service</h2>
+    <ContentPage
+      eyebrow="Legal"
+      title="Terms of use"
+      description="Access to Global South Watch implies acceptance of these terms. Please read them carefully."
+    >
+      <ContentSection title="Purpose of the service">
         <p>
           Global South Watch is an online news portal offering articles, analysis, videos,
-          and newsletters on African and Global South news. Some content is reserved for Premium subscribers.
+          and newsletters on African and Global South news. Articles are free to read; newsletters
+          let you follow the editions you choose.
         </p>
-        <h2 className="font-serif text-2xl font-bold text-charcoal mt-8">User account</h2>
+      </ContentSection>
+
+      <ContentSection title="Newsletter">
+        <p>
+          Newsletter subscriptions are free. Select regional and thematic editions on the{" "}
+          <Link href="/newsletter" className="text-accent hover:underline">Newsletter</Link> page
+          and unsubscribe at any time.
+        </p>
+      </ContentSection>
+
+      <ContentSection title="User account">
         <p>
           Creating an account is free. You are responsible for keeping your credentials confidential.
           Any activity carried out from your account is attributable to you.
         </p>
-        <h2 className="font-serif text-2xl font-bold text-charcoal mt-8">Premium subscription</h2>
-        <p>
-          The Premium subscription provides access to exclusive content. Current rates are displayed on the{" "}
-          <Link href="/subscription" className="text-accent hover:underline">Subscription</Link> page.
-          In demo mode, Premium activation does not trigger a real payment.
-        </p>
-        <h2 className="font-serif text-2xl font-bold text-charcoal mt-8">Intellectual property</h2>
+      </ContentSection>
+
+      <ContentSection title="Intellectual property">
         <p>
           All content (text, images, videos, logos) is protected by copyright.
           Any reproduction without written authorization from the publisher is prohibited.
         </p>
-        <h2 className="font-serif text-2xl font-bold text-charcoal mt-8">Comments</h2>
+      </ContentSection>
+
+      <ContentSection title="Comments">
         <p>
-          Published comments must comply with the editorial charter. Global South Watch reserves the right
-          to moderate or remove any inappropriate, defamatory, or off-topic content.
+          Published comments must comply with the{" "}
+          <Link href="/editorial-charter" className="text-accent hover:underline">editorial charter</Link>.
+          Global South Watch reserves the right to moderate or remove inappropriate, defamatory, or off-topic content.
         </p>
-        <p className="text-sm text-muted pt-8 border-t border-border">
-          Last updated: June 2026 —{" "}
-          <Link href="/privacy" className="text-accent hover:underline">Privacy policy</Link>
-        </p>
-      </div>
-    </div>
+      </ContentSection>
+
+      <p className="text-sm text-muted pt-4 border-t border-border">
+        Last updated: June 2026 —{" "}
+        <Link href="/privacy" className="text-accent hover:underline">Privacy policy</Link>
+      </p>
+    </ContentPage>
   );
 }

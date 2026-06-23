@@ -100,6 +100,10 @@ export async function getHomePageData() {
     divertissementNews,
     localNews,
     urgentArticles,
+    africaNews,
+    latinAmericaNews,
+    southAsiaNews,
+    westAsiaNews,
   ] = await Promise.all([
     Alert.find({ isActive: true }).sort({ order: 1 }).limit(5).lean(),
     Category.find({ isActive: true }).sort({ order: 1 }).lean(),
@@ -167,6 +171,10 @@ export async function getHomePageData() {
       .sort({ publishedAt: -1 })
       .limit(8)
       .lean(),
+    getArticlesByCategorySlug("africa", 4),
+    getArticlesByCategorySlug("latin-america", 4),
+    getArticlesByCategorySlug("south-asia", 4),
+    getArticlesByCategorySlug("west-asia", 4),
   ]);
 
   return {
@@ -205,6 +213,10 @@ export async function getHomePageData() {
     urgentArticles: urgentArticles.map((a) =>
       serializeArticle(a as unknown as Record<string, unknown>)
     ),
+    africaNews,
+    latinAmericaNews,
+    southAsiaNews,
+    westAsiaNews,
   };
 }
 
@@ -244,6 +256,27 @@ export async function getUrgentArticles(limit = 24) {
   return getMockArticles()
     .filter((a) => a.isUrgent || a.isTopStory)
     .slice(0, limit);
+}
+
+export async function getUrgentPageData(limit = 36) {
+  const articles = await getUrgentArticles(limit);
+
+  let alerts: { text: string; link?: string }[] = mockAlerts.map((a) => ({
+    text: a.text,
+    link: a.link,
+  }));
+
+  try {
+    await connectDB();
+    const dbAlerts = await Alert.find({ isActive: true }).sort({ order: 1 }).limit(8).lean();
+    if (dbAlerts.length > 0) {
+      alerts = dbAlerts.map((a) => ({ text: a.text, link: a.link }));
+    }
+  } catch {
+    // keep mock alerts
+  }
+
+  return { articles, alerts };
 }
 
 export async function getArticlesByCategorySlug(slug: string, limit = 12) {
@@ -395,7 +428,7 @@ export async function getCategoryBySlug(slug: string) {
   const category = await Category.findOne({ slug, isActive: true }).lean();
   if (!category) return getMockCategoryBySlug(slug);
 
-  const articles = await getArticlesByCategorySlug(slug, 24);
+  const articles = await getArticlesByCategorySlug(slug, 36);
 
   return {
     category: {
@@ -512,6 +545,33 @@ export async function getArticlesByContentType(
   if (result.length > 0) return result;
 
   return searchMockArticles("").filter((a) => a.contentType === contentType).slice(0, limit);
+}
+
+export async function getArticlesByTag(tag: string, limit = 36) {
+  const tagLower = tag.toLowerCase();
+
+  if (!(await hasDbArticles())) {
+    return searchMockArticles("")
+      .filter((a) => a.tags?.some((t) => t.toLowerCase().includes(tagLower)))
+      .slice(0, limit);
+  }
+
+  await connectDB();
+  const articles = await Article.find({
+    status: "published",
+    tags: { $regex: tag, $options: "i" },
+  })
+    .populate(articlePopulate)
+    .sort({ publishedAt: -1 })
+    .limit(limit)
+    .lean();
+
+  const result = articles.map((a) => serializeArticle(a as unknown as Record<string, unknown>));
+  if (result.length > 0) return result;
+
+  return searchMockArticles("")
+    .filter((a) => a.tags?.some((t) => t.toLowerCase().includes(tagLower)))
+    .slice(0, limit);
 }
 
 export async function getAllAuthors() {

@@ -100,8 +100,8 @@ export function Header({ categories }: { categories: Category[] }) {
             >
               <User className="w-5 h-5" />
             </Link>
-            <Button href="/subscription" variant="gold" size="sm" className="hidden sm:inline-flex">
-              Subscribe
+            <Button href="/newsletter" variant="gold" size="sm" className="hidden sm:inline-flex">
+              Newsletter
             </Button>
           </div>
         </div>
@@ -140,8 +140,8 @@ export function Header({ categories }: { categories: Category[] }) {
               <Button href="/login" variant="outline" size="sm" className="flex-1">
                 Sign in
               </Button>
-              <Button href="/subscription" variant="gold" size="sm" className="flex-1">
-                Subscribe
+              <Button href="/newsletter" variant="gold" size="sm" className="flex-1">
+                Newsletter
               </Button>
             </div>
           </nav>

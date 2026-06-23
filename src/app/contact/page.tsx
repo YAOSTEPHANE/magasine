@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { Mail, MapPin, Phone } from "lucide-react";
+import Link from "next/link";
+import { Mail, MapPin, Phone, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { SocialLinks } from "@/components/ui/SocialIcons";
+import { UtilityPageLayout } from "@/components/layout/UtilityPageLayout";
 
 export default function ContactPage() {
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
@@ -21,7 +23,7 @@ export default function ContactPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
-      const data = await res.json();
+      const data = (await res.json()) as { error?: string };
       if (res.ok) {
         setSuccess(true);
         setForm({ name: "", email: "", subject: "", message: "" });
@@ -35,59 +37,61 @@ export default function ContactPage() {
     }
   };
 
-  const inputClass =
-    "w-full px-4 py-3 bg-muted-bg border border-border rounded-sm focus:outline-none focus:ring-2 focus:ring-gold/30 text-charcoal";
+  const inputClass = "utility-input";
 
   return (
-    <div className="max-w-[1320px] mx-auto px-4 lg:px-6 py-16">
-      <div className="text-center mb-12">
-        <span className="text-[10px] font-bold tracking-[0.25em] uppercase text-gold">Contact</span>
-        <h1 className="font-serif text-4xl font-bold text-charcoal mt-2 mb-4">Contact us</h1>
-        <p className="text-muted max-w-xl mx-auto">
-          Editorial, partnerships, advertising or tips — our team will respond within 48 business hours.
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 max-w-5xl mx-auto">
-        <div className="space-y-6">
-          {[
-            { icon: Mail, label: "Email", value: "contact@globalsouthwatch.com" },
-            { icon: Phone, label: "Phone", value: "+225 27 00 00 00 00" },
-            { icon: MapPin, label: "Headquarters", value: "Abidjan, Côte d'Ivoire" },
-          ].map(({ icon: Icon, label, value }) => (
-            <div key={label} className="flex items-start gap-4 p-4 bg-surface border border-border rounded-sm">
-              <Icon className="w-5 h-5 text-gold mt-0.5 shrink-0" />
-              <div>
-                <p className="text-xs font-bold tracking-wider uppercase text-muted">{label}</p>
-                <p className="text-sm text-charcoal mt-1">{value}</p>
-              </div>
-            </div>
-          ))}
-          <div className="p-4 bg-surface border border-border rounded-sm">
-            <p className="text-xs font-bold tracking-wider uppercase text-muted mb-3">Social media</p>
+    <UtilityPageLayout
+      eyebrow="Contact"
+      eyebrowIcon={MessageSquare}
+      title="Contact us"
+      lead="Editorial, partnerships, advertising, or tips — our team responds within 48 business hours."
+      actions={[
+        { label: "Press room", href: "/press" },
+        { label: "Advertising", href: "/advertising" },
+      ]}
+      wide
+    >
+      <div className="utility-body--split">
+        <aside className="utility-aside">
+          <h2>Reach us</h2>
+          <ul className="utility-contact-list">
+            {[
+              { icon: Mail, label: "Email", value: "contact@globalsouthwatch.com" },
+              { icon: Phone, label: "Phone", value: "+225 27 00 00 00 00" },
+              { icon: MapPin, label: "Headquarters", value: "Abidjan, Côte d'Ivoire" },
+            ].map(({ icon: Icon, label, value }) => (
+              <li key={label}>
+                <Icon className="utility-contact-icon" aria-hidden />
+                <div>
+                  <p className="utility-contact-label">{label}</p>
+                  <p>{value}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+          <div className="utility-aside-box">
+            <p className="utility-aside-lead">Follow Global South Watch</p>
             <SocialLinks variant="inline" iconClassName="w-5 h-5" />
           </div>
-        </div>
+        </aside>
 
-        <div className="lg:col-span-2">
+        <section className="utility-card utility-contact-panel">
+          <h2>Send a message</h2>
           {success ? (
-            <div className="bg-gold-light border border-gold/30 rounded-sm p-8 text-center">
-              <p className="font-serif text-xl font-bold text-gold-dark mb-2">Message sent</p>
-              <p className="text-sm text-muted">Thank you! We will get back to you shortly.</p>
-              <button
-                type="button"
-                onClick={() => setSuccess(false)}
-                className="mt-4 text-sm text-accent hover:underline"
-              >
+            <div className="utility-success-box">
+              <p className="utility-success-title">Message sent</p>
+              <p>Thank you! We will get back to you shortly.</p>
+              <button type="button" onClick={() => setSuccess(false)} className="utility-inline-link">
                 Send another message
               </button>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="bg-surface border border-border rounded-sm p-8 space-y-5">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <form onSubmit={handleSubmit} className="utility-form">
+              <div className="utility-form-row">
                 <div>
-                  <label className="block text-xs font-medium tracking-wider uppercase text-muted mb-2">Name</label>
+                  <label htmlFor="contact-name">Name</label>
                   <input
+                    id="contact-name"
                     className={inputClass}
                     value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
@@ -95,8 +99,9 @@ export default function ContactPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium tracking-wider uppercase text-muted mb-2">Email</label>
+                  <label htmlFor="contact-email">Email</label>
                   <input
+                    id="contact-email"
                     type="email"
                     className={inputClass}
                     value={form.email}
@@ -106,8 +111,9 @@ export default function ContactPage() {
                 </div>
               </div>
               <div>
-                <label className="block text-xs font-medium tracking-wider uppercase text-muted mb-2">Subject</label>
+                <label htmlFor="contact-subject">Subject</label>
                 <input
+                  id="contact-subject"
                   className={inputClass}
                   value={form.subject}
                   onChange={(e) => setForm({ ...form, subject: e.target.value })}
@@ -115,23 +121,24 @@ export default function ContactPage() {
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium tracking-wider uppercase text-muted mb-2">Message</label>
+                <label htmlFor="contact-message">Message</label>
                 <textarea
-                  className={`${inputClass} resize-none`}
+                  id="contact-message"
+                  className={`${inputClass} utility-textarea`}
                   rows={6}
                   value={form.message}
                   onChange={(e) => setForm({ ...form, message: e.target.value })}
                   required
                 />
               </div>
-              {error && <p className="text-sm text-red-600">{error}</p>}
+              {error && <p className="utility-form-error" role="alert">{error}</p>}
               <Button type="submit" variant="gold" disabled={loading}>
-                {loading ? "Sending..." : "Send message"}
+                {loading ? "Sending…" : "Send message"}
               </Button>
             </form>
           )}
-        </div>
+        </section>
       </div>
-    </div>
+    </UtilityPageLayout>
   );
 }

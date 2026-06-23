@@ -3,6 +3,7 @@ import Link from "next/link";
 import { auth } from "@/lib/auth";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 import { isAdminRole } from "@/lib/permissions";
+import { getFeedUrl, getSiteUrl, PUBLISHER_NAME } from "@/lib/site";
 
 export default async function AdminParametresPage() {
   const session = await auth();
@@ -12,10 +13,11 @@ export default async function AdminParametresPage() {
 
   const settings = [
     { label: "Site name", value: "Global South Watch" },
-    { label: "URL", value: process.env.NEXTAUTH_URL ?? "http://localhost:3000" },
+    { label: "Publisher", value: PUBLISHER_NAME },
+    { label: "URL", value: getSiteUrl() },
     { label: "Contact email", value: "contact@globalsouthwatch.com" },
     { label: "Seed mode", value: "GET /api/seed?force=true" },
-    { label: "RSS feed", value: "/api/feed" },
+    { label: "RSS feed", value: getFeedUrl() },
   ];
 
   return (
@@ -37,11 +39,17 @@ export default async function AdminParametresPage() {
             <Link href="/api/seed?force=true" className="block text-sm text-accent hover:underline">
               Re-run data seed →
             </Link>
-            <Link href="/api/feed" className="block text-sm text-accent hover:underline">
+            <Link href="/feed.xml" className="block text-sm text-accent hover:underline">
               Check RSS feed →
             </Link>
+            <Link href="/rss" className="block text-sm text-accent hover:underline">
+              RSS hub page →
+            </Link>
+            <Link href="/sitemap" className="block text-sm text-accent hover:underline">
+              HTML sitemap →
+            </Link>
             <Link href="/sitemap.xml" className="block text-sm text-accent hover:underline">
-              View sitemap →
+              XML sitemap →
             </Link>
           </div>
         </div>

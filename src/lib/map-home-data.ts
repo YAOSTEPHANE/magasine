@@ -41,6 +41,10 @@ const RUBRIQUE_SOURCES: {
   title: string;
   key: keyof HomeDataSource;
 }[] = [
+  { slug: "africa", title: "Africa", key: "africaNews" },
+  { slug: "latin-america", title: "Latin America", key: "latinAmericaNews" },
+  { slug: "south-asia", title: "South Asia", key: "southAsiaNews" },
+  { slug: "west-asia", title: "West Asia", key: "westAsiaNews" },
   { slug: "actualites", title: "News", key: "nationalNews" },
   { slug: "finance", title: "Finance", key: "financeNews" },
   { slug: "sante", title: "Health", key: "santeNews" },

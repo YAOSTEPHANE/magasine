@@ -4,7 +4,7 @@ import { getToken } from "next-auth/jwt";
 
 const ADMIN_ROLES = new Set(["super_admin", "admin", "editor", "author"]);
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (!pathname.startsWith("/admin")) {

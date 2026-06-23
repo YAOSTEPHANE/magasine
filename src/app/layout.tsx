@@ -7,6 +7,7 @@ import { SiteFooter } from "@/components/presse-ivoire/SiteFooter";
 import { ProgressBar } from "@/components/presse-ivoire/ProgressBar";
 import { ScrollReveal } from "@/components/presse-ivoire/ScrollReveal";
 import { getLayoutNavData } from "@/lib/data";
+import { getEditorialDateString } from "@/lib/editorial-date";
 import { Providers } from "@/components/Providers";
 import "./globals.css";
 import "./responsive.css";
@@ -51,6 +52,9 @@ export const metadata: Metadata = {
   icons: {
     icon: "/images/logo-global-south-watch.png",
   },
+  other: {
+    google: "notranslate",
+  },
 };
 
 export const viewport = {
@@ -69,13 +73,18 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const { categories, alerts } = await getLayoutData();
+  const formattedDate = getEditorialDateString();
 
   return (
-    <html lang="en" className={`${syne.variable} ${dmSans.variable} ${newsreader.variable}`}>
-      <body>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${syne.variable} ${dmSans.variable} ${newsreader.variable} notranslate`}
+    >
+      <body className="notranslate" suppressHydrationWarning translate="no">
         <Providers>
           <ProgressBar />
-          <TopBar alerts={alerts} />
+          <TopBar alerts={alerts} formattedDate={formattedDate} />
           <SiteHeader />
           <HomeQuickNav categories={categories} />
           <main>{children}</main>

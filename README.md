@@ -255,7 +255,7 @@ magasine/
 
 ## Authentification & rôles
 
-L'accès à `/admin` est protégé par **middleware** (`src/middleware.ts`).
+L'accès à `/admin` est protégé par un **proxy** (`src/proxy.ts`, convention Next.js 16).
 
 | Rôle | Accès admin | Droits typiques |
 |------|-------------|-----------------|

@@ -1,27 +1,23 @@
 export function HomePulseStrip() {
   return (
-    <div className="home-pulse-strip" aria-label="Live editorial indicators">
+    <div
+      className="home-pulse-strip notranslate"
+      aria-label="Editorial statistics"
+      translate="no"
+      lang="en"
+    >
       <div className="container home-pulse-strip-inner">
-        <div className="home-pulse-item home-pulse-item--live">
-          <span className="home-pulse-dot" aria-hidden />
-          <span>
-            Newsroom <strong>live</strong>
-          </span>
+        <div className="home-pulse-item home-pulse-stat">
+          <strong>54</strong>
+          <span className="home-pulse-stat-label">countries</span>
         </div>
-        <div className="home-pulse-item">
-          <span>
-            <strong>54</strong> countries covered
-          </span>
+        <div className="home-pulse-item home-pulse-stat">
+          <strong>127</strong>
+          <span className="home-pulse-stat-label">stories / week</span>
         </div>
-        <div className="home-pulse-item">
-          <span>
-            <strong>127</strong> articles / week
-          </span>
-        </div>
-        <div className="home-pulse-item">
-          <span>
-            <strong>2M+</strong> active readers
-          </span>
+        <div className="home-pulse-item home-pulse-stat">
+          <strong>2M+</strong>
+          <span className="home-pulse-stat-label">readers</span>
         </div>
       </div>
     </div>

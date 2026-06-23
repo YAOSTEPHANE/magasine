@@ -1,46 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { NewsletterSignupForm } from "@/components/newsletter/NewsletterSignupForm";
 
 const BENEFITS = [
-  "Exclusive morning briefing",
-  "Early access to investigations",
-  "Ad-free analysis",
+  "Daily briefing every morning",
+  "Regional editions you choose",
+  "Investigation alerts — always free",
 ];
 
 export function NewsletterBanner() {
-  const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus("loading");
-    try {
-      const res = await fetch("/api/newsletter", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
-      if (res.ok) {
-        setStatus("success");
-        setEmail("");
-      } else {
-        setStatus("error");
-      }
-    } catch {
-      setStatus("error");
-    } finally {
-      setStatus((s) => (s === "loading" ? "idle" : s));
-    }
-  };
-
   return (
     <section className="newsletter-banner newsletter-premium">
       <div className="newsletter-pattern" aria-hidden />
       <div className="newsletter-inner">
         <div className="newsletter-copy">
           <div className="nl-emblem" aria-hidden>GSW</div>
-          <div className="nl-label">Exclusive newsletter</div>
+          <div className="nl-label">Newsletter</div>
           <h2 className="nl-title">
             The essentials every morning,
             <br />
@@ -64,35 +39,7 @@ export function NewsletterBanner() {
         </div>
         <div className="newsletter-form-wrap">
           <div className="newsletter-form-card">
-            <form className="nl-form nl-form-premium" onSubmit={handleSubmit}>
-              <input
-                className="nl-input"
-                type="email"
-                placeholder="you@email.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-              <button type="submit" className="nl-btn" disabled={status === "loading"}>
-                {status === "loading" ? (
-                  "Signing up..."
-                ) : (
-                  <>
-                    <span className="nl-btn-full">Subscribe for free</span>
-                    <span className="nl-btn-short">Subscribe</span>
-                  </>
-                )}
-              </button>
-            </form>
-            {status === "success" && (
-              <p className="nl-note nl-note-success">Successfully subscribed. Thank you!</p>
-            )}
-            {status === "error" && (
-              <p className="nl-note nl-note-error">Something went wrong. Please try again.</p>
-            )}
-            {status === "idle" && (
-              <p className="nl-note">Free · No spam · Unsubscribe in one click</p>
-            )}
+            <NewsletterSignupForm variant="banner" showTopics={false} />
           </div>
         </div>
       </div>

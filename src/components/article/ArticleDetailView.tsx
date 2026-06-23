@@ -5,11 +5,10 @@ import type { ArticleDetail, ArticleListItem } from "@/types";
 import type { Session } from "next-auth";
 import { formatDate, formatRelativeDate } from "@/lib/utils";
 import { articleBadge } from "@/lib/format-article";
-import { canAccessPremium } from "@/lib/permissions";
 import { ShareButtons } from "@/components/article/ShareButtons";
 import { SaveArticleButton } from "@/components/article/SaveArticleButton";
 import { CommentsSection } from "@/components/article/CommentsSection";
-import { Paywall } from "@/components/article/Paywall";
+import { NewsletterPrompt } from "@/components/article/NewsletterPrompt";
 import { ArticleBody } from "@/components/article/ArticleBody";
 import { PageBackdrop } from "@/components/presse-ivoire/PageBackdrop";
 import { ArticleCard } from "@/components/article/ArticleCard";
@@ -33,7 +32,6 @@ export function ArticleDetailView({
   siteUrl,
 }: ArticleDetailViewProps) {
   const author = article.authors[0];
-  const hasAccess = canAccessPremium(!!article.isPremium, session?.user ?? null);
   const badge = articleBadge(article);
 
   return (
@@ -131,14 +129,9 @@ export function ArticleDetailView({
 
             <p className="article-chapo">{article.excerpt}</p>
 
-            {hasAccess ? (
-              <ArticleBody article={article} />
-            ) : (
-              <>
-                <ArticleBody article={article} truncated />
-                <Paywall />
-              </>
-            )}
+            <ArticleBody article={article} />
+
+            {(article.isPremium || article.isEditorsChoice) && <NewsletterPrompt />}
 
             {author?.bio && (
               <aside className="article-author-box">

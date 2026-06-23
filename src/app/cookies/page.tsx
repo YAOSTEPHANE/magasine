@@ -47,7 +47,7 @@ export default function CookiesPage() {
       <ContentSection title="Managing your cookies">
         <p>
           You can configure your browser to refuse non-essential cookies.
-          Disabling essential cookies may limit certain features (sign-in, subscription).
+          Disabling essential cookies may limit certain features (sign-in, newsletter preferences).
         </p>
       </ContentSection>
 

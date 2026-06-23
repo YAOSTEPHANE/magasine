@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NAV_RUBRIQUES } from "@/data/presse-ivoire-home";
 
-const URGENT_LINK = { label: "Urgent", href: "/#urgent", featured: true, icon: "🔥" };
+const URGENT_LINK = { label: "Urgent", href: "/urgent", featured: true, icon: "🔥" };
 
 interface HomeQuickNavProps {
   categories?: { name: string; slug: string }[];
@@ -13,7 +13,9 @@ interface HomeQuickNavProps {
 type NavItem = { label: string; href: string; featured: boolean; icon?: string };
 
 function isActive(pathname: string, href: string) {
-  if (href === "/#urgent") return pathname === "/" || pathname === "/urgent";
+  if (href === "/urgent" || href === "/#urgent") {
+    return pathname === "/urgent" || pathname === "/";
+  }
   if (href.startsWith("/category/")) {
     return pathname === href || pathname.startsWith(`${href}/`);
   }
@@ -46,15 +48,22 @@ function NavPill({ item, active }: { item: NavItem; active: boolean }) {
 export function HomeQuickNav({ categories }: HomeQuickNavProps) {
   const pathname = usePathname();
 
-  const rubriques: NavItem[] = categories?.length
-    ? categories.map((c) => ({ label: c.name, href: `/category/${c.slug}`, featured: false }))
-    : NAV_RUBRIQUES.filter((r) => !r.featured).map((r) => ({
-        label: r.label,
-        href: r.href,
-        featured: false,
-      }));
+  const rubriqueItems: NavItem[] = NAV_RUBRIQUES.filter((r) => !r.featured).map((r) => ({
+    label: r.label,
+    href: r.href === "/#urgent" ? "/urgent" : r.href,
+    featured: false,
+  }));
 
-  const items: NavItem[] = [URGENT_LINK, ...rubriques];
+  if (categories?.length) {
+    for (const category of categories) {
+      const href = `/category/${category.slug}`;
+      if (!rubriqueItems.some((item) => item.href === href)) {
+        rubriqueItems.push({ label: category.name, href, featured: false });
+      }
+    }
+  }
+
+  const items: NavItem[] = [URGENT_LINK, ...rubriqueItems];
 
   return (
     <nav className="home-quick-nav home-quick-nav--revolution" aria-label="Quick sections">
@@ -69,7 +78,11 @@ export function HomeQuickNav({ categories }: HomeQuickNavProps) {
 
         <div className="home-quick-nav-track">
           {items.map((item) => (
-            <NavPill key={item.href + item.label} item={item} active={isActive(pathname, item.href)} />
+            <NavPill
+              key={item.href + item.label}
+              item={item}
+              active={isActive(pathname, item.href)}
+            />
           ))}
         </div>
       </div>

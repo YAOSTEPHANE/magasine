@@ -4,8 +4,9 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import Image from "next/image";
-import { Crown, Bookmark, Clock, User } from "lucide-react";
+import { Mail, Bookmark, Clock, User } from "lucide-react";
 import { formatDate } from "@/lib/utils";
+import { NEWSLETTER_TOPICS } from "@/lib/newsletter-topics";
 
 interface ArticleItem {
   _id: string;
@@ -23,15 +24,26 @@ interface ProfileData {
   readingHistory: ArticleItem[];
 }
 
+interface NewsletterStatus {
+  subscribed: boolean;
+  preferences?: string[];
+}
+
 export default function ProfilPage() {
   const { data: session, status } = useSession();
   const [profile, setProfile] = useState<ProfileData | null>(null);
+  const [newsletter, setNewsletter] = useState<NewsletterStatus | null>(null);
 
   useEffect(() => {
     if (session?.user) {
       fetch("/api/user/profile")
         .then((r) => r.json())
         .then(setProfile)
+        .catch(() => undefined);
+
+      fetch("/api/newsletter")
+        .then((r) => r.json())
+        .then(setNewsletter)
         .catch(() => undefined);
     }
   }, [session]);
@@ -53,6 +65,10 @@ export default function ProfilPage() {
     );
   }
 
+  const preferenceLabels = (newsletter?.preferences ?? [])
+    .map((id) => NEWSLETTER_TOPICS.find((t) => t.id === id)?.label)
+    .filter(Boolean);
+
   return (
     <div className="max-w-4xl mx-auto px-4 lg:px-6 py-16">
       <div className="flex items-start gap-6 mb-12 pb-8 border-b border-border">
@@ -62,17 +78,32 @@ export default function ProfilPage() {
         <div>
           <h1 className="font-serif text-3xl font-bold text-charcoal">{session.user.name}</h1>
           <p className="text-muted text-sm mt-1">{session.user.email}</p>
-          {session.user.isPremium ? (
-            <span className="inline-flex items-center gap-1.5 mt-3 px-3 py-1 bg-gold-light text-gold-dark text-xs font-bold tracking-wider uppercase rounded-sm">
-              <Crown className="w-3.5 h-3.5" /> Premium active
+          {newsletter?.subscribed ? (
+            <span className="inline-flex items-center gap-1.5 mt-3 px-3 py-1 bg-accent/10 text-accent text-xs font-bold tracking-wider uppercase rounded-sm">
+              <Mail className="w-3.5 h-3.5" /> Newsletter subscriber
             </span>
           ) : (
-            <Link href="/subscription" className="inline-block mt-3 text-sm text-accent hover:underline">
-              Upgrade to Premium →
+            <Link href="/newsletter" className="inline-block mt-3 text-sm text-accent hover:underline">
+              Subscribe to the newsletter →
             </Link>
           )}
         </div>
       </div>
+
+      {newsletter?.subscribed && preferenceLabels.length > 0 && (
+        <section className="mb-12 p-5 bg-muted-bg border border-border rounded-sm">
+          <h2 className="font-serif text-lg font-bold text-charcoal mb-2 flex items-center gap-2">
+            <Mail className="w-4 h-4 text-gold" />
+            Your newsletter editions
+          </h2>
+          <p className="text-sm text-muted mb-3">
+            {preferenceLabels.join(" · ")}
+          </p>
+          <Link href="/newsletter" className="text-sm text-accent hover:underline">
+            Update preferences →
+          </Link>
+        </section>
+      )}
 
       <section className="mb-12">
         <h2 className="font-serif text-xl font-bold text-charcoal mb-6 flex items-center gap-2">

@@ -14,7 +14,7 @@ export default function AProposPage() {
       description="Global South Watch is the leading news portal for Africa and the Global South. We cover the continent with rigor, independence and proximity."
     >
       <p>
-        Founded by Digitalpro Solutions and published from Abidjan, Global South Watch covers political,
+        Founded by Noya Industries and published from Abidjan, Global South Watch covers political,
         economic, social and cultural news from Africa and the Global South. Our editorial team
         brings together journalists, correspondents and experts based across the continent and in the diaspora.
       </p>

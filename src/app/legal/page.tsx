@@ -16,7 +16,7 @@ export default function MentionsLegalesPage() {
     >
       <ContentSection title="Site publisher">
         <ul className="space-y-2 not-prose text-sm">
-          <li><strong>Company name:</strong> Digitalpro Solutions</li>
+          <li><strong>Company name:</strong> Noya Industries</li>
           <li><strong>Editorial brand:</strong> Global South Watch</li>
           <li><strong>Headquarters:</strong> Abidjan, Côte d&apos;Ivoire</li>
           <li><strong>Email:</strong>{" "}
@@ -60,6 +60,8 @@ export default function MentionsLegalesPage() {
           <li><Link href="/terms" className="text-accent hover:underline">Terms of use</Link></li>
           <li><Link href="/privacy" className="text-accent hover:underline">Privacy policy</Link></li>
           <li><Link href="/accessibility" className="text-accent hover:underline">Accessibility</Link></li>
+          <li><Link href="/sitemap" className="text-accent hover:underline">Sitemap</Link></li>
+          <li><Link href="/rss" className="text-accent hover:underline">RSS feeds</Link></li>
         </ul>
       </ContentSection>
 

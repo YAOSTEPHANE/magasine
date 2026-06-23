@@ -1,25 +1,24 @@
 import { TICKER_ITEMS } from "@/data/presse-ivoire-home";
-import { format } from "date-fns";
-import { enUS } from "date-fns/locale";
+import { getEditorialDateString } from "@/lib/editorial-date";
 import { SocialLinks } from "@/components/ui/SocialIcons";
 
 interface TopBarProps {
   alerts?: { text: string; link?: string }[];
+  formattedDate?: string;
 }
 
-export function TopBar({ alerts }: TopBarProps) {
+export function TopBar({ alerts, formattedDate }: TopBarProps) {
   const items = alerts?.length
     ? alerts.map((a) => a.text)
     : TICKER_ITEMS;
 
   const doubled = [...items, ...items];
-  const today = format(new Date(), "EEEE, MMMM d, yyyy", { locale: enUS });
-  const formattedDate = today.charAt(0).toUpperCase() + today.slice(1);
+  const dateLabel = formattedDate ?? getEditorialDateString();
 
   return (
-    <div className="top-bar">
+    <div className="top-bar" translate="no">
       <div className="top-bar-inner container">
-        <div className="top-bar-label">
+        <div className="top-bar-label" suppressHydrationWarning>
           <span className="breaking-dot" />
           Live
         </div>
@@ -38,7 +37,9 @@ export function TopBar({ alerts }: TopBarProps) {
           networks={["facebook", "twitter", "instagram", "youtube"]}
           iconClassName="w-3.5 h-3.5"
         />
-        <div className="top-bar-date">{formattedDate}</div>
+        <div className="top-bar-date" suppressHydrationWarning>
+          {dateLabel}
+        </div>
       </div>
     </div>
   );

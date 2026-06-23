@@ -19,6 +19,9 @@ export function HomeRubriquesBand({ rubriques }: HomeRubriquesBandProps) {
           linkHref="/search"
           linkLabel="Explore"
         />
+        <p className="home-rubriques-intro">
+          Browse our editorial desks — from breaking news and finance to culture, sports, and regional bureaus across the Global South.
+        </p>
         <div className="rubriques-stack">
           {rubriques.map((block, index) => (
             <RubriqueSectionHome key={block.slug} block={block} index={index} />

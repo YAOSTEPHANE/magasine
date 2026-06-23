@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { ContentPage, ContentSection, ContentCta } from "@/components/layout/ContentPage";
 
 export const metadata: Metadata = {
@@ -33,7 +34,8 @@ export default function EspacePressePage() {
           <li>Logo and brand guidelines on request</li>
           <li>Interviews and speaking opportunities with editorial leadership</li>
           <li>Early access to major investigations (upon accreditation)</li>
-          <li>RSS feed: <a href="/api/feed" className="text-accent hover:underline">/api/feed</a></li>
+          <li>RSS feed: <a href="/feed.xml" className="text-accent hover:underline">/feed.xml</a> · <Link href="/rss" className="text-accent hover:underline">RSS hub</Link></li>
+          <li>Sitemap: <Link href="/sitemap" className="text-accent hover:underline">/sitemap</Link></li>
         </ul>
       </ContentSection>
 

@@ -12,7 +12,7 @@ export function HeroHome({ data }: HeroHomeProps) {
 
   return (
     <section className="hero hero-premium">
-      <div className="container">
+      <div className="container hero-shell">
         <div className="hero-grid">
           <div className="hero-main reveal">
             <HeroCarousel slides={data.heroSlides} />
@@ -87,13 +87,13 @@ export function HeroHome({ data }: HeroHomeProps) {
               </div>
             </div>
 
-            <div className="sidebar-premium-cta">
-              <span className="sidebar-premium-cta-label">Subscription</span>
+            <div className="sidebar-premium-cta sidebar-newsletter-cta">
+              <span className="sidebar-premium-cta-label">Newsletter</span>
               <p className="sidebar-premium-cta-text">
-                Access exclusive investigations and in-depth analysis.
+                Free morning briefing and regional editions — curated by our newsroom.
               </p>
-              <Link href="/subscription" className="sidebar-premium-cta-btn">
-                Discover Premium
+              <Link href="/newsletter" className="sidebar-premium-cta-btn">
+                Subscribe for free
               </Link>
             </div>
           </aside>

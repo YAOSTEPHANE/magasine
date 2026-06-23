@@ -21,6 +21,10 @@ export const IMG = {
   portrait1: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&h=200&fit=crop",
   portrait2: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop",
   portrait3: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop",
+  latinAmerica: "https://images.unsplash.com/photo-1483729558449-99ef09a8c325?w=1200&h=800&fit=crop",
+  southAsia: "https://images.unsplash.com/photo-1524492412937-280c33fd95dd?w=1200&h=800&fit=crop",
+  westAsia: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=1200&h=800&fit=crop",
+  sahel: "https://images.unsplash.com/photo-1509316785289-025f5b846b8e?w=1200&h=800&fit=crop",
 } as const;
 
 export const SITE_LOGO = "/images/logo-global-south-watch.png";

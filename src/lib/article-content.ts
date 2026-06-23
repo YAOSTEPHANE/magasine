@@ -447,6 +447,168 @@ const ARTICLE_BODIES: Record<string, ArticleBodySpec> = {
       },
     ],
   },
+  "afcfta-implementation-accelerates-kenya-ghana-first-tariff-schedules": {
+    sections: [
+      {
+        heading: "A continental trade milestone",
+        paragraphs: [
+          "Kenya and Ghana filed the first major tariff schedules under AfCFTA, allowing preferential movement of goods among ratifying states.",
+          "Customs unions in East and West Africa are aligning documentation so traders can use a single certificate of origin across borders.",
+        ],
+      },
+    ],
+    quote: { text: "This is the moment AfCFTA stops being a treaty and becomes a marketplace.", author: "Wamkele Mene, AfCFTA Secretary-General" },
+  },
+  "great-green-wall-sahel-reforestation-fifteen-years-progress": {
+    sections: [
+      {
+        heading: "Measurable green recovery",
+        paragraphs: [
+          "Independent satellite monitoring shows vegetation gains along priority corridors from Senegal to Djibouti, though drought years still set back fragile zones.",
+        ],
+      },
+    ],
+  },
+  "lagos-abidjan-corridor-ecowas-regional-rail-master-plan": {
+    sections: [
+      {
+        heading: "Coastal integration",
+        paragraphs: [
+          "The approved master plan sequences civil works over fifteen years, prioritizing freight links between Lagos, Cotonou, Lomé, Accra, and Abidjan.",
+        ],
+      },
+    ],
+  },
+  "southern-africa-mining-royalties-debate-resource-nationalism": {
+    sections: [
+      {
+        heading: "Who owns the boom?",
+        paragraphs: [
+          "Windfall taxes on copper and lithium are framed as correcting historical under-taxation; operators warn that fiscal uncertainty could delay new mine openings.",
+        ],
+      },
+    ],
+  },
+  "amazon-fund-brazil-2-4-billion-rainforest-protection-pledges": {
+    sections: [
+      {
+        heading: "Financing stewardship",
+        paragraphs: [
+          "Donors tied disbursements to verified deforestation reductions and strengthened indigenous territorial protections in the Amazon biome.",
+        ],
+      },
+    ],
+  },
+  "mexico-nearshoring-boom-industrial-north-supply-chains": {
+    sections: [
+      {
+        heading: "Factories at capacity",
+        paragraphs: [
+          "Automotive and electronics assemblers are expanding footprints in Nuevo León and Coahuila as lead times from Asia remain volatile.",
+        ],
+      },
+    ],
+  },
+  "colombia-peace-process-rural-councils-budget-autonomy": {
+    sections: [
+      {
+        heading: "Peace dividends",
+        paragraphs: [
+          "Rural councils will propose investments in roads, schools, and crop substitution, with federal auditors retaining oversight on procurement.",
+        ],
+      },
+    ],
+  },
+  "argentina-brazil-common-trade-currency-mercosur-study": {
+    sections: [
+      {
+        heading: "Settlement innovation",
+        paragraphs: [
+          "Technical teams will pilot invoicing in a basket of reals and pesos for bilateral trade, without creating a parallel legal tender.",
+        ],
+      },
+    ],
+  },
+  "india-digital-public-infrastructure-export-bangladesh-sri-lanka": {
+    sections: [
+      {
+        heading: "Stack diplomacy",
+        paragraphs: [
+          "Bangladesh will adapt India's open APIs for payments and identity; Sri Lanka focuses on port logistics digitization and customs single windows.",
+        ],
+      },
+    ],
+  },
+  "bangladesh-garment-sector-living-wage-framework": {
+    sections: [
+      {
+        heading: "A phased floor",
+        paragraphs: [
+          "The agreement indexes minimum wages to inflation in Dhaka and Chattogram zones, with brand auditors publishing compliance scores twice yearly.",
+        ],
+      },
+    ],
+  },
+  "indus-waters-treaty-talks-pakistan-india-mediation": {
+    sections: [
+      {
+        heading: "Water under pressure",
+        paragraphs: [
+          "Glacial melt and erratic monsoons have revived disputes over eastern rivers; mediators seek updated flow data sharing before summer peaks.",
+        ],
+      },
+    ],
+  },
+  "sri-lanka-tourism-recovery-pre-crisis-arrivals": {
+    sections: [
+      {
+        heading: "Visitors return",
+        paragraphs: [
+          "Visa-on-arrival for Gulf travelers and stable exchange rates helped hotels exceed 2019 occupancy during the April festival season.",
+        ],
+      },
+    ],
+  },
+  "gulf-states-40-billion-african-energy-transition": {
+    sections: [
+      {
+        heading: "South–South capital",
+        paragraphs: [
+          "Funds target solar parks, green hydrogen hubs, and cross-border transmission in the Sahel and Horn of Africa, with co-financing from African development banks.",
+        ],
+      },
+    ],
+  },
+  "iran-nuclear-talks-regional-oil-markets-shipping": {
+    sections: [
+      {
+        heading: "Strait calculus",
+        paragraphs: [
+          "Partial sanctions relief scenarios are being modeled by insurers and tanker operators ahead of renewed talks in Muscat.",
+        ],
+      },
+    ],
+  },
+  "turkey-black-sea-grain-corridor-extension-un": {
+    sections: [
+      {
+        heading: "Food corridors",
+        paragraphs: [
+          "Ankara extended inspection protocols for Odessa-area exports, keeping wheat flows to North Africa and the Levant on stable footing.",
+        ],
+      },
+    ],
+  },
+  "saudi-arabia-megacity-solar-hub-50-gw-photovoltaic": {
+    sections: [
+      {
+        heading: "Desert gigawatts",
+        paragraphs: [
+          "NEOM Energy will pair panel manufacturing with hydrogen export terminals, signing preliminary offtake deals with European steelmakers.",
+        ],
+      },
+    ],
+  },
 };
 
 export function resolveArticleContent(

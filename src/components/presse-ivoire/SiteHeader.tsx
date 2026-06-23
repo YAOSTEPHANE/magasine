@@ -1,32 +1,130 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { HEADER_NAV } from "@/data/presse-ivoire-home";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { HEADER_NAV, REGION_NAV } from "@/data/presse-ivoire-home";
 import { BrandLogo } from "@/components/presse-ivoire/BrandLogo";
 import { HeaderAuth } from "@/components/presse-ivoire/HeaderAuth";
+import { MobileMenuButton, MobileNavDrawer } from "@/components/presse-ivoire/MobileNavDrawer";
+
+function RegionsMegaMenu() {
+  const [open, setOpen] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
+  const isRegionActive = REGION_NAV.some((r) => pathname === r.href || pathname.startsWith(`${r.href}/`));
+
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    const onClick = (e: MouseEvent) => {
+      if (!rootRef.current?.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("keydown", onKey);
+    document.addEventListener("mousedown", onClick);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.removeEventListener("mousedown", onClick);
+    };
+  }, [open]);
+
+  return (
+    <div
+      ref={rootRef}
+      className={`header-nav-mega${open ? " is-open" : ""}`}
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+    >
+      <button
+        type="button"
+        className={`header-nav-mega-trigger${open || isRegionActive ? " is-active" : ""}`}
+        aria-expanded={open}
+        aria-haspopup="true"
+        onClick={() => setOpen((v) => !v)}
+      >
+        Regions
+        <svg
+          className="header-nav-mega-chevron"
+          width="10"
+          height="10"
+          viewBox="0 0 10 10"
+          aria-hidden
+        >
+          <path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" strokeWidth="1.5" fill="none" />
+        </svg>
+      </button>
+
+      <div className="header-nav-mega-panel" role="menu" aria-hidden={!open}>
+        <div className="header-nav-mega-panel-head">
+          <span className="header-nav-mega-panel-kicker">Global South coverage</span>
+          <span className="header-nav-mega-panel-title">Explore by region</span>
+        </div>
+        <div className="header-nav-mega-panel-body">
+          {REGION_NAV.map((region) => (
+            <Link
+              key={region.href}
+              href={region.href}
+              className={`header-nav-mega-item${pathname === region.href ? " is-current" : ""}`}
+              role="menuitem"
+              style={{ "--region-accent": region.accent } as React.CSSProperties}
+              onClick={() => setOpen(false)}
+            >
+              <span className="header-nav-mega-item-accent" aria-hidden />
+              <span className="header-nav-mega-item-text">
+                <span className="header-nav-mega-item-label">{region.label}</span>
+                <span className="header-nav-mega-item-desc">{region.description}</span>
+              </span>
+              <svg className="header-nav-mega-item-arrow" width="12" height="12" viewBox="0 0 12 12" aria-hidden>
+                <path d="M4 2l4 4-4 4" stroke="currentColor" strokeWidth="1.5" fill="none" />
+              </svg>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function HeaderNavLinks({ className }: { className: string }) {
   return (
     <nav className={className} aria-label="Main navigation">
-      {HEADER_NAV.map((item) => (
-        <Link
-          key={item.label}
-          href={item.href}
-          className={item.active ? "active" : undefined}
-        >
-          {item.label}
-        </Link>
-      ))}
+      {HEADER_NAV.map((item) =>
+        item.mega ? (
+          <RegionsMegaMenu key={item.label} />
+        ) : (
+          <Link
+            key={item.label}
+            href={item.href}
+            className={item.active ? "active" : undefined}
+          >
+            {item.label}
+          </Link>
+        )
+      )}
     </nav>
   );
 }
 
 export function SiteHeader() {
   const router = useRouter();
+  const pathname = usePathname();
   const [searchOpen, setSearchOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [query, setQuery] = useState("");
+
+  const closeMobileMenu = useCallback(() => setMobileMenuOpen(false), []);
+
+  useEffect(() => {
+    closeMobileMenu();
+    setSearchOpen(false);
+  }, [pathname, closeMobileMenu]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,16 +135,22 @@ export function SiteHeader() {
   };
 
   return (
-    <header className="header">
+    <header className="header" translate="no">
       <div className="header-inner">
-        <BrandLogo variant="header" />
+        <div className="header-brand-row">
+          <MobileMenuButton
+            open={mobileMenuOpen}
+            onClick={() => setMobileMenuOpen((v) => !v)}
+          />
+          <BrandLogo variant="header" />
+        </div>
 
         <HeaderNavLinks className="header-nav-left header-nav-left--desktop" />
 
         <div className="header-actions">
           <button
             type="button"
-            className="btn-search"
+            className="btn-search btn-search--desktop"
             title="Search"
             onClick={() => setSearchOpen(!searchOpen)}
             aria-label="Search"
@@ -56,15 +160,30 @@ export function SiteHeader() {
               <path d="M10.5 10.5L13.5 13.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
             </svg>
           </button>
-          <Link href="/subscription" className="btn-subscribe" aria-label="Subscribe">
-            <span className="btn-subscribe-full">Subscribe</span>
-            <span className="btn-subscribe-short">Pro</span>
+          <Link href="/donate" className="btn-donate" aria-label="Donate">
+            <span className="btn-donate-full">Donate</span>
+            <span className="btn-donate-short">♥</span>
+          </Link>
+          <Link href="/newsletter" className="btn-subscribe" aria-label="Newsletter">
+            <span className="btn-subscribe-label">Newsletter</span>
           </Link>
           <HeaderAuth />
         </div>
       </div>
 
-      <HeaderNavLinks className="header-nav-mobile" />
+      <nav className="header-regions-strip" aria-label="Regions">
+        {REGION_NAV.map((region) => (
+          <Link
+            key={region.href}
+            href={region.href}
+            className={pathname === region.href || pathname.startsWith(`${region.href}/`) ? "is-active" : undefined}
+          >
+            {region.label}
+          </Link>
+        ))}
+      </nav>
+
+      <MobileNavDrawer open={mobileMenuOpen} onClose={closeMobileMenu} />
 
       {searchOpen && (
         <form onSubmit={handleSearch} className="container header-search" style={{ paddingBottom: 16 }}>

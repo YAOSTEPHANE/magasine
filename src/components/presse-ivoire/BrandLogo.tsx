@@ -6,19 +6,23 @@ interface BrandLogoProps {
   variant?: "header" | "footer" | "auth";
   className?: string;
   showTagline?: boolean;
+  /** When false, renders markup only (use inside an existing link). */
+  linked?: boolean;
 }
 
-export function BrandLogo({ variant = "header", className, showTagline }: BrandLogoProps) {
+export function BrandLogo({
+  variant = "header",
+  className,
+  showTagline,
+  linked = true,
+}: BrandLogoProps) {
   const height = variant === "header" ? 52 : 44;
   const width = variant === "header" ? 220 : 190;
   const displayTagline = showTagline ?? variant === "header";
+  const logoClassName = className ?? (variant === "auth" ? "logo logo-auth" : "logo");
 
-  return (
-    <Link
-      href="/"
-      className={className ?? (variant === "auth" ? "logo logo-auth" : "logo")}
-      aria-label="Global South Watch — Home"
-    >
+  const content = (
+    <>
       <Image
         src={SITE_LOGO}
         alt="Global South Watch"
@@ -28,8 +32,22 @@ export function BrandLogo({ variant = "header", className, showTagline }: BrandL
         style={{ height, width: "auto", maxWidth: width }}
       />
       {displayTagline && (
-        <div className="logo-tagline">News at the heart of the Global South</div>
+        <div className="logo-tagline">Décolonisation des médias</div>
       )}
+    </>
+  );
+
+  if (!linked) {
+    return <span className={logoClassName}>{content}</span>;
+  }
+
+  return (
+    <Link
+      href="/"
+      className={logoClassName}
+      aria-label="Global South Watch — Home"
+    >
+      {content}
     </Link>
   );
 }

@@ -1,8 +1,11 @@
+import type { CSSProperties } from "react";
 import Link from "next/link";
 import type { ArticleListItem } from "@/types";
+import type { SectionKind } from "@/lib/sections";
 import { PageBackdrop } from "@/components/presse-ivoire/PageBackdrop";
-import { SectionHeader } from "@/components/presse-ivoire/SectionHeader";
 import { SectionImage } from "@/components/presse-ivoire/SectionImage";
+import { SectionPageHero } from "@/components/category/SectionPageHero";
+import { SectionRelatedNav } from "@/components/category/SectionRelatedNav";
 import { formatRelativeDate } from "@/lib/utils";
 
 interface CategoryPageViewProps {
@@ -10,6 +13,17 @@ interface CategoryPageViewProps {
     name: string;
     slug: string;
     description?: string;
+    color?: string;
+  };
+  sectionMeta: {
+    kind: SectionKind;
+    number: string;
+    eyebrow: string;
+    lead: string;
+    relatedSlugs: string[];
+    linkHref?: string;
+    linkLabel?: string;
+    formatLinks?: { label: string; href: string }[];
   };
   articles: ArticleListItem[];
 }
@@ -20,32 +34,37 @@ function formatMeta(article: ArticleListItem) {
   return `${author} · ${date} · ${article.readingTime} min`;
 }
 
-export function CategoryPageView({ category, articles }: CategoryPageViewProps) {
+export function CategoryPageView({ category, sectionMeta, articles }: CategoryPageViewProps) {
   const [featured, ...rest] = articles;
+  const isRegion = sectionMeta.kind === "region";
 
   return (
-    <div className="category-page category-page--revolution">
+    <div
+      className={`category-page category-page--revolution category-page--${sectionMeta.kind}`}
+      data-section={category.slug}
+      style={
+        category.color
+          ? ({ "--section-accent": category.color } as CSSProperties)
+          : undefined
+      }
+    >
       <PageBackdrop />
 
+      <SectionPageHero
+        name={category.name}
+        slug={category.slug}
+        kind={sectionMeta.kind}
+        number={sectionMeta.number}
+        eyebrow={sectionMeta.eyebrow}
+        lead={sectionMeta.lead}
+        description={category.description}
+        accent={category.color}
+        linkHref={sectionMeta.linkHref}
+        linkLabel={sectionMeta.linkLabel}
+        formatLinks={sectionMeta.formatLinks}
+      />
+
       <div className="container category-page-inner">
-        <nav className="category-breadcrumb" aria-label="Breadcrumb">
-          <Link href="/">Home</Link>
-          <span aria-hidden>/</span>
-          <span>{category.name}</span>
-        </nav>
-
-        <SectionHeader
-          number={category.slug.slice(0, 2).toUpperCase()}
-          eyebrow="Section"
-          title={category.name}
-          linkHref="/search"
-          linkLabel="All sections"
-        />
-
-        {category.description && (
-          <p className="category-description">{category.description}</p>
-        )}
-
         {articles.length === 0 ? (
           <p className="category-empty">
             No articles published in this section yet.{" "}
@@ -72,6 +91,12 @@ export function CategoryPageView({ category, articles }: CategoryPageViewProps) 
                       Urgent
                     </span>
                   )}
+                  {featured.contentType === "video" && (
+                    <span className="content-type-badge">Video</span>
+                  )}
+                  {featured.contentType === "podcast" && (
+                    <span className="content-type-badge">Podcast</span>
+                  )}
                 </div>
                 <div className="ec-card-h-content">
                   <span className="tag">{featured.category.name}</span>
@@ -88,7 +113,9 @@ export function CategoryPageView({ category, articles }: CategoryPageViewProps) 
               <>
                 <div className="category-section-label article-reveal article-reveal--delay-1">
                   <span>All articles</span>
-                  <span className="category-count">{rest.length} article{rest.length > 1 ? "s" : ""}</span>
+                  <span className="category-count">
+                    {articles.length} article{articles.length > 1 ? "s" : ""}
+                  </span>
                 </div>
 
                 <div className="category-grid">
@@ -121,6 +148,12 @@ export function CategoryPageView({ category, articles }: CategoryPageViewProps) 
           </>
         )}
       </div>
+
+      <SectionRelatedNav
+        currentSlug={category.slug}
+        relatedSlugs={sectionMeta.relatedSlugs}
+        showRegions={!isRegion}
+      />
     </div>
   );
 }

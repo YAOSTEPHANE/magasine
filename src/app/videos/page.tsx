@@ -1,34 +1,16 @@
 import type { Metadata } from "next";
 import { getArticlesByContentType } from "@/lib/data";
-import { ArticleCard } from "@/components/article/ArticleCard";
+import { FormatPageView } from "@/components/format/FormatPageView";
+import { FORMAT_PAGES } from "@/lib/formats";
 
 export const metadata: Metadata = {
   title: "Videos",
   description: "Video reports, interviews and documentaries — Global South Watch.",
 };
 
+export const revalidate = 60;
+
 export default async function VideosPage() {
-  const articles = await getArticlesByContentType("video");
-
-  return (
-    <div className="max-w-[1320px] mx-auto px-4 lg:px-6 py-16">
-      <div className="text-center mb-14">
-        <span className="text-[10px] font-bold tracking-[0.25em] uppercase text-gold">Multimedia</span>
-        <h1 className="font-serif text-4xl font-bold text-charcoal mt-2 mb-4">Videos</h1>
-        <p className="text-muted max-w-2xl mx-auto">
-          Reports, interviews and documentaries on Global South news.
-        </p>
-      </div>
-
-      {articles.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {articles.map((article) => (
-            <ArticleCard key={article._id} article={article} />
-          ))}
-        </div>
-      ) : (
-        <p className="text-center text-muted py-16">No videos published yet.</p>
-      )}
-    </div>
-  );
+  const articles = await getArticlesByContentType("video", 36);
+  return <FormatPageView config={FORMAT_PAGES.videos} articles={articles} />;
 }

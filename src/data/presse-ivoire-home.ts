@@ -8,17 +8,29 @@ export const TICKER_ITEMS = [
   "Health: new anti-malaria protocol adopted across 12 West African countries",
 ];
 
+export const REGION_NAV = [
+  { label: "Africa", href: "/category/africa", description: "Continental news & analysis", accent: "#1a3896" },
+  { label: "Latin America", href: "/category/latin-america", description: "From Mexico to Patagonia", accent: "#2D6A4F" },
+  { label: "South Asia", href: "/category/south-asia", description: "Subcontinent & diaspora", accent: "#E85D04" },
+  { label: "West Asia", href: "/category/west-asia", description: "Gulf, Levant & beyond", accent: "#9B2226" },
+] as const;
+
 export const HEADER_NAV = [
   { label: "Home", href: "/", active: true },
-  { label: "World", href: "/category/monde" },
+  { label: "Regions", href: "/category/africa", mega: true },
   { label: "Politics", href: "/category/actualites" },
   { label: "Economy", href: "/category/finance" },
   { label: "Sports", href: "/category/sports" },
 ];
 
 export const NAV_RUBRIQUES = [
-  { label: "🔥 Breaking", href: "/#urgent", featured: true },
+  { label: "🔥 Urgent", href: "/urgent", featured: true },
+  { label: "Africa", href: "/category/africa" },
+  { label: "Latin America", href: "/category/latin-america" },
+  { label: "South Asia", href: "/category/south-asia" },
+  { label: "West Asia", href: "/category/west-asia" },
   { label: "News", href: "/category/actualites" },
+  { label: "Politics", href: "/category/politique" },
   { label: "Sports", href: "/category/sports" },
   { label: "Finance", href: "/category/finance" },
   { label: "Technology", href: "/category/technologie" },
@@ -28,6 +40,8 @@ export const NAV_RUBRIQUES = [
   { label: "Multimedia", href: "/category/multimedia" },
   { label: "Investigations", href: "/category/investigations" },
   { label: "Local", href: "/category/local" },
+  { label: "World", href: "/category/monde" },
+  { label: "Special Reports", href: "/category/reportages-speciaux" },
 ];
 
 export const HERO_MAIN = {
@@ -177,14 +191,21 @@ export const THEMATIC = [
 export const STATS = [
   { num: "2", suffix: "M+", label: "Monthly Readers" },
   { num: "145", suffix: "k", label: "Newsletter Subscribers" },
-  { num: "12", suffix: "+", label: "Editorial Sections" },
+  { num: "16", suffix: "+", label: "Editorial Sections" },
   { num: "48", suffix: "h", label: "Continuous Coverage" },
 ];
 
 export const FOOTER_COLS = {
+  regions: [
+    { label: "Africa", href: "/category/africa" },
+    { label: "Latin America", href: "/category/latin-america" },
+    { label: "South Asia", href: "/category/south-asia" },
+    { label: "West Asia", href: "/category/west-asia" },
+    { label: "World", href: "/category/monde" },
+  ],
   rubriques: [
     { label: "News", href: "/category/actualites" },
-    { label: "Politics", href: "/category/actualites" },
+    { label: "Politics", href: "/category/politique" },
     { label: "Economy & Finance", href: "/category/finance" },
     { label: "Technology", href: "/category/technologie" },
     { label: "Sports", href: "/category/sports" },
@@ -199,6 +220,8 @@ export const FOOTER_COLS = {
     { label: "Advertising", href: "/advertising" },
     { label: "Editorial charter", href: "/editorial-charter" },
     { label: "Careers", href: "/careers" },
+    { label: "Donate", href: "/donate" },
+    { label: "Newsletter", href: "/newsletter" },
     { label: "Contact", href: "/contact" },
   ],
   formats: [
@@ -207,14 +230,14 @@ export const FOOTER_COLS = {
     { label: "Opinion", href: "/category/opinion" },
     { label: "Videos", href: "/videos" },
     { label: "Podcasts", href: "/podcasts" },
-    { label: "Infographics", href: "/category/multimedia" },
-    { label: "Photo galleries", href: "/category/multimedia" },
+    { label: "Infographics", href: "/infographics" },
+    { label: "Photo galleries", href: "/photo-galleries" },
   ],
   legal: [
     { label: "Legal notice", href: "/legal" },
     { label: "Privacy policy", href: "/privacy" },
     { label: "Terms of use", href: "/terms" },
     { label: "Cookies", href: "/cookies" },
-    { label: "Right to erasure", href: "/privacy" },
+    { label: "Right to erasure", href: "/right-to-erasure" },
   ],
 };

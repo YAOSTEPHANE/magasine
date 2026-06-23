@@ -1,37 +1,127 @@
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
+import { auth } from "@/lib/auth";
 import { connectDB } from "@/lib/mongodb";
 import { Newsletter } from "@/models/Newsletter";
-import { z } from "zod";
+import { NEWSLETTER_TOPICS, type NewsletterTopicId } from "@/lib/newsletter-topics";
 
-const schema = z.object({
+const topicIds = NEWSLETTER_TOPICS.map((t) => t.id) as NewsletterTopicId[];
+
+function isValidTopicId(value: string): value is NewsletterTopicId {
+  return (topicIds as readonly string[]).includes(value);
+}
+
+const postSchema = z.object({
   email: z.string().email("Invalid email"),
-  preferences: z.array(z.string()).optional(),
+  preferences: z
+    .array(z.string())
+    .optional()
+    .refine(
+      (prefs) => !prefs || prefs.every(isValidTopicId),
+      "Invalid newsletter preference"
+    ),
 });
+
+export async function GET() {
+  const session = await auth();
+  if (!session?.user?.email) {
+    return NextResponse.json({ subscribed: false });
+  }
+
+  try {
+    await connectDB();
+    const subscriber = await Newsletter.findOne({
+      email: session.user.email.toLowerCase(),
+      isActive: true,
+    }).lean();
+
+    if (!subscriber) {
+      return NextResponse.json({ subscribed: false });
+    }
+
+    return NextResponse.json({
+      subscribed: true,
+      preferences: subscriber.preferences,
+      subscribedAt: subscriber.subscribedAt,
+    });
+  } catch {
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
+  }
+}
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const parsed = schema.safeParse(body);
+    const parsed = postSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: "Invalid email" }, { status: 400 });
+      return NextResponse.json({ error: "Invalid email or preferences" }, { status: 400 });
+    }
+
+    const email = parsed.data.email.toLowerCase().trim();
+    const preferences = parsed.data.preferences?.length
+      ? parsed.data.preferences
+      : ["general", "weekly"];
+
+    await connectDB();
+    const existing = await Newsletter.findOne({ email });
+
+    if (existing) {
+      existing.isActive = true;
+      existing.preferences = preferences;
+      await existing.save();
+      return NextResponse.json({
+        message: "Your newsletter preferences have been updated.",
+        preferences,
+      });
+    }
+
+    await Newsletter.create({ email, preferences });
+
+    return NextResponse.json(
+      {
+        message: "Welcome! Check your inbox for our next edition.",
+        preferences,
+      },
+      { status: 201 }
+    );
+  } catch {
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
+  }
+}
+
+export async function PATCH(request: NextRequest) {
+  const session = await auth();
+  if (!session?.user?.email) {
+    return NextResponse.json({ error: "Sign in required" }, { status: 401 });
+  }
+
+  try {
+    const body = await request.json();
+    const parsed = postSchema.safeParse({
+      email: session.user.email,
+      preferences: body.preferences,
+    });
+    if (!parsed.success) {
+      return NextResponse.json({ error: "Invalid preferences" }, { status: 400 });
     }
 
     await connectDB();
-    const existing = await Newsletter.findOne({ email: parsed.data.email });
-    if (existing) {
-      if (!existing.isActive) {
-        existing.isActive = true;
-        await existing.save();
-      }
-      return NextResponse.json({ message: "Already subscribed" });
+    const email = session.user.email.toLowerCase();
+    const preferences = parsed.data.preferences ?? ["general"];
+
+    const subscriber = await Newsletter.findOne({ email });
+    if (!subscriber) {
+      await Newsletter.create({ email, preferences });
+    } else {
+      subscriber.isActive = true;
+      subscriber.preferences = preferences;
+      await subscriber.save();
     }
 
-    await Newsletter.create({
-      email: parsed.data.email,
-      preferences: parsed.data.preferences ?? ["general"],
+    return NextResponse.json({
+      message: "Preferences saved.",
+      preferences,
     });
-
-    return NextResponse.json({ message: "Subscription successful" }, { status: 201 });
   } catch {
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }

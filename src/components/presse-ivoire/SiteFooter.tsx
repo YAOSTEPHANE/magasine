@@ -26,6 +26,14 @@ export function SiteFooter() {
           </div>
           <div className="footer-cols">
             <div className="footer-col">
+              <div className="footer-col-title">Regions</div>
+              <ul>
+                {FOOTER_COLS.regions.map((l) => (
+                  <li key={l.label}><Link href={l.href}>{l.label}</Link></li>
+                ))}
+              </ul>
+            </div>
+            <div className="footer-col">
               <div className="footer-col-title">Sections</div>
               <ul>
                 {FOOTER_COLS.rubriques.map((l) => (
@@ -60,10 +68,11 @@ export function SiteFooter() {
           </div>
         </div>
         <div className="footer-bottom">
-          <span>© {new Date().getFullYear()} Global South Watch — Digitalpro Solutions. All rights reserved.</span>
+          <span>© {new Date().getFullYear()} Global South Watch — Noya Industries. All rights reserved.</span>
           <div className="footer-bottom-links">
-            <Link href="/sitemap.xml">Sitemap</Link>
-            <a href="/api/feed">RSS</a>
+            <Link href="/sitemap">Sitemap</Link>
+            <Link href="/rss">RSS</Link>
+            <a href="/feed.xml">Feed XML</a>
             <Link href="/accessibility">Accessibility</Link>
           </div>
         </div>

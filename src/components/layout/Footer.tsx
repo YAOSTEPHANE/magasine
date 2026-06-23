@@ -168,7 +168,7 @@ export function Footer() {
         <div className="gold-line my-10 opacity-30" />
 
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-white/40">
-          <p>© {new Date().getFullYear()} Global South Watch — Digitalpro Solutions. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Global South Watch — Noya Industries. All rights reserved.</p>
           <div className="flex gap-6">
             {footerLinks.legal.map((link) => (
               <Link

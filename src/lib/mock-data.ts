@@ -203,6 +203,10 @@ export function getMockHomePageData() {
     divertissementNews: articles.filter((a) => a.category.slug === "divertissement").slice(0, 4),
     localNews: articles.filter((a) => a.category.slug === "local").slice(0, 4),
     urgentArticles: articles.filter((a) => a.isUrgent || a.isTopStory).slice(0, 8),
+    africaNews: articles.filter((a) => a.category.slug === "africa").slice(0, 4),
+    latinAmericaNews: articles.filter((a) => a.category.slug === "latin-america").slice(0, 4),
+    southAsiaNews: articles.filter((a) => a.category.slug === "south-asia").slice(0, 4),
+    westAsiaNews: articles.filter((a) => a.category.slug === "west-asia").slice(0, 4),
   };
 }
 
