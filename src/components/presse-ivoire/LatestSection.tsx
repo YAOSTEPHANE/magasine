@@ -17,7 +17,7 @@ export function LatestSection({ data }: LatestSectionProps) {
           number="02"
           eyebrow="Live"
           title="Latest Updates"
-          linkHref="/recherche"
+          linkHref="/search"
           linkLabel="View all"
         />
         <div className="latest-layout">

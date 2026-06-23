@@ -20,7 +20,7 @@ const plans = [
     period: "forever",
     features: ["Public articles", "Weekly newsletter", "Comments"],
     cta: "Get started for free",
-    href: "/inscription",
+    href: "/register",
     highlighted: false,
     subscribe: false as const,
   },

@@ -76,7 +76,7 @@ export function EditorsChoiceSection({ data }: EditorsChoiceSectionProps) {
           number="01"
           eyebrow="Editor's pick"
           title="Editor's Choice"
-          linkHref="/recherche"
+          linkHref="/search"
           linkLabel="View all"
         />
         <div className="editors-horizontal">

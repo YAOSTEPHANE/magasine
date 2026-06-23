@@ -10,7 +10,7 @@ import { canManageArticles } from "@/lib/permissions";
 export default async function AdminCategoriesPage() {
   const session = await auth();
   if (!session?.user || !canManageArticles(session.user.role)) {
-    redirect("/connexion");
+    redirect("/login");
   }
 
   let categories: { _id: string; name: string; slug: string; order?: number; isActive?: boolean }[] = [];
@@ -74,7 +74,7 @@ export default async function AdminCategoriesPage() {
                     )}
                   </td>
                   <td className="px-6 py-4 text-right">
-                    <Link href={`/categorie/${cat.slug}`} className="text-sm text-accent hover:underline">
+                    <Link href={`/category/${cat.slug}`} className="text-sm text-accent hover:underline">
                       View →
                     </Link>
                   </td>

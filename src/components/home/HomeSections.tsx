@@ -27,7 +27,7 @@ export function Sidebar({ topStories, popularTags }: SidebarProps) {
           {popularTags.map((tag) => (
             <Link
               key={tag.name}
-              href={`/recherche?q=${encodeURIComponent(tag.name)}`}
+              href={`/search?q=${encodeURIComponent(tag.name)}`}
               className="px-3 py-1.5 text-xs bg-muted-bg text-muted hover:bg-gold-light hover:text-gold-dark rounded-sm transition-colors"
             >
               #{tag.name}
@@ -103,7 +103,7 @@ export function VideoSection({ articles }: { articles: ArticleListItem[] }) {
       <SectionTitle
         title="Featured Videos"
         subtitle="Multimedia"
-        href="/categorie/multimedia"
+        href="/category/multimedia"
       />
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {articles.map((article) => (

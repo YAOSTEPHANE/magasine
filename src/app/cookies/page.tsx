@@ -52,7 +52,7 @@ export default function CookiesPage() {
       </ContentSection>
 
       <p className="text-sm text-muted pt-8 border-t border-border">
-        <Link href="/confidentialite" className="text-accent hover:underline">
+        <Link href="/privacy" className="text-accent hover:underline">
           Full privacy policy →
         </Link>
       </p>

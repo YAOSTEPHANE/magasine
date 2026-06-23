@@ -33,7 +33,7 @@ export default async function AdminDashboard() {
   const session = await auth();
   const allowedRoles = ["super_admin", "admin", "editor"];
   if (!session?.user || !allowedRoles.includes(session.user.role)) {
-    redirect("/connexion");
+    redirect("/login");
   }
 
   let stats;
@@ -71,7 +71,7 @@ export default async function AdminDashboard() {
           </div>
           <div className="flex items-center gap-4">
             <Link
-              href="/admin/articles/nouveau"
+              href="/admin/articles/new"
               className="flex items-center gap-2 px-4 py-2 bg-gold text-white text-sm rounded-sm hover:bg-gold-dark transition-colors"
             >
               <Plus className="w-4 h-4" />
@@ -146,10 +146,10 @@ export default async function AdminDashboard() {
               {[
                 { label: "Articles", href: "/admin/articles" },
                 { label: "Categories", href: "/admin/categories" },
-                { label: "Authors", href: "/admin/auteurs" },
+                { label: "Authors", href: "/admin/authors" },
                 { label: "Newsletter", href: "/admin/newsletter" },
-                { label: "Comments", href: "/admin/commentaires" },
-                { label: "Settings", href: "/admin/parametres" },
+                { label: "Comments", href: "/admin/comments" },
+                { label: "Settings", href: "/admin/settings" },
               ].map((item) => (
                 <Link
                   key={item.href}

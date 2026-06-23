@@ -9,7 +9,7 @@ export function NavBar({ categories }: NavBarProps) {
   const items = categories?.length
     ? [
         { label: "🔥 Urgent", href: "/#urgent", featured: true },
-        ...categories.map((c) => ({ label: c.name, href: `/categorie/${c.slug}`, featured: false })),
+        ...categories.map((c) => ({ label: c.name, href: `/category/${c.slug}`, featured: false })),
       ]
     : NAV_RUBRIQUES;
 

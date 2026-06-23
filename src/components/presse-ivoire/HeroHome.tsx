@@ -20,7 +20,7 @@ export function HeroHome({ data }: HeroHomeProps) {
             <div className="hero-sub-section">
               <div className="hero-sub-header">
                 <h3 className="hero-sub-title">Also read</h3>
-                <Link href="/recherche" className="hero-sub-link">
+                <Link href="/search" className="hero-sub-link">
                   All news
                 </Link>
               </div>
@@ -54,7 +54,7 @@ export function HeroHome({ data }: HeroHomeProps) {
                   <span className="sidebar-live-dot" />
                   Top Stories
                 </span>
-                <Link href="/recherche">View all</Link>
+                <Link href="/search">View all</Link>
               </div>
 
               {data.topStories.map((story) => (
@@ -78,7 +78,7 @@ export function HeroHome({ data }: HeroHomeProps) {
                 {data.popularTags.map((tag) => (
                   <Link
                     key={tag}
-                    href={`/recherche?q=${encodeURIComponent(tag.replace("#", ""))}`}
+                    href={`/search?q=${encodeURIComponent(tag.replace("#", ""))}`}
                     className="cloud-tag"
                   >
                     {tag}
@@ -92,7 +92,7 @@ export function HeroHome({ data }: HeroHomeProps) {
               <p className="sidebar-premium-cta-text">
                 Access exclusive investigations and in-depth analysis.
               </p>
-              <Link href="/abonnement" className="sidebar-premium-cta-btn">
+              <Link href="/subscription" className="sidebar-premium-cta-btn">
                 Discover Premium
               </Link>
             </div>

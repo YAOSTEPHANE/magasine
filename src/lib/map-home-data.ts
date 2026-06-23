@@ -303,7 +303,7 @@ function buildThematicCol(
   const [main, ...subs] = articles;
   return {
     title,
-    href: `/categorie/${slug}`,
+    href: `/category/${slug}`,
     main: {
       cat: main.category.name,
       title: main.title,
@@ -382,7 +382,7 @@ function buildRubriques(source: HomeDataSource): HomeRubriqueBlock[] {
       {
         slug,
         title,
-        href: `/categorie/${slug}`,
+        href: `/category/${slug}`,
         articles: items.slice(0, 3).map(toHomeCard),
       },
     ];

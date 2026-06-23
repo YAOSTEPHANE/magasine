@@ -22,7 +22,7 @@ export function SaveArticleButton({ articleId }: { articleId: string }) {
 
   const toggle = async () => {
     if (!session?.user) {
-      window.location.href = `/connexion?callbackUrl=${encodeURIComponent(window.location.pathname)}`;
+      window.location.href = `/login?callbackUrl=${encodeURIComponent(window.location.pathname)}`;
       return;
     }
     setLoading(true);

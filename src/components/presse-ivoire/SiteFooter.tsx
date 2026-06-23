@@ -64,7 +64,7 @@ export function SiteFooter() {
           <div className="footer-bottom-links">
             <Link href="/sitemap.xml">Sitemap</Link>
             <a href="/api/feed">RSS</a>
-            <Link href="/accessibilite">Accessibility</Link>
+            <Link href="/accessibility">Accessibility</Link>
           </div>
         </div>
       </div>

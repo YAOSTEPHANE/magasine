@@ -7,24 +7,24 @@ import { Button } from "@/components/ui/Button";
 
 const footerLinks = {
   rubriques: [
-    { label: "News", href: "/categorie/actualites" },
-    { label: "World", href: "/categorie/monde" },
-    { label: "Finance", href: "/categorie/finance" },
-    { label: "Technology", href: "/categorie/technologie" },
-    { label: "Sports", href: "/categorie/sports" },
-    { label: "Health", href: "/categorie/sante" },
+    { label: "News", href: "/category/actualites" },
+    { label: "World", href: "/category/monde" },
+    { label: "Finance", href: "/category/finance" },
+    { label: "Technology", href: "/category/technologie" },
+    { label: "Sports", href: "/category/sports" },
+    { label: "Health", href: "/category/sante" },
   ],
   magazine: [
     { label: "Editor's Choice", href: "/#editors-choice" },
-    { label: "Investigations", href: "/categorie/investigations" },
-    { label: "Special Reports", href: "/categorie/reportages-speciaux" },
-    { label: "Opinion", href: "/categorie/opinion" },
-    { label: "Multimedia", href: "/categorie/multimedia" },
+    { label: "Investigations", href: "/category/investigations" },
+    { label: "Special Reports", href: "/category/reportages-speciaux" },
+    { label: "Opinion", href: "/category/opinion" },
+    { label: "Multimedia", href: "/category/multimedia" },
   ],
   legal: [
-    { label: "Legal notice", href: "/mentions-legales" },
-    { label: "Privacy policy", href: "/confidentialite" },
-    { label: "Terms of use", href: "/cgu" },
+    { label: "Legal notice", href: "/legal" },
+    { label: "Privacy policy", href: "/privacy" },
+    { label: "Terms of use", href: "/terms" },
     { label: "Contact", href: "/contact" },
   ],
 };

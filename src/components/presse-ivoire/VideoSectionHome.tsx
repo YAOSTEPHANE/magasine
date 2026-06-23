@@ -17,7 +17,7 @@ export function VideoSectionHome({ data }: VideoSectionHomeProps) {
           number="03"
           eyebrow="Multimedia"
           title="Featured Videos"
-          linkHref="/categorie/multimedia"
+          linkHref="/category/multimedia"
           linkLabel="Full video library"
         />
         <div className="video-row">

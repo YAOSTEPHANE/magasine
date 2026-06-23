@@ -31,7 +31,7 @@ export function SiteHeader() {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (query.trim()) {
-      router.push(`/recherche?q=${encodeURIComponent(query.trim())}`);
+      router.push(`/search?q=${encodeURIComponent(query.trim())}`);
       setSearchOpen(false);
     }
   };
@@ -56,7 +56,7 @@ export function SiteHeader() {
               <path d="M10.5 10.5L13.5 13.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
             </svg>
           </button>
-          <Link href="/abonnement" className="btn-subscribe" aria-label="Subscribe">
+          <Link href="/subscription" className="btn-subscribe" aria-label="Subscribe">
             <span className="btn-subscribe-full">Subscribe</span>
             <span className="btn-subscribe-short">Pro</span>
           </Link>

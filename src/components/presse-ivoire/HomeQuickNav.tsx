@@ -14,7 +14,7 @@ type NavItem = { label: string; href: string; featured: boolean; icon?: string }
 
 function isActive(pathname: string, href: string) {
   if (href === "/#urgent") return pathname === "/" || pathname === "/urgent";
-  if (href.startsWith("/categorie/")) {
+  if (href.startsWith("/category/")) {
     return pathname === href || pathname.startsWith(`${href}/`);
   }
   return pathname === href;
@@ -47,7 +47,7 @@ export function HomeQuickNav({ categories }: HomeQuickNavProps) {
   const pathname = usePathname();
 
   const rubriques: NavItem[] = categories?.length
-    ? categories.map((c) => ({ label: c.name, href: `/categorie/${c.slug}`, featured: false }))
+    ? categories.map((c) => ({ label: c.name, href: `/category/${c.slug}`, featured: false }))
     : NAV_RUBRIQUES.filter((r) => !r.featured).map((r) => ({
         label: r.label,
         href: r.href,

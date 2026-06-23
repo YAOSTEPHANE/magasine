@@ -228,7 +228,8 @@ magasine/
 │   │   ├── api/             # Route Handlers REST
 │   │   ├── admin/           # Back-office rédaction
 │   │   ├── article/         # Pages article
-│   │   ├── categorie/       # Pages rubrique
+│   │   ├── category/        # Category pages
+│   │   ├── author/          # Author pages
 │   │   ├── globals.css      # Design system & tokens
 │   │   ├── responsive.css   # Breakpoints mobile
 │   │   └── revolution.css   # Thème « Revolution Edition »
@@ -265,7 +266,7 @@ L'accès à `/admin` est protégé par **middleware** (`src/middleware.ts`).
 | `contributor` | Non | Soumission (selon évolution) |
 | `reader` | Non | Lecture, commentaires, abonnement |
 
-**Connexion :** `/connexion` — email/mot de passe ou Google (si configuré).
+**Connexion :** `/login` — email/mot de passe ou Google (si configuré).
 
 **Paywall :** les articles `isPremium` sont accessibles aux abonnés premium, auteurs et rôles admin.
 

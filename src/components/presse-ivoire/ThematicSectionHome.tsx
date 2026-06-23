@@ -16,7 +16,7 @@ export function ThematicSectionHome({ data, embedded = false }: ThematicSectionH
           number="05"
           eyebrow="Sections"
           title="Featured by Theme"
-          linkHref="/recherche"
+          linkHref="/search"
           linkLabel="All sections"
         />
         <div className="thematic-grid thematic-grid-premium">

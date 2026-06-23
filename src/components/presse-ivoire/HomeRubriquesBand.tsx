@@ -16,7 +16,7 @@ export function HomeRubriquesBand({ rubriques }: HomeRubriquesBandProps) {
           number="06"
           eyebrow="By section"
           title="All Sections"
-          linkHref="/recherche"
+          linkHref="/search"
           linkLabel="Explore"
         />
         <div className="rubriques-stack">

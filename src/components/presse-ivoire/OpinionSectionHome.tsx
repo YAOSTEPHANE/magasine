@@ -18,7 +18,7 @@ export function OpinionSectionHome({ data, embedded = false }: OpinionSectionHom
           number="04"
           eyebrow="Op-eds"
           title="Opinions & Analysis"
-          linkHref="/categorie/opinion"
+          linkHref="/category/opinion"
           linkLabel="All op-eds"
           italic
         />
@@ -47,7 +47,7 @@ export function OpinionSectionHome({ data, embedded = false }: OpinionSectionHom
                   <div className="opinion-author-role">{op.role}</div>
                 </div>
               </div>
-              <Link href={op.slug ?? "/categorie/opinion"} className="opinion-read-link">
+              <Link href={op.slug ?? "/category/opinion"} className="opinion-read-link">
                 Read the op-ed →
               </Link>
             </article>

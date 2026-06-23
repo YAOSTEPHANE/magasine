@@ -21,7 +21,7 @@ export function Header({ categories }: { categories: Category[] }) {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (query.trim()) {
-      window.location.href = `/recherche?q=${encodeURIComponent(query.trim())}`;
+      window.location.href = `/search?q=${encodeURIComponent(query.trim())}`;
     }
   };
 
@@ -62,7 +62,7 @@ export function Header({ categories }: { categories: Category[] }) {
                   {categories.map((cat) => (
                     <Link
                       key={cat._id}
-                      href={`/categorie/${cat.slug}`}
+                      href={`/category/${cat.slug}`}
                       className="group p-3 rounded-sm hover:bg-muted-bg transition-colors"
                     >
                       <span className="text-sm font-medium text-charcoal group-hover:text-accent transition-colors">
@@ -77,7 +77,7 @@ export function Header({ categories }: { categories: Category[] }) {
             {categories.slice(0, 5).map((cat) => (
               <Link
                 key={cat._id}
-                href={`/categorie/${cat.slug}`}
+                href={`/category/${cat.slug}`}
                 className="px-3 py-2 text-sm text-muted hover:text-charcoal transition-colors"
               >
                 {cat.name}
@@ -94,13 +94,13 @@ export function Header({ categories }: { categories: Category[] }) {
               <Search className="w-5 h-5" />
             </button>
             <Link
-              href="/connexion"
+              href="/login"
               className="hidden sm:flex p-2.5 hover:bg-muted-bg rounded-sm transition-colors"
               aria-label="Mon compte"
             >
               <User className="w-5 h-5" />
             </Link>
-            <Button href="/abonnement" variant="gold" size="sm" className="hidden sm:inline-flex">
+            <Button href="/subscription" variant="gold" size="sm" className="hidden sm:inline-flex">
               Subscribe
             </Button>
           </div>
@@ -129,7 +129,7 @@ export function Header({ categories }: { categories: Category[] }) {
             {categories.map((cat) => (
               <Link
                 key={cat._id}
-                href={`/categorie/${cat.slug}`}
+                href={`/category/${cat.slug}`}
                 className="block px-4 py-3 text-charcoal hover:bg-muted-bg rounded-sm transition-colors"
                 onClick={() => setMobileOpen(false)}
               >
@@ -137,10 +137,10 @@ export function Header({ categories }: { categories: Category[] }) {
               </Link>
             ))}
             <div className="pt-4 border-t border-border flex gap-2">
-              <Button href="/connexion" variant="outline" size="sm" className="flex-1">
+              <Button href="/login" variant="outline" size="sm" className="flex-1">
                 Sign in
               </Button>
-              <Button href="/abonnement" variant="gold" size="sm" className="flex-1">
+              <Button href="/subscription" variant="gold" size="sm" className="flex-1">
                 Subscribe
               </Button>
             </div>

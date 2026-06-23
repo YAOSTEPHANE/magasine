@@ -20,12 +20,12 @@ export function SubscribeButton({ plan, label, variant = "gold", className }: Su
 
   const handleSubscribe = async () => {
     if (!session?.user) {
-      router.push(`/connexion?callbackUrl=/abonnement`);
+      router.push(`/login?callbackUrl=/subscription`);
       return;
     }
 
     if (session.user.isPremium) {
-      router.push("/profil");
+      router.push("/profile");
       return;
     }
 
@@ -48,7 +48,7 @@ export function SubscribeButton({ plan, label, variant = "gold", className }: Su
 
   if (session?.user?.isPremium || done) {
     return (
-      <Button href="/profil" variant="outline" className={className}>
+      <Button href="/profile" variant="outline" className={className}>
         Active subscription ✓
       </Button>
     );

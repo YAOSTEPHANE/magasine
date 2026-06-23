@@ -18,7 +18,7 @@ const statusLabels: Record<string, string> = {
 export default async function AdminArticlesPage() {
   const session = await auth();
   if (!session?.user || !["super_admin", "admin", "editor"].includes(session.user.role)) {
-    redirect("/connexion");
+    redirect("/login");
   }
 
   await connectDB();
@@ -39,7 +39,7 @@ export default async function AdminArticlesPage() {
             <h1 className="font-serif text-xl font-bold">Article management</h1>
           </div>
           <Link
-            href="/admin/articles/nouveau"
+            href="/admin/articles/new"
             className="flex items-center gap-2 px-4 py-2 bg-gold text-white text-sm rounded-sm hover:bg-gold-dark transition-colors"
           >
             <Plus className="w-4 h-4" />

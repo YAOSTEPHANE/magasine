@@ -43,7 +43,7 @@ export function ArticleDetailView({
         <nav className="article-breadcrumb article-reveal" aria-label="Breadcrumb">
           <Link href="/">Home</Link>
           <span aria-hidden>/</span>
-          <Link href={`/categorie/${article.category.slug}`}>{article.category.name}</Link>
+          <Link href={`/category/${article.category.slug}`}>{article.category.name}</Link>
           <span aria-hidden>/</span>
           <span className="article-breadcrumb-current">{article.title}</span>
         </nav>
@@ -66,7 +66,7 @@ export function ArticleDetailView({
 
           <div className="article-meta">
             {author && (
-              <Link href={`/auteur/${author.slug}`} className="article-author">
+              <Link href={`/author/${author.slug}`} className="article-author">
                 {author.avatar && (
                   <Image
                     src={author.avatar}
@@ -144,7 +144,7 @@ export function ArticleDetailView({
               <aside className="article-author-box">
                 <h3>About the author</h3>
                 <p>{author.bio}</p>
-                <Link href={`/auteur/${author.slug}`} className="read-more">
+                <Link href={`/author/${author.slug}`} className="read-more">
                   View all their articles
                 </Link>
               </aside>
@@ -153,7 +153,7 @@ export function ArticleDetailView({
             {article.tags && article.tags.length > 0 && (
               <div className="article-tags">
                 {article.tags.map((tag) => (
-                  <Link key={tag} href={`/recherche?q=${encodeURIComponent(tag)}`} className="article-tag">
+                  <Link key={tag} href={`/search?q=${encodeURIComponent(tag)}`} className="article-tag">
                     #{tag}
                   </Link>
                 ))}

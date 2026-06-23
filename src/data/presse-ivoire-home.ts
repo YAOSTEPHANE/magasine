@@ -10,24 +10,24 @@ export const TICKER_ITEMS = [
 
 export const HEADER_NAV = [
   { label: "Home", href: "/", active: true },
-  { label: "World", href: "/categorie/monde" },
-  { label: "Politics", href: "/categorie/actualites" },
-  { label: "Economy", href: "/categorie/finance" },
-  { label: "Sports", href: "/categorie/sports" },
+  { label: "World", href: "/category/monde" },
+  { label: "Politics", href: "/category/actualites" },
+  { label: "Economy", href: "/category/finance" },
+  { label: "Sports", href: "/category/sports" },
 ];
 
 export const NAV_RUBRIQUES = [
   { label: "🔥 Breaking", href: "/#urgent", featured: true },
-  { label: "News", href: "/categorie/actualites" },
-  { label: "Sports", href: "/categorie/sports" },
-  { label: "Finance", href: "/categorie/finance" },
-  { label: "Technology", href: "/categorie/technologie" },
-  { label: "Health", href: "/categorie/sante" },
-  { label: "Entertainment", href: "/categorie/divertissement" },
-  { label: "Opinion", href: "/categorie/opinion" },
-  { label: "Multimedia", href: "/categorie/multimedia" },
-  { label: "Investigations", href: "/categorie/investigations" },
-  { label: "Local", href: "/categorie/local" },
+  { label: "News", href: "/category/actualites" },
+  { label: "Sports", href: "/category/sports" },
+  { label: "Finance", href: "/category/finance" },
+  { label: "Technology", href: "/category/technologie" },
+  { label: "Health", href: "/category/sante" },
+  { label: "Entertainment", href: "/category/divertissement" },
+  { label: "Opinion", href: "/category/opinion" },
+  { label: "Multimedia", href: "/category/multimedia" },
+  { label: "Investigations", href: "/category/investigations" },
+  { label: "Local", href: "/category/local" },
 ];
 
 export const HERO_MAIN = {
@@ -154,7 +154,7 @@ export const OPINIONS = [
 export const THEMATIC = [
   {
     title: "Technology",
-    href: "/categorie/technologie",
+    href: "/category/technologie",
     main: { cat: "Technology", title: "5G arrives in Abidjan: Orange CI and MTN simultaneously deploy pilot networks", image: IMG.datacenter },
     subs: [
       { num: "01", cat: "Startups", title: "InnovaCI wins the 2026 Francophonie Innovation Grand Prize" },
@@ -164,7 +164,7 @@ export const THEMATIC = [
   },
   {
     title: "Sports",
-    href: "/categorie/sports",
+    href: "/category/sports",
     main: { cat: "Football", title: "Didier Drogba named Technical Director — a divisive decision for FIF and fans", image: IMG.stadium },
     subs: [
       { num: "01", cat: "Basketball", title: "Ivory Coast Lions qualify for FIBA World Cup 2027 after win over Cameroon" },
@@ -183,38 +183,38 @@ export const STATS = [
 
 export const FOOTER_COLS = {
   rubriques: [
-    { label: "News", href: "/categorie/actualites" },
-    { label: "Politics", href: "/categorie/actualites" },
-    { label: "Economy & Finance", href: "/categorie/finance" },
-    { label: "Technology", href: "/categorie/technologie" },
-    { label: "Sports", href: "/categorie/sports" },
-    { label: "Health", href: "/categorie/sante" },
-    { label: "Entertainment", href: "/categorie/divertissement" },
-    { label: "World", href: "/categorie/monde" },
+    { label: "News", href: "/category/actualites" },
+    { label: "Politics", href: "/category/actualites" },
+    { label: "Economy & Finance", href: "/category/finance" },
+    { label: "Technology", href: "/category/technologie" },
+    { label: "Sports", href: "/category/sports" },
+    { label: "Health", href: "/category/sante" },
+    { label: "Entertainment", href: "/category/divertissement" },
+    { label: "World", href: "/category/monde" },
   ],
   presse: [
-    { label: "About", href: "/a-propos" },
-    { label: "Our team", href: "/equipe" },
-    { label: "Press room", href: "/espace-presse" },
-    { label: "Advertising", href: "/publicite" },
-    { label: "Editorial charter", href: "/charte-editoriale" },
-    { label: "Careers", href: "/carrieres" },
+    { label: "About", href: "/about" },
+    { label: "Our team", href: "/team" },
+    { label: "Press room", href: "/press" },
+    { label: "Advertising", href: "/advertising" },
+    { label: "Editorial charter", href: "/editorial-charter" },
+    { label: "Careers", href: "/careers" },
     { label: "Contact", href: "/contact" },
   ],
   formats: [
-    { label: "Investigations", href: "/categorie/investigations" },
-    { label: "Features", href: "/categorie/reportages-speciaux" },
-    { label: "Opinion", href: "/categorie/opinion" },
+    { label: "Investigations", href: "/category/investigations" },
+    { label: "Features", href: "/category/reportages-speciaux" },
+    { label: "Opinion", href: "/category/opinion" },
     { label: "Videos", href: "/videos" },
     { label: "Podcasts", href: "/podcasts" },
-    { label: "Infographics", href: "/categorie/multimedia" },
-    { label: "Photo galleries", href: "/categorie/multimedia" },
+    { label: "Infographics", href: "/category/multimedia" },
+    { label: "Photo galleries", href: "/category/multimedia" },
   ],
   legal: [
-    { label: "Legal notice", href: "/mentions-legales" },
-    { label: "Privacy policy", href: "/confidentialite" },
-    { label: "Terms of use", href: "/cgu" },
+    { label: "Legal notice", href: "/legal" },
+    { label: "Privacy policy", href: "/privacy" },
+    { label: "Terms of use", href: "/terms" },
     { label: "Cookies", href: "/cookies" },
-    { label: "Right to erasure", href: "/confidentialite" },
+    { label: "Right to erasure", href: "/privacy" },
   ],
 };

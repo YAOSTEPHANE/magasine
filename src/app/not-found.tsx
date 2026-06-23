@@ -18,7 +18,7 @@ export default function NotFound() {
           Back to home
         </Link>
         <Link
-          href="/recherche"
+          href="/search"
           className="px-6 py-3 border border-border text-charcoal text-sm rounded-sm hover:bg-muted-bg transition-colors"
         >
           Search for an article

@@ -17,7 +17,7 @@ export async function middleware(request: NextRequest) {
   });
 
   if (!token) {
-    const login = new URL("/connexion", request.url);
+    const login = new URL("/login", request.url);
     login.searchParams.set("callbackUrl", pathname);
     return NextResponse.redirect(login);
   }

@@ -9,7 +9,7 @@ import { formatDate } from "@/lib/utils";
 export default async function AdminNewsletterPage() {
   const session = await auth();
   if (!session?.user || !canManageArticles(session.user.role)) {
-    redirect("/connexion");
+    redirect("/login");
   }
 
   let subscribers: { email: string; preferences: string[]; isActive: boolean; subscribedAt: Date }[] = [];

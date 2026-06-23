@@ -24,16 +24,16 @@ export function Paywall() {
           Ad-free, with dedicated newsletters and early access to major stories.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button href="/abonnement" variant="gold">
+          <Button href="/subscription" variant="gold">
             Subscribe — €9.99/month
           </Button>
-          <Button href="/connexion" variant="outline" className="border-white/30 text-white hover:bg-white/10">
+          <Button href="/login" variant="outline" className="border-white/30 text-white hover:bg-white/10">
             Sign in
           </Button>
         </div>
         <p className="text-xs text-white/50 mt-6">
           Don&apos;t have an account yet?{" "}
-          <Link href="/inscription" className="text-gold hover:underline">
+          <Link href="/register" className="text-gold hover:underline">
             Create a free account
           </Link>
         </p>

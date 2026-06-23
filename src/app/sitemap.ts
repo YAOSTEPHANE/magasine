@@ -11,25 +11,25 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const staticPages: MetadataRoute.Sitemap = [
     { url: baseUrl, lastModified: new Date(), changeFrequency: "hourly", priority: 1 },
-    { url: `${baseUrl}/abonnement`, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${baseUrl}/recherche`, changeFrequency: "weekly", priority: 0.7 },
+    { url: `${baseUrl}/subscription`, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${baseUrl}/search`, changeFrequency: "weekly", priority: 0.7 },
     { url: `${baseUrl}/contact`, changeFrequency: "monthly", priority: 0.6 },
-    { url: `${baseUrl}/a-propos`, changeFrequency: "monthly", priority: 0.6 },
-    { url: `${baseUrl}/equipe`, changeFrequency: "monthly", priority: 0.6 },
-    { url: `${baseUrl}/charte-editoriale`, changeFrequency: "yearly", priority: 0.5 },
-    { url: `${baseUrl}/carrieres`, changeFrequency: "weekly", priority: 0.5 },
-    { url: `${baseUrl}/espace-presse`, changeFrequency: "monthly", priority: 0.5 },
-    { url: `${baseUrl}/publicite`, changeFrequency: "monthly", priority: 0.5 },
-    { url: `${baseUrl}/accessibilite`, changeFrequency: "yearly", priority: 0.3 },
+    { url: `${baseUrl}/about`, changeFrequency: "monthly", priority: 0.6 },
+    { url: `${baseUrl}/team`, changeFrequency: "monthly", priority: 0.6 },
+    { url: `${baseUrl}/editorial-charter`, changeFrequency: "yearly", priority: 0.5 },
+    { url: `${baseUrl}/careers`, changeFrequency: "weekly", priority: 0.5 },
+    { url: `${baseUrl}/press`, changeFrequency: "monthly", priority: 0.5 },
+    { url: `${baseUrl}/advertising`, changeFrequency: "monthly", priority: 0.5 },
+    { url: `${baseUrl}/accessibility`, changeFrequency: "yearly", priority: 0.3 },
     { url: `${baseUrl}/cookies`, changeFrequency: "yearly", priority: 0.3 },
     { url: `${baseUrl}/videos`, changeFrequency: "daily", priority: 0.7 },
     { url: `${baseUrl}/podcasts`, changeFrequency: "weekly", priority: 0.6 },
-    { url: `${baseUrl}/profil`, changeFrequency: "monthly", priority: 0.4 },
-    { url: `${baseUrl}/connexion`, changeFrequency: "yearly", priority: 0.3 },
-    { url: `${baseUrl}/inscription`, changeFrequency: "yearly", priority: 0.3 },
-    { url: `${baseUrl}/mentions-legales`, changeFrequency: "yearly", priority: 0.3 },
-    { url: `${baseUrl}/confidentialite`, changeFrequency: "yearly", priority: 0.3 },
-    { url: `${baseUrl}/cgu`, changeFrequency: "yearly", priority: 0.3 },
+    { url: `${baseUrl}/profile`, changeFrequency: "monthly", priority: 0.4 },
+    { url: `${baseUrl}/login`, changeFrequency: "yearly", priority: 0.3 },
+    { url: `${baseUrl}/register`, changeFrequency: "yearly", priority: 0.3 },
+    { url: `${baseUrl}/legal`, changeFrequency: "yearly", priority: 0.3 },
+    { url: `${baseUrl}/privacy`, changeFrequency: "yearly", priority: 0.3 },
+    { url: `${baseUrl}/terms`, changeFrequency: "yearly", priority: 0.3 },
   ];
 
   try {
@@ -48,14 +48,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }));
 
     const categoryPages = (categories.length > 0 ? categories : mockCategories).map((c) => ({
-      url: `${baseUrl}/categorie/${c.slug}`,
+      url: `${baseUrl}/category/${c.slug}`,
       changeFrequency: "daily" as const,
       priority: 0.8,
     }));
 
     const authorSlugs = authors.length > 0 ? authors : SEED_AUTHORS;
     const authorPages = authorSlugs.map((a) => ({
-      url: `${baseUrl}/auteur/${a.slug}`,
+      url: `${baseUrl}/author/${a.slug}`,
       changeFrequency: "weekly" as const,
       priority: 0.6,
     }));

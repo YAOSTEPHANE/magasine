@@ -75,7 +75,7 @@ export function CommentsSection({ articleId }: { articleId: string }) {
       <form onSubmit={handleSubmit} className="mb-8">
         {!session?.user && (
           <p className="text-sm text-muted mb-3">
-            <Link href="/connexion" className="text-accent hover:underline">Sign in</Link>
+            <Link href="/login" className="text-accent hover:underline">Sign in</Link>
             {" "}to leave a comment.
           </p>
         )}
