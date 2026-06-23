@@ -5,7 +5,7 @@ import {
   ensureDefaultAdmin,
 } from "@/lib/ensure-admin";
 
-/** Dev only — crée ou répare le compte admin seed. */
+/** Dev only — creates or repairs the seed admin account. */
 export async function GET() {
   if (process.env.NODE_ENV !== "development") {
     return NextResponse.json({ error: "Not available" }, { status: 404 });

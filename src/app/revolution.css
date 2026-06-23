@@ -152,26 +152,34 @@ body {
   box-shadow: 0 0 10px rgba(148, 86, 60, 0.5);
   animation: pulse-live 2s ease-in-out infinite;
 }
+.home-quick-nav--revolution .home-quick-nav-rail {
+  width: 100%;
+  border-top: 1.5px solid rgba(26, 56, 150, 0.28);
+  border-bottom: 1.5px solid rgba(26, 56, 150, 0.28);
+}
 .home-quick-nav--revolution .home-quick-nav-track {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
-  padding: 4px 6px 2px;
+  gap: 4px 0;
+  width: 100%;
+  padding: 7px 0;
 }
 .home-quick-nav--revolution .home-quick-pill {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 7px 14px;
+  padding: 4px 14px;
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   color: var(--charcoal);
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid var(--rule);
-  border-radius: 999px;
-  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  background: none;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  transition: color 0.2s ease;
   text-decoration: none;
   white-space: nowrap;
 }
@@ -180,38 +188,32 @@ body {
   line-height: 1;
 }
 .home-quick-nav--revolution .home-quick-pill:hover {
-  border-color: var(--brand-blue);
   color: var(--brand-blue);
-  box-shadow: 0 6px 20px rgba(30, 58, 138, 0.12);
-  transform: translateY(-2px);
+  box-shadow: none;
+  transform: none;
 }
 .home-quick-nav--revolution .home-quick-pill--featured {
-  background: var(--brand-brown-light);
-  border-color: rgba(148, 86, 60, 0.35);
   color: var(--brand-brown-dark);
+  background: none;
   font-weight: 800;
 }
 .home-quick-nav--revolution .home-quick-pill--featured:hover {
-  background: var(--brand-brown);
-  border-color: var(--brand-brown);
-  color: var(--white);
-  box-shadow: 0 6px 24px rgba(148, 86, 60, 0.25);
+  color: var(--brand-brown);
+  background: none;
+  box-shadow: none;
 }
 .home-quick-nav--revolution .home-quick-pill--active {
-  background: var(--brand-blue);
-  border-color: var(--brand-blue);
-  color: var(--white);
-  box-shadow: 0 4px 16px rgba(26, 56, 150, 0.2);
+  color: var(--brand-blue);
+  background: none;
+  box-shadow: none;
 }
 .home-quick-nav--revolution .home-quick-pill--active:hover {
-  background: var(--brand-blue-dark);
-  color: var(--white);
-  border-color: var(--brand-blue-dark);
+  color: var(--brand-blue-dark);
+  background: none;
 }
 .home-quick-nav--revolution .home-quick-pill--featured.home-quick-pill--active {
-  background: var(--brand-brown);
-  border-color: var(--brand-brown);
-  color: var(--white);
+  color: var(--brand-brown);
+  background: none;
 }
 
 @media (min-width: 1025px) {
@@ -231,6 +233,9 @@ body {
 }
 
 @media (max-width: 768px) {
+  .home-quick-nav--revolution .home-quick-nav-rail {
+    overflow: hidden;
+  }
   .home-quick-nav--revolution .home-quick-nav-track {
     flex-wrap: nowrap;
     overflow-x: auto;
@@ -238,8 +243,8 @@ body {
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     margin: 0;
-    padding: 6px 8px 8px;
-    scroll-padding-inline: 8px;
+    padding: 7px 0;
+    scroll-padding-inline: 0;
   }
   .home-quick-nav--revolution .home-quick-nav-track::-webkit-scrollbar {
     display: none;
@@ -659,12 +664,12 @@ body {
 
 /* Hero cinematic */
 .home-page--revolution .hero-frame {
-  border-radius: 20px;
+  border-radius: 0;
   overflow: hidden;
-  box-shadow: var(--shadow-soft), var(--shadow-glow);
+  box-shadow: none;
 }
 .home-page--revolution .hero-illustration {
-  border-radius: 20px;
+  border-radius: 0;
 }
 .home-page--revolution .hero-illustration::after {
   content: "";
@@ -728,12 +733,26 @@ body {
 }
 .home-page--revolution .tag:not(.outline):not(.gold),
 .home-page--revolution .ec-card-cat,
-.home-page--revolution .mini-card-cat {
-  background: var(--brand-blue);
-  color: var(--white);
-  border-radius: 999px;
-  padding: 4px 12px;
+.home-page--revolution .mini-card-cat,
+.home-page--revolution .hero-latest-cat,
+.home-page--revolution .hero-latest-item-cat,
+.home-page--revolution .topic-row-card-cat,
+.home-page--revolution .video-cat,
+.home-page--revolution .rubrique-block-item-cat,
+.home-page--revolution .latest-item-cat {
   display: inline-block;
+  background: none;
+  color: var(--brand-brown, #94563c);
+  border-radius: 0;
+  padding: 0;
+  margin-bottom: 4px;
+  line-height: 1.35;
+  border: none;
+  box-shadow: none;
+  font-size: inherit;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
 /* Opinion cards */
@@ -1522,11 +1541,14 @@ body {
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  background: var(--brand-blue);
-  color: var(--white);
-  border-radius: 999px;
-  padding: 4px 12px;
+  background: none;
+  color: var(--brand-brown, #94563c);
+  border-radius: 0;
+  padding: 0;
   margin-bottom: 6px;
+  line-height: 1.35;
+  border: none;
+  box-shadow: none;
 }
 
 @media (max-width: 1024px) {

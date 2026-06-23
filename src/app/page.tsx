@@ -8,7 +8,6 @@ import { MegaAd } from "@/components/presse-ivoire/MegaAd";
 import { EditorsChoiceSection } from "@/components/presse-ivoire/EditorsChoiceSection";
 import { LatestSection } from "@/components/presse-ivoire/LatestSection";
 import { VideoSectionHome } from "@/components/presse-ivoire/VideoSectionHome";
-import { OpinionSectionHome } from "@/components/presse-ivoire/OpinionSectionHome";
 import { HomeRubriquesBand } from "@/components/presse-ivoire/HomeRubriquesBand";
 import { HomeClosingBand } from "@/components/presse-ivoire/HomeClosingBand";
 import { SectionDivider } from "@/components/presse-ivoire/SectionDivider";
@@ -29,6 +28,7 @@ export default async function HomePage() {
         <section className="home-band home-band--hero">
           <HeroHome
             data={data}
+            opinions={sections.insights ? data.opinions : []}
             latest={data.latest}
             newsletterEnabled={siteSettings.newsletterEnabled}
           />
@@ -48,12 +48,6 @@ export default async function HomePage() {
             <EditorsChoiceSection data={data.editorsChoice} />
           </section>
         </>
-      )}
-
-      {sections.insights && data.opinions.length > 0 && (
-        <section className="home-band home-band--opinion">
-          <OpinionSectionHome data={data.opinions} />
-        </section>
       )}
 
       {sections.rubriques && (

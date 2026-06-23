@@ -1,17 +1,17 @@
 import { IMG } from "@/lib/images";
 
 export const SEED_CATEGORIES = [
-  { name: "News", slug: "actualites", color: "#1a3896", order: 1, description: "National and local news from the Global South" },
-  { name: "Politics", slug: "politique", color: "#1D3557", order: 2, description: "Political institutions, elections, and governance across the Global South" },
+  { name: "News", slug: "news", color: "#1a3896", order: 1, description: "National and local news from the Global South" },
+  { name: "Politics", slug: "politics", color: "#1D3557", order: 2, description: "Political institutions, elections, and governance across the Global South" },
   { name: "Culture", slug: "culture", color: "#6A4C93", order: 3, description: "Arts, literature, heritage, and cultural life across the Global South" },
-  { name: "Health", slug: "sante", color: "#00B4D8", order: 4, description: "Public health, epidemics, and health systems across emerging economies" },
-  { name: "Technology", slug: "technologie", color: "#4361EE", order: 5, description: "Innovation, digital infrastructure, and startups" },
-  { name: "World", slug: "monde", color: "#F77F00", order: 6, description: "International news" },
+  { name: "Health", slug: "health", color: "#00B4D8", order: 4, description: "Public health, epidemics, and health systems across emerging economies" },
+  { name: "Technology", slug: "technology", color: "#4361EE", order: 5, description: "Innovation, digital infrastructure, and startups" },
+  { name: "World", slug: "world", color: "#F77F00", order: 6, description: "International news" },
   { name: "Investigations", slug: "investigations", color: "#D62828", order: 7, description: "Accountability journalism and long-form probes" },
   { name: "Opinion", slug: "opinion", color: "#6B6B6B", order: 8, description: "Analysis, columns, and debate from experts and public intellectuals" },
   { name: "Multimedia", slug: "multimedia", color: "#1a3896", order: 9, description: "Video reports, podcasts, and visual storytelling" },
   { name: "Local", slug: "local", color: "#588157", order: 10, description: "City and regional stories beyond the capital" },
-  { name: "Special Reports", slug: "reportages-speciaux", color: "#94563c", order: 11, description: "In-depth features and cross-border narrative journalism" },
+  { name: "Special Reports", slug: "special-reports", color: "#94563c", order: 11, description: "In-depth features and cross-border narrative journalism" },
   { name: "Africa", slug: "africa", color: "#1a3896", order: 12, description: "News, analysis, and investigations across the African continent" },
   { name: "Latin America", slug: "latin-america", color: "#2D6A4F", order: 13, description: "Coverage from Mexico to Patagonia" },
   { name: "South Asia", slug: "south-asia", color: "#E85D04", order: 14, description: "India, Pakistan, Bangladesh, Sri Lanka, and the wider subcontinent" },
@@ -63,7 +63,7 @@ export const SEED_ARTICLES: SeedArticle[] = [
     title: "The great West African tax reform: who wins and who loses in WAEMU?",
     slug: "la-grande-reforme-fiscale-ouest-africaine-qui-gagne-qui-perd-dans-luemoa",
     subtitle: "In-depth analysis of the new common tax directives",
-    category: "politique",
+    category: "politics",
     excerpt: "An in-depth analysis of the new common tax directives for the eight member states of the Union. Our experts break down the stakes for businesses, households, and governments across the region.",
     content: `<p>The WAEMU member states have just adopted an unprecedented package of tax reforms since the creation of the monetary union. This overhaul affects VAT, corporate tax, and sectoral exemptions.</p>
     <h2>Differentiated impacts</h2>
@@ -82,7 +82,7 @@ export const SEED_ARTICLES: SeedArticle[] = [
   {
     title: "Wave and Orange Money announce merger: birth of Africa's first super-wallet",
     slug: "wave-et-orange-money-annoncent-leur-fusion-naissance-du-premier-super-portefeuille-africain",
-    category: "politique",
+    category: "politics",
     excerpt: "The deal would create an entity valued at over $8 billion, reshaping the FinTech landscape across the continent.",
     content: `<p>Two mobile money giants have just announced their intention to merge. The resulting entity would cover 24 countries and more than 180 million active users.</p>
     <h2>An expected consolidation</h2>
@@ -108,7 +108,7 @@ export const SEED_ARTICLES: SeedArticle[] = [
   {
     title: "Abidjan Tech Valley: 40 startups selected for the 2026 continental accelerator",
     slug: "abidjan-tech-valley-40-startups-selectionnees-pour-laccelerateur-continental-2026",
-    category: "technologie",
+    category: "technology",
     excerpt: "The program selects the most promising startups in West Africa for 12 months of support and a $2M fund.",
     content: `<p>Forty startups from 15 countries have been selected for the 2026 Abidjan Tech Valley cohort. Dominant sectors: agritech, digital health, and clean energy.</p>`,
     tags: ["startups", "tech", "Abidjan", "innovation"],
@@ -119,7 +119,7 @@ export const SEED_ARTICLES: SeedArticle[] = [
   {
     title: "AU Summit: the continent adopts a roadmap for food self-sufficiency",
     slug: "sommet-de-lua-le-continent-adopte-une-feuille-de-route-pour-lautonomie-alimentaire",
-    category: "monde",
+    category: "world",
     excerpt: "African heads of state adopted a five-year plan aiming to reduce food imports by 50% by 2031.",
     content: `<p>The extraordinary African Union summit resulted in a historic agreement on food self-sufficiency. The plan provides for $25 billion in public and private investment.</p>`,
     tags: ["AU", "agriculture", "food security", "Africa"],
@@ -146,7 +146,7 @@ export const SEED_ARTICLES: SeedArticle[] = [
   {
     title: "Ivorian farmers turning cocoa into premium chocolate",
     slug: "ces-agriculteurs-ivoiriens-qui-transforment-le-cacao-en-chocolat-haut-de-gamme",
-    category: "reportages-speciaux",
+    category: "special-reports",
     excerpt: "A new generation of cocoa growers is disrupting the global chocolate market from plantations in Bélier.",
     content: `<p>In the Bélier region, family cooperatives now produce bean-to-bar chocolate exported to Europe and Asia. A model challenging the dominance of major processors.</p>`,
     tags: ["cocoa", "agriculture", "chocolate", "Côte d'Ivoire"],
@@ -157,7 +157,7 @@ export const SEED_ARTICLES: SeedArticle[] = [
   {
     title: "RTS,S malaria vaccine: Côte d'Ivoire launches national mass vaccination campaign",
     slug: "vaccin-antipaludisme-rtss-la-cote-divoire-lance-sa-campagne-nationale-de-vaccination-de-masse",
-    category: "sante",
+    category: "health",
     excerpt: "The Ministry of Health aims to vaccinate 2.5 million children in the first six months of the campaign.",
     content: `<p>Côte d'Ivoire becomes the first Francophone West African country to launch a mass malaria vaccination campaign with the RTS,S vaccine.</p>`,
     tags: ["health", "malaria", "vaccination"],
@@ -168,7 +168,7 @@ export const SEED_ARTICLES: SeedArticle[] = [
   {
     title: "Google unveils its first sub-Saharan Africa data center in Accra",
     slug: "google-devoile-son-premier-data-center-dafrique-subsaharienne-installe-a-accra",
-    category: "technologie",
+    category: "technology",
     excerpt: "The $600 million investment positions Ghana as a regional digital hub.",
     content: `<p>Google has inaugurated its first sub-Saharan Africa data center in Accra. The facility will power cloud services for the entire West African region.</p>`,
     tags: ["Google", "data center", "Ghana", "tech"],
@@ -179,7 +179,7 @@ export const SEED_ARTICLES: SeedArticle[] = [
     title: "Parliament passes personal data protection law",
     slug: "le-parlement-vote-la-loi-sur-la-protection-des-donnees-personnelles",
     subtitle: "A first in Francophone West Africa",
-    category: "politique",
+    category: "politics",
     excerpt: "The bill transposes international data protection standards and creates an independent supervisory authority.",
     content: `<p>Parliament adopted the personal data protection law by a large majority, a first in the Francophone West African space.</p>`,
     tags: ["personal data", "politics", "GDPR"],
@@ -191,7 +191,7 @@ export const SEED_ARTICLES: SeedArticle[] = [
   {
     title: "AI for agriculture: Agrotech CI deploys voice assistant in Dioula and Baoulé",
     slug: "lia-au-service-de-lagriculture-agrotech-ci-deploie-son-assistant-vocal-en-dioula-et-baoule",
-    category: "technologie",
+    category: "technology",
     excerpt: "The app gives farmers personalized advice on crops, weather, and market prices.",
     content: `<p>Agrotech CI launches a multilingual voice assistant for smallholder farmers. The tool works offline and covers 12 main crops.</p>`,
     tags: ["AI", "agriculture", "innovation"],
@@ -213,7 +213,7 @@ export const SEED_ARTICLES: SeedArticle[] = [
   {
     title: "Ivoirians in France: how the second generation is reinventing ties with home",
     slug: "ivoiriens-de-france-comment-la-deuxieme-generation-reinvente-le-lien-avec-le-pays",
-    category: "reportages-speciaux",
+    category: "special-reports",
     excerpt: "Cross-portraits of eight young Franco-Ivoirians who chose to return home to start businesses.",
     content: `<p>They grew up in the Paris suburbs and chose to return to Abidjan to launch their startup or take over a family farm. Eight journeys telling the story of a changing diaspora.</p>`,
     tags: ["diaspora", "return", "entrepreneurship"],
@@ -248,7 +248,7 @@ export const SEED_ARTICLES: SeedArticle[] = [
   {
     title: "UN adopts historic resolution on developing countries' sovereign debt",
     slug: "lonu-adopte-une-resolution-historique-sur-la-dette-souveraine-des-pays-en-developpement",
-    category: "monde",
+    category: "world",
     excerpt: "The Security Council calls for coordinated restructuring of debt for the most vulnerable countries.",
     content: `<p>A historic resolution on sovereign debt was adopted at the UN, paving the way for fairer restructuring mechanisms for Global South countries.</p>`,
     tags: ["UN", "debt", "development"],
@@ -290,7 +290,7 @@ export const SEED_ARTICLES: SeedArticle[] = [
   {
     title: "AfDB announces $800M financing for Ivorian agri-food SMEs",
     slug: "la-bad-annonce-un-financement-de-800mdollar-pour-les-pme-ivoiriennes-dans-le-secteur-agroalimentaire",
-    category: "politique",
+    category: "politics",
     excerpt: "The African Development Bank unlocks a major package for local processing and agri-food exports.",
     content: `<p>The AfDB confirms an $800 million loan to support Ivorian SMEs.</p>`,
     tags: ["AfDB", "SMEs", "agri-food"],
@@ -300,7 +300,7 @@ export const SEED_ARTICLES: SeedArticle[] = [
   {
     title: "United Nations: Security Council meets urgently on Sahel situation",
     slug: "nations-unies-le-conseil-de-securite-se-reunit-en-urgence-sur-la-situation-au-sahel",
-    category: "monde",
+    category: "world",
     excerpt: "Deteriorating security in the Sahel puts the UN before a humanitarian and political dilemma.",
     content: `<p>The Security Council is holding an extraordinary session on the Sahel crisis.</p>`,
     tags: ["UN", "Sahel", "security"],
@@ -311,7 +311,7 @@ export const SEED_ARTICLES: SeedArticle[] = [
   {
     title: "Meta deploys WhatsApp Pay in Côte d'Ivoire with native CinetPay integration",
     slug: "meta-deploie-son-service-whatsapp-pay-en-cote-divoire-avec-integration-cinetpay-native",
-    category: "technologie",
+    category: "technology",
     excerpt: "Payment via WhatsApp arrives in Côte d'Ivoire through a partnership with CinetPay.",
     content: `<p>Meta launches WhatsApp Pay in Côte d'Ivoire with CinetPay.</p>`,
     tags: ["Meta", "WhatsApp", "FinTech"],
@@ -321,7 +321,7 @@ export const SEED_ARTICLES: SeedArticle[] = [
   {
     title: "New meningitis cases in Bouaké: Health Ministry activates regional emergency protocol",
     slug: "nouveaux-cas-de-meningite-a-bouake-le-ministere-de-la-sante-active-le-protocole-durgence-regional",
-    category: "sante",
+    category: "health",
     excerpt: "Facing a surge in cases, health authorities deploy an emergency response.",
     content: `<p>Emergency protocol activated after new meningitis cases in Bouaké.</p>`,
     tags: ["health", "meningitis", "Bouaké"],
@@ -332,7 +332,7 @@ export const SEED_ARTICLES: SeedArticle[] = [
   {
     title: "Exclusive interview: Prime Minister responds to criticism of education reform",
     slug: "interview-exclusive-le-premier-ministre-repond-aux-critiques-sur-la-reforme-de-leducation",
-    category: "politique",
+    category: "politics",
     excerpt: "The Prime Minister outlines the roadmap for national education reform.",
     content: `<p>Exclusive interview on education reform.</p>`,
     tags: ["politics", "education", "interview"],
@@ -588,7 +588,7 @@ export const SEED_ARTICLES: SeedArticle[] = [
   {
     title: "WAEMU debt in numbers: who owes what across eight member states",
     slug: "waemu-debt-in-numbers-eight-member-states-infographic",
-    category: "politique",
+    category: "politics",
     excerpt: "An interactive visual breakdown of sovereign and commercial debt across the West African Economic and Monetary Union.",
     content: `<p>Our data desk maps debt-to-GDP ratios, repayment schedules, and creditor composition for Benin, Burkina Faso, Côte d'Ivoire, Guinea-Bissau, Mali, Niger, Senegal, and Togo.</p>`,
     tags: ["infographic", "WAEMU", "debt", "data"],
@@ -599,7 +599,7 @@ export const SEED_ARTICLES: SeedArticle[] = [
   {
     title: "Malaria by district: mapping vaccination rollout across Côte d'Ivoire",
     slug: "malaria-by-district-vaccination-rollout-cote-divoire-infographic",
-    category: "sante",
+    category: "health",
     excerpt: "District-level heat maps show where the RTS,S campaign has reached children under five.",
     content: `<p>Health ministry open data visualized for public transparency.</p>`,
     tags: ["infographic", "health", "malaria", "maps"],

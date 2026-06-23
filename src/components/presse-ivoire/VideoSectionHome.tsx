@@ -20,15 +20,15 @@ export function VideoSectionHome({ data }: VideoSectionHomeProps) {
           linkHref="/category/multimedia"
           linkLabel="Full video library"
         />
-        <div className="video-row">
-          {data.map((video, i) => {
+        <div className="video-row video-row--grid-3">
+          {data.slice(0, 3).map((video, i) => {
             const card = (
               <>
                 <div className="video-card-thumb">
                   <SectionImage
                     src={video.image}
                     alt={video.title}
-                    sizes="(max-width: 768px) 50vw, 300px"
+                    sizes="(max-width: 768px) 100vw, 33vw"
                   />
                   <div className="play-btn">
                     <svg viewBox="0 0 16 16" aria-hidden>

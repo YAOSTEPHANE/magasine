@@ -19,6 +19,7 @@ import {
 import { getAuthorAvatarUrl, resolveFeaturedImage } from "@/lib/images";
 import { ensureDefaultAdmin, DEFAULT_ADMIN_PASSWORD } from "@/lib/ensure-admin";
 import { resolveArticleContent } from "@/lib/article-content";
+import { migrateCategorySlugs } from "@/lib/migrate-category-slugs";
 
 async function clearDatabase() {
   await Promise.all([
@@ -50,11 +51,13 @@ export async function GET(request: NextRequest) {
         request.nextUrl.searchParams.get("repairAdmin") !== "false" &&
         process.env.NODE_ENV === "development";
       const admin = await ensureDefaultAdmin({ resetPassword: repairAdmin });
+      const categoriesMigrated = await migrateCategorySlugs();
       return NextResponse.json({
         message: repairAdmin
           ? "Admin account repaired. Use the credentials below to sign in."
           : "Database already initialized. Add ?force=true to reset, or ?repairAdmin=true to reset admin password.",
         seeded: false,
+        categoriesMigrated,
         admin: {
           email: admin.email,
           password: admin.repaired || admin.created ? DEFAULT_ADMIN_PASSWORD : undefined,

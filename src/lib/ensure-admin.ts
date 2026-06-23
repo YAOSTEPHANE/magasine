@@ -6,11 +6,11 @@ export const DEFAULT_ADMIN_EMAIL = "admin@globalsouthwatch.com";
 export const DEFAULT_ADMIN_PASSWORD = "Admin123!";
 
 interface EnsureAdminOptions {
-  /** Réinitialise le mot de passe seed (dev / récupération uniquement). */
+  /** Resets the seed admin password (dev / recovery only). */
   resetPassword?: boolean;
 }
 
-/** Garantit un compte super_admin (création si absent, réparation optionnelle du mot de passe). */
+/** Ensures a super_admin account exists (creates if missing, optionally repairs password). */
 export async function ensureDefaultAdmin(options: EnsureAdminOptions = {}) {
   await connectDB();
 

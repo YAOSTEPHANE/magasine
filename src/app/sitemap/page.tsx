@@ -130,7 +130,7 @@ export default async function SitemapPage() {
           <section className="utility-panel" aria-labelledby="sitemap-sections">
             <h2 id="sitemap-sections">Editorial sections</h2>
             <ul className="utility-link-list">
-              {FOOTER_COLS.rubriques.map((link) => (
+              {FOOTER_COLS.sections.map((link) => (
                 <li key={link.href + link.label}>
                   <Link href={link.href}>{link.label}</Link>
                 </li>
@@ -152,7 +152,7 @@ export default async function SitemapPage() {
           <section className="utility-panel" aria-labelledby="sitemap-about">
             <h2 id="sitemap-about">About &amp; contact</h2>
             <ul className="utility-link-list">
-              {FOOTER_COLS.presse.map((link) => (
+              {FOOTER_COLS.about.map((link) => (
                 <li key={link.href + link.label}>
                   <Link href={link.href}>{link.label}</Link>
                 </li>

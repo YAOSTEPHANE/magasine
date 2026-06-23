@@ -18,9 +18,9 @@ export const REGION_NAV = [
 export const HEADER_NAV = [
   { label: "Home", href: "/", active: true },
   { label: "Regions", href: "/category/africa", mega: true },
-  { label: "Politics", href: "/category/politique" },
+  { label: "Politics", href: "/category/politics" },
   { label: "Culture", href: "/category/culture" },
-  { label: "Technology", href: "/category/technologie" },
+  { label: "Technology", href: "/category/technology" },
   { label: "About us", href: "/about" },
 ];
 
@@ -32,18 +32,17 @@ export const ABOUT_NAV = [
   { label: "Editorial charter", href: "/editorial-charter" },
 ] as const;
 
-export const NAV_RUBRIQUES = [
+export const NAV_SECTIONS = [
   { label: "Africa", href: "/category/africa" },
   { label: "Latin America", href: "/category/latin-america" },
   { label: "South Asia", href: "/category/south-asia" },
   { label: "West Asia", href: "/category/west-asia" },
-  { label: "News", href: "/category/actualites" },
-  { label: "Politics", href: "/category/politique" },
+  { label: "News", href: "/category/news" },
   { label: "Opinion", href: "/category/opinion" },
   { label: "Culture", href: "/category/culture" },
   { label: "Investigations", href: "/category/investigations" },
   { label: "Multimedia", href: "/category/multimedia" },
-  { label: "Special Reports", href: "/category/reportages-speciaux" },
+  { label: "Special Reports", href: "/category/special-reports" },
 ];
 
 export const HERO_MAIN = {
@@ -176,15 +175,15 @@ export const VIDEOS = [
 ];
 
 export const OPINIONS = [
-  { accent: true, text: "Electoral democracy is no longer enough. What we must build is a democracy of results — where access to water, schools, and healthcare is not a promise but an enforceable right.", initials: "PK", avatar: IMG.portrait1, name: "Prof. Paul Konan", role: "Political Scientist, Félix Houphouët-Boigny University" },
-  { accent: false, text: "Africa can no longer afford to import its own processed raw materials. True economic independence starts in our factories, not our mines.", initials: "FM", avatar: IMG.portrait2, name: "Fatou Mbaye", role: "Economist, World Bank — Africa Bureau" },
-  { accent: false, text: "African youth don't need anyone to build their future for them. They're already building it — with their phones, their ideas, and their refusal to wait for institutional permission.", initials: "YD", avatar: IMG.portrait3, name: "Yaya Diabaté", role: "Entrepreneur & Author, Abidjan" },
+  { accent: true, text: "Electoral democracy is no longer enough. What we must build is a democracy of results — where access to water, schools, and healthcare is not a promise but an enforceable right.", title: "Beyond electoral democracy", initials: "PK", avatar: IMG.portrait1, image: IMG.politics, name: "Prof. Paul Konan", role: "Political Scientist, Félix Houphouët-Boigny University" },
+  { accent: false, text: "Africa can no longer afford to import its own processed raw materials. True economic independence starts in our factories, not our mines.", title: "Industrial sovereignty first", initials: "FM", avatar: IMG.portrait2, image: IMG.finance, name: "Fatou Mbaye", role: "Economist, World Bank — Africa Bureau" },
+  { accent: false, text: "African youth don't need anyone to build their future for them. They're already building it — with their phones, their ideas, and their refusal to wait for institutional permission.", title: "Youth are already building", initials: "YD", avatar: IMG.portrait3, image: IMG.tech, name: "Yaya Diabaté", role: "Entrepreneur & Author, Abidjan" },
 ];
 
 export const THEMATIC = [
   {
     title: "Technology",
-    href: "/category/technologie",
+    href: "/category/technology",
     main: { cat: "Technology", title: "5G arrives in Abidjan: Orange CI and MTN simultaneously deploy pilot networks", image: IMG.datacenter },
     subs: [
       { num: "01", cat: "Startups", title: "InnovaCI wins the 2026 Francophonie Innovation Grand Prize" },
@@ -217,17 +216,17 @@ export const FOOTER_COLS = {
     { label: "Latin America", href: "/category/latin-america" },
     { label: "South Asia", href: "/category/south-asia" },
     { label: "West Asia", href: "/category/west-asia" },
-    { label: "World", href: "/category/monde" },
+    { label: "World", href: "/category/world" },
   ],
-  rubriques: [
-    { label: "News", href: "/category/actualites" },
-    { label: "Politics", href: "/category/politique" },
-    { label: "Technology", href: "/category/technologie" },
+  sections: [
+    { label: "News", href: "/category/news" },
+    { label: "Politics", href: "/category/politics" },
+    { label: "Technology", href: "/category/technology" },
     { label: "Culture", href: "/category/culture" },
-    { label: "Health", href: "/category/sante" },
-    { label: "World", href: "/category/monde" },
+    { label: "Health", href: "/category/health" },
+    { label: "World", href: "/category/world" },
   ],
-  presse: [
+  about: [
     { label: "About us", href: "/about" },
     { label: "Our mission", href: "/about#mission" },
     { label: "Our team", href: "/team" },
@@ -241,7 +240,7 @@ export const FOOTER_COLS = {
   ],
   formats: [
     { label: "Investigations", href: "/category/investigations" },
-    { label: "Features", href: "/category/reportages-speciaux" },
+    { label: "Features", href: "/category/special-reports" },
     { label: "Opinion", href: "/category/opinion" },
     { label: "Videos", href: "/videos" },
     { label: "Podcasts", href: "/podcasts" },

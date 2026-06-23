@@ -4,8 +4,8 @@
   --art-accent: var(--brand-blue, #1a3896);
   --art-accent-soft: rgba(26, 56, 150, 0.08);
   --art-surface: rgba(255, 255, 255, 0.92);
-  --art-radius: 20px;
-  --art-radius-sm: 14px;
+  --art-radius: 0;
+  --art-radius-sm: 0;
   --art-shadow:
     0 1px 0 rgba(255, 255, 255, 0.85) inset,
     0 28px 80px rgba(26, 56, 150, 0.1);

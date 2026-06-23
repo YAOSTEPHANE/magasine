@@ -19,6 +19,8 @@ import { resolveAuthorAvatar, resolveFeaturedImage } from "@/lib/images";
 import { getPublicSiteSettings } from "@/lib/site-settings";
 import { filterRetiredCategories, filterArticlesByRetiredCategories } from "@/lib/retired-categories";
 import { repairBrokenArticleImagesOnce } from "@/lib/repair-article-images";
+import { migrateCategorySlugsOnce } from "@/lib/migrate-category-slugs";
+import { resolveCategorySlug } from "@/lib/category-slugs";
 
 function mapHomeArticles(
   docs: unknown[],
@@ -56,7 +58,7 @@ function serializeArticle(doc: Record<string, unknown>): ArticleListItem {
       : {
           _id: "unknown",
           name: "News",
-          slug: "actualites",
+          slug: "news",
         },
     authors: authors
       .filter((a) => a?._id)
@@ -111,6 +113,7 @@ export const getHomePageData = cache(async function getHomePageData() {
 
   await connectDB();
   await repairBrokenArticleImagesOnce();
+  await migrateCategorySlugsOnce();
 
   const siteSettings = await getPublicSiteSettings();
   const baseQuery = { status: "published" as const };
@@ -131,9 +134,9 @@ export const getHomePageData = cache(async function getHomePageData() {
     specialReports,
     popularTags,
     techNews,
-    santeNews,
+    healthNews,
     localNews,
-    politiqueNews,
+    politicsNews,
     cultureNews,
     urgentArticles,
     africaNews,
@@ -171,7 +174,7 @@ export const getHomePageData = cache(async function getHomePageData() {
     Article.find(baseQuery)
       .populate({
         path: "category",
-        match: { slug: "actualites" },
+        match: { slug: "news" },
         select: "name slug color",
       })
       .populate(articlePopulate[1])
@@ -179,13 +182,13 @@ export const getHomePageData = cache(async function getHomePageData() {
       .limit(6)
       .lean()
       .then((docs) =>
-        docs.filter((d) => (d.category as { slug?: string } | null)?.slug === "actualites")
+        docs.filter((d) => (d.category as { slug?: string } | null)?.slug === "news")
       ),
-    getArticlesByCategorySlug("monde", 4),
+    getArticlesByCategorySlug("world", 4),
     getArticlesByCategorySlug("multimedia", 4),
     getArticlesByCategorySlug("opinion", 3),
     getArticlesByCategorySlug("investigations", 3),
-    getArticlesByCategorySlug("reportages-speciaux", 3),
+    getArticlesByCategorySlug("special-reports", 3),
     Article.aggregate([
       { $match: { status: "published" } },
       { $unwind: "$tags" },
@@ -193,10 +196,10 @@ export const getHomePageData = cache(async function getHomePageData() {
       { $sort: { count: -1 } },
       { $limit: 12 },
     ]),
-    getArticlesByCategorySlug("technologie", 4),
-    getArticlesByCategorySlug("sante", 4),
+    getArticlesByCategorySlug("technology", 4),
+    getArticlesByCategorySlug("health", 4),
     getArticlesByCategorySlug("local", 4),
-    getArticlesByCategorySlug("politique", 4),
+    getArticlesByCategorySlug("politics", 4),
     getArticlesByCategorySlug("culture", 4),
     Article.find({
       ...baseQuery,
@@ -245,9 +248,9 @@ export const getHomePageData = cache(async function getHomePageData() {
       count: t.count,
     })),
     techNews: filterHomeArticleList(techNews, 4),
-    santeNews: filterHomeArticleList(santeNews, 4),
+    healthNews: filterHomeArticleList(healthNews, 4),
     localNews: filterHomeArticleList(localNews, 4),
-    politiqueNews: filterHomeArticleList(politiqueNews, 4),
+    politicsNews: filterHomeArticleList(politicsNews, 4),
     cultureNews: filterHomeArticleList(cultureNews, 4),
     urgentArticles: mapHomeArticles(urgentArticles, 8),
     africaNews: filterHomeArticleList(africaNews, 4),
@@ -317,14 +320,15 @@ export async function getUrgentPageData(limit = 36) {
 }
 
 export async function getArticlesByCategorySlug(slug: string, limit = 12) {
+  const resolvedSlug = resolveCategorySlug(slug);
   const useDb = await hasDbArticles();
   if (!useDb) {
-    return getMockCategoryBySlug(slug)?.articles.slice(0, limit) ?? [];
+    return getMockCategoryBySlug(resolvedSlug)?.articles.slice(0, limit) ?? [];
   }
 
   await connectDB();
-  const category = await Category.findOne({ slug }).lean();
-  if (!category) return getMockCategoryBySlug(slug)?.articles.slice(0, limit) ?? [];
+  const category = await Category.findOne({ slug: resolvedSlug }).lean();
+  if (!category) return getMockCategoryBySlug(resolvedSlug)?.articles.slice(0, limit) ?? [];
 
   const articles = await Article.find({
     status: "published",
@@ -338,7 +342,7 @@ export async function getArticlesByCategorySlug(slug: string, limit = 12) {
   const result = articles.map((a) => serializeArticle(a as unknown as Record<string, unknown>));
   return result.length > 0
     ? result
-    : (getMockCategoryBySlug(slug)?.articles.slice(0, limit) ?? []);
+    : (getMockCategoryBySlug(resolvedSlug)?.articles.slice(0, limit) ?? []);
 }
 
 export async function getArticleBySlug(slug: string) {
@@ -461,15 +465,16 @@ export async function searchArticles(
 }
 
 export async function getCategoryBySlug(slug: string) {
+  const resolvedSlug = resolveCategorySlug(slug);
   if (!(await hasDbArticles())) {
-    return getMockCategoryBySlug(slug);
+    return getMockCategoryBySlug(resolvedSlug);
   }
 
   await connectDB();
-  const category = await Category.findOne({ slug, isActive: true }).lean();
-  if (!category) return getMockCategoryBySlug(slug);
+  const category = await Category.findOne({ slug: resolvedSlug, isActive: true }).lean();
+  if (!category) return getMockCategoryBySlug(resolvedSlug);
 
-  const articles = await getArticlesByCategorySlug(slug, 36);
+  const articles = await getArticlesByCategorySlug(resolvedSlug, 36);
 
   return {
     category: {

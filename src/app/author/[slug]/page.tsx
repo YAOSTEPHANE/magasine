@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function AuteurPage({ params }: Props) {
+export default async function AuthorPage({ params }: Props) {
   const { slug } = await params;
   const data = await getAuthorBySlug(slug);
   if (!data) notFound();

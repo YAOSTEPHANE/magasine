@@ -7,7 +7,7 @@ const BROKEN_UNSPLASH_PATTERN =
 
 let repairDone = false;
 
-/** Corrige en base les URLs Unsplash retirées (une fois par instance serveur). */
+/** Fixes removed Unsplash URLs in the database (once per server instance). */
 export async function repairBrokenArticleImagesOnce() {
   if (repairDone) return;
   repairDone = true;

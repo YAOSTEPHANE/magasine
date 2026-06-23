@@ -58,7 +58,7 @@ export async function getHomepageAdminOverview(): Promise<{
     Article.find(published).select("title slug status category").populate("category", "name").sort({ publishedAt: -1 }).limit(5).lean(),
     Article.find({ ...published, contentType: "video" }).select("title slug status category").populate("category", "name").sort({ publishedAt: -1 }).limit(4).lean(),
     Article.find(published).select("title slug status category").populate({ path: "category", match: { slug: "opinion" }, select: "name slug" }).sort({ publishedAt: -1 }).limit(3).lean(),
-    Article.find(published).select("title slug status category").populate({ path: "category", match: { slug: "technologie" }, select: "name slug" }).sort({ publishedAt: -1 }).limit(4).lean(),
+    Article.find(published).select("title slug status category").populate({ path: "category", match: { slug: "technology" }, select: "name slug" }).sort({ publishedAt: -1 }).limit(4).lean(),
     Article.find(published).select("title slug status category").populate({ path: "category", match: { slug: "culture" }, select: "name slug" }).sort({ publishedAt: -1 }).limit(4).lean(),
     Alert.countDocuments({ isActive: true }),
     Category.find({ isActive: true }).select("slug").lean(),
@@ -83,7 +83,7 @@ export async function getHomepageAdminOverview(): Promise<{
   const heroPool = [...featured, ...videos, ...topStories].slice(0, 6);
   const insightsPool = [
     ...opinion.filter((a) => (a.category as { slug?: string } | null)?.slug === "opinion"),
-    ...tech.filter((a) => (a.category as { slug?: string } | null)?.slug === "technologie"),
+    ...tech.filter((a) => (a.category as { slug?: string } | null)?.slug === "technology"),
     ...culture.filter((a) => (a.category as { slug?: string } | null)?.slug === "culture"),
   ];
 

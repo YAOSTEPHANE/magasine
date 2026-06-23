@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { NAV_RUBRIQUES } from "@/data/presse-ivoire-home";
+import { NAV_SECTIONS } from "@/data/presse-ivoire-home";
 
 interface HomeQuickNavProps {
   categories?: { name: string; slug: string }[];
@@ -46,7 +46,7 @@ function NavPill({ item, active }: { item: NavItem; active: boolean }) {
 export function HomeQuickNav({ categories: _categories }: HomeQuickNavProps) {
   const pathname = usePathname();
 
-  const items: NavItem[] = NAV_RUBRIQUES.map((r) => ({
+  const items: NavItem[] = NAV_SECTIONS.map((r) => ({
     label: r.label,
     href: r.href,
     featured: false,
@@ -63,14 +63,16 @@ export function HomeQuickNav({ categories: _categories }: HomeQuickNavProps) {
           </span>
         </div>
 
-        <div className="home-quick-nav-track">
-          {items.map((item) => (
-            <NavPill
-              key={item.href + item.label}
-              item={item}
-              active={isActive(pathname, item.href)}
-            />
-          ))}
+        <div className="home-quick-nav-rail">
+          <div className="home-quick-nav-track">
+            {items.map((item) => (
+              <NavPill
+                key={item.href + item.label}
+                item={item}
+                active={isActive(pathname, item.href)}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </nav>

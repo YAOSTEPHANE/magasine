@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { DM_Sans, Newsreader } from "next/font/google";
+import { DM_Sans } from "next/font/google";
 import { SiteChrome } from "@/components/SiteChrome";
 import { getLayoutNavData } from "@/lib/data";
 import { getPublicSiteSettings } from "@/lib/site-settings";
@@ -9,6 +9,7 @@ import "./globals.css";
 import "./responsive.css";
 import "./revolution.css";
 import "./home-page.css";
+import "./images-flat.css";
 
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
@@ -17,13 +18,7 @@ const dmSans = DM_Sans({
   display: "swap",
 });
 
-const newsreader = Newsreader({
-  variable: "--font-newsreader",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  style: ["normal"],
-  display: "swap",
-});
+const adobeFontsKitId = process.env.NEXT_PUBLIC_ADOBE_FONTS_KIT_ID;
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getPublicSiteSettings();
@@ -72,8 +67,13 @@ export default async function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${dmSans.variable} ${newsreader.variable} notranslate`}
+      className={`${dmSans.variable} notranslate`}
     >
+      <head>
+        {adobeFontsKitId ? (
+          <link rel="stylesheet" href={`https://use.typekit.net/${adobeFontsKitId}.css`} />
+        ) : null}
+      </head>
       <body className="notranslate" suppressHydrationWarning translate="no">
         <Providers
           branding={{

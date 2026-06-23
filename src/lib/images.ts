@@ -1,4 +1,4 @@
-/** URLs d'images éditoriales (Unsplash) — réutilisées sur l'accueil et dans les articles */
+/** Editorial image URLs (Unsplash) — reused on the homepage and in articles */
 export const IMG = {
   finance: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&h=800&fit=crop",
   fintech: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=1200&h=800&fit=crop",
@@ -29,7 +29,7 @@ export const IMG = {
 
 export { DEFAULT_SITE_LOGO as SITE_LOGO } from "@/lib/branding";
 
-/** Photos Unsplash retirées — remplacement par ID (indépendant des query params). */
+/** Removed Unsplash photos — replaced by ID (independent of query params). */
 const REMOVED_UNSPLASH_PHOTO_IDS: Record<string, string> = {
   "photo-1574943325722-55f388851e73": IMG.agriculture,
   "photo-1611162617474-5b21e939e113": IMG.tech,

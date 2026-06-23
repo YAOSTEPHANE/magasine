@@ -46,11 +46,11 @@ const RUBRIQUE_SOURCES: {
   { slug: "latin-america", title: "Latin America", key: "latinAmericaNews" },
   { slug: "south-asia", title: "South Asia", key: "southAsiaNews" },
   { slug: "west-asia", title: "West Asia", key: "westAsiaNews" },
-  { slug: "actualites", title: "News", key: "nationalNews" },
-  { slug: "politique", title: "Politics", key: "politiqueNews" },
+  { slug: "news", title: "News", key: "nationalNews" },
+  { slug: "politics", title: "Politics", key: "politicsNews" },
   { slug: "culture", title: "Culture", key: "cultureNews" },
   { slug: "investigations", title: "Investigations", key: "investigations" },
-  { slug: "reportages-speciaux", title: "Special Reports", key: "specialReports" },
+  { slug: "special-reports", title: "Special Reports", key: "specialReports" },
   { slug: "multimedia", title: "Multimedia", key: "multimedia" },
 ];
 
@@ -282,14 +282,16 @@ function buildVideos(source: HomeDataSource): HomeVideo[] {
 
 function buildOpinions(source: HomeDataSource): HomeOpinion[] {
   if (source.opinion.length > 0) {
-    return source.opinion.slice(0, 3).map((a, i) => {
+    return source.opinion.slice(0, 6).map((a, i) => {
       const author = a.authors[0];
       return {
         accent: i === 0,
         text: a.excerpt,
+        title: a.title,
         name: author?.name ?? "Contributor",
         role: author?.bio ?? a.category.name,
         avatar: author?.avatar ?? IMG.portrait1,
+        image: a.featuredImage,
         slug: articlePath(a.slug),
       };
     });
@@ -297,9 +299,11 @@ function buildOpinions(source: HomeDataSource): HomeOpinion[] {
   return OPINIONS.map((o, i) => ({
     accent: o.accent,
     text: o.text,
+    title: o.title,
     name: o.name,
     role: o.role,
     avatar: o.avatar,
+    image: o.image,
     slug: `static-opinion-${i}`,
   }));
 }

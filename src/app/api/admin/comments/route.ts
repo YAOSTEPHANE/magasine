@@ -35,7 +35,7 @@ export async function GET() {
       }),
     });
   } catch {
-    return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }
 
@@ -64,6 +64,6 @@ export async function PATCH(request: NextRequest) {
 
     return NextResponse.json({ success: true });
   } catch {
-    return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }

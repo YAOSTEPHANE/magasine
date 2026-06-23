@@ -61,9 +61,11 @@ export interface HomeVideo {
 export interface HomeOpinion {
   accent: boolean;
   text: string;
+  title?: string;
   name: string;
   role: string;
   avatar: string;
+  image: string;
   slug?: string;
 }
 

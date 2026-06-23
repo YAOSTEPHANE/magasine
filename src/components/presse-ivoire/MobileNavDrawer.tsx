@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { HEADER_NAV, NAV_RUBRIQUES, REGION_NAV, ABOUT_NAV } from "@/data/presse-ivoire-home";
+import { HEADER_NAV, NAV_SECTIONS, REGION_NAV, ABOUT_NAV } from "@/data/presse-ivoire-home";
 
 interface MobileNavDrawerProps {
   open: boolean;
@@ -76,7 +76,7 @@ export function MobileNavDrawer({ open, onClose }: MobileNavDrawerProps) {
   };
 
   const mainLinks = HEADER_NAV.filter((item) => !item.mega);
-  const sectionLinks = NAV_RUBRIQUES.filter(
+  const sectionLinks = NAV_SECTIONS.filter(
     (item) => !REGION_NAV.some((region) => region.href === item.href)
   );
 

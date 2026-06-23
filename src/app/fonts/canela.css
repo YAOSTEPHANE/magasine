@@ -1,0 +1,90 @@
+/* Canela — place licensed .woff2 files in public/fonts/canela/
+   Expected names (any matching pair works):
+   - Canela-Regular.woff2 / Canela-Regular-Web.woff2
+   - Canela-Medium.woff2 / Canela-Medium-Web.woff2
+   - Canela-Bold.woff2 / Canela-Bold-Web.woff2
+   - Canela-RegularItalic.woff2
+   - Canela-MediumItalic.woff2
+   - Canela-BoldItalic.woff2
+
+   Or set NEXT_PUBLIC_ADOBE_FONTS_KIT_ID for Adobe Fonts (family: canela). */
+
+@font-face {
+  font-family: "Canela";
+  src:
+    url("/fonts/canela/Canela-Regular-Web.woff2") format("woff2"),
+    url("/fonts/canela/Canela-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Canela";
+  src:
+    url("/fonts/canela/Canela-RegularItalic-Web.woff2") format("woff2"),
+    url("/fonts/canela/Canela-RegularItalic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Canela";
+  src:
+    url("/fonts/canela/Canela-Medium-Web.woff2") format("woff2"),
+    url("/fonts/canela/Canela-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Canela";
+  src:
+    url("/fonts/canela/Canela-MediumItalic-Web.woff2") format("woff2"),
+    url("/fonts/canela/Canela-MediumItalic.woff2") format("woff2");
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Canela";
+  src:
+    url("/fonts/canela/Canela-Bold-Web.woff2") format("woff2"),
+    url("/fonts/canela/Canela-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Canela";
+  src:
+    url("/fonts/canela/Canela-BoldItalic-Web.woff2") format("woff2"),
+    url("/fonts/canela/Canela-BoldItalic.woff2") format("woff2");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Canela";
+  src:
+    url("/fonts/canela/Canela-Light-Web.woff2") format("woff2"),
+    url("/fonts/canela/Canela-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Canela";
+  src:
+    url("/fonts/canela/Canela-Black-Web.woff2") format("woff2"),
+    url("/fonts/canela/Canela-Black.woff2") format("woff2");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}

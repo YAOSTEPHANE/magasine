@@ -6,17 +6,17 @@ import { Mail } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 
 const footerLinks = {
-  rubriques: [
-    { label: "News", href: "/category/actualites" },
-    { label: "World", href: "/category/monde" },
-    { label: "Technology", href: "/category/technologie" },
+  sections: [
+    { label: "News", href: "/category/news" },
+    { label: "World", href: "/category/world" },
+    { label: "Technology", href: "/category/technology" },
     { label: "Culture", href: "/category/culture" },
-    { label: "Health", href: "/category/sante" },
+    { label: "Health", href: "/category/health" },
   ],
   magazine: [
     { label: "Editor's Choice", href: "/#editors-choice" },
     { label: "Investigations", href: "/category/investigations" },
-    { label: "Special Reports", href: "/category/reportages-speciaux" },
+    { label: "Special Reports", href: "/category/special-reports" },
     { label: "Opinion", href: "/category/opinion" },
     { label: "Multimedia", href: "/category/multimedia" },
   ],
@@ -95,7 +95,7 @@ export function Footer() {
               Sections
             </h4>
             <ul className="space-y-3">
-              {footerLinks.rubriques.map((link) => (
+              {footerLinks.sections.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}

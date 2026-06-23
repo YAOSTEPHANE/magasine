@@ -36,7 +36,7 @@ export function BrandLogo({
         style={{ height, width: "auto", maxWidth: width }}
       />
       {displayTagline && (
-        <div className="logo-tagline">Décolonisation des médias</div>
+        <div className="logo-tagline">Decolonizing media</div>
       )}
     </>
   );

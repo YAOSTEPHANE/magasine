@@ -1,86 +1,89 @@
 # Global South Watch
 
-**Portail magazine & presse en ligne** dédié à l'information sur l'Afrique et le Sud global.  
-Journalisme indépendant, interface éditoriale moderne, back-office intégré et expérience lecteur complète (abonnement, paywall, multimédia).
+**Online magazine & news portal** covering Africa and the Global South.  
+Independent journalism, a modern editorial interface, an integrated back office, and a full reader experience (accounts, premium paywall, multimedia).
 
 ---
 
-## Sommaire
+## Table of contents
 
-- [Aperçu](#aperçu)
-- [Fonctionnalités](#fonctionnalités)
-- [Stack technique](#stack-technique)
+- [Overview](#overview)
+- [Features](#features)
+- [Tech stack](#tech-stack)
 - [Architecture](#architecture)
-- [Prérequis](#prérequis)
+- [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Configuration](#configuration)
-- [Initialisation des données](#initialisation-des-données)
-- [Scripts disponibles](#scripts-disponibles)
-- [Structure du projet](#structure-du-projet)
-- [Authentification & rôles](#authentification--rôles)
-- [API REST](#api-rest)
+- [Data seeding](#data-seeding)
+- [Available scripts](#available-scripts)
+- [Project structure](#project-structure)
+- [Authentication & roles](#authentication--roles)
+- [REST API](#rest-api)
 - [Design system](#design-system)
-- [Déploiement](#déploiement)
-- [Dépannage](#dépannage)
+- [Deployment](#deployment)
+- [Troubleshooting](#troubleshooting)
+- [License](#license)
 
 ---
 
-## Aperçu
+## Overview
 
-Global South Watch est une application **full-stack** construite avec **Next.js 16** (App Router). Elle combine :
+Global South Watch is a **full-stack** application built with **Next.js 16** (App Router). It combines:
 
-- une **homepage magazine** riche (urgent, hero, rubriques, tribunes, vidéos, stats) ;
-- des **pages article** avec paywall, commentaires et partage social ;
-- un **espace admin** pour la rédaction ;
-- une couche **API** pour la recherche, la newsletter, le flux RSS et les interactions lecteur.
+- a rich **magazine homepage** (breaking ticker, hero lead, editor's choice, latest news, opinion, thematic sections, video, stats & newsletter);
+- **article pages** with paywall, comments, and social sharing;
+- an **admin workspace** for the editorial team;
+- an **API layer** for search, newsletter, RSS, and reader interactions.
 
-Sans base MongoDB configurée, l'application bascule automatiquement sur des **données de démonstration** intégrées au code — utile pour explorer l'UI immédiatement.
+When MongoDB is not configured, the app automatically falls back to **built-in demo data** — useful for exploring the UI immediately.
 
 ---
 
-## Fonctionnalités
+## Features
 
-### Côté lecteur
+### Reader-facing
 
 | Module | Description |
 |--------|-------------|
-| **Accueil** | Masthead, fil urgent, carrousel hero, choix de la rédaction, dernières actus, tribunes, thématiques, vidéos, stats & newsletter |
-| **Articles** | Contenu riche (HTML), galerie, vidéo, podcast, progression de lecture, articles liés |
-| **Rubriques** | Pages catégorie avec article vedette et grille |
-| **Recherche** | Recherche full-text sur les articles publiés |
-| **Urgent** | Page dédiée aux alertes et breaking news |
-| **Multimédia** | Hubs `/videos` et `/podcasts` |
-| **Compte** | Inscription, connexion (email ou Google), profil, historique, articles sauvegardés |
-| **Abonnement** | Plans premium et paywall sur les contenus exclusifs |
-| **Institutionnel** | À propos, équipe, charte, contact, mentions légales, accessibilité… |
+| **Homepage** | Masthead, breaking ticker, hero lead, editor's choice, latest news, opinion columns, thematic bands, video section, stats & newsletter |
+| **Articles** | Rich HTML content, gallery, video, podcast, reading progress, related articles |
+| **Categories** | Category pages with featured article and article grid (`/category/[slug]`) |
+| **Search** | Full-text search across published articles |
+| **Breaking** | Dedicated urgent / breaking news page (`/urgent`) |
+| **Multimedia** | Hubs at `/videos` and `/podcasts` |
+| **Account** | Registration, login (email or Google), profile, reading history, saved articles |
+| **Premium** | Paywall on exclusive `isPremium` articles; premium status managed per user |
+| **Institutional** | About, team, editorial charter, contact, legal, privacy, accessibility, and more |
 
-### Côté rédaction (`/admin`)
+### Editorial (`/admin`)
 
-- Tableau de bord (articles, utilisateurs, commentaires, newsletter)
-- Gestion des articles (création, édition, statuts : brouillon → publié)
-- Modération des commentaires
-- Gestion des catégories et auteurs
-- Paramètres et métadonnées
+- Dashboard (articles, users, comments, newsletter)
+- Article management (create, edit, workflow: draft → review → published)
+- Editorial review queue (`/admin/review`)
+- Comment moderation
+- Category and author management
+- Breaking alerts and homepage section curation
+- Site settings, branding upload, and user / premium management
 
 ### SEO & distribution
 
-- `sitemap.xml` et `robots.txt` générés
-- Flux RSS via `/api/feed`
-- Métadonnées Open Graph par article
+- `sitemap.xml` and `robots.txt` generated via App Router metadata routes
+- RSS feed at `/api/feed`
+- Open Graph metadata per article
 
 ---
 
-## Stack technique
+## Tech stack
 
-| Couche | Technologies |
-|--------|--------------|
-| **Framework** | [Next.js 16](https://nextjs.org/) (App Router, RSC, ISR) |
-| **UI** | React 19, CSS custom (design system « Revolution »), Tailwind CSS 4 |
-| **Base de données** | [MongoDB](https://www.mongodb.com/) + [Mongoose](https://mongoosejs.com/) |
+| Layer | Technologies |
+|-------|--------------|
+| **Framework** | [Next.js 16](https://nextjs.org/) (App Router, RSC, caching) |
+| **UI** | React 19, custom CSS design system (“Revolution Edition”), Tailwind CSS 4 |
+| **Database** | [MongoDB](https://www.mongodb.com/) + [Mongoose](https://mongoosejs.com/) |
 | **Auth** | [NextAuth.js v5](https://authjs.dev/) (Credentials + Google OAuth) |
-| **Formulaires** | React Hook Form + Zod |
-| **Éditeur** | TipTap (back-office) |
-| **Utilitaires** | date-fns, slugify, bcryptjs, lucide-react |
+| **Forms** | React Hook Form + Zod |
+| **Editor** | TipTap (admin back office) |
+| **Utilities** | date-fns, slugify, bcryptjs, lucide-react, recharts |
 
 ---
 
@@ -89,18 +92,18 @@ Sans base MongoDB configurée, l'application bascule automatiquement sur des **d
 ```mermaid
 flowchart TB
   subgraph client [Client]
-    Pages[Pages App Router]
-    Components[Composants UI]
+    Pages[App Router pages]
+    Components[UI components]
   end
 
-  subgraph server [Serveur Next.js]
+  subgraph server [Next.js server]
     RSC[Server Components]
     API[Route Handlers /api]
     Auth[NextAuth]
     Data[data.ts + map-home-data]
   end
 
-  subgraph persistence [Persistance]
+  subgraph persistence [Persistence]
     MongoDB[(MongoDB Atlas / local)]
   end
 
@@ -112,140 +115,154 @@ flowchart TB
   Data -.->|fallback| Mock[mock-data.ts]
 ```
 
-**Flux de données homepage :**
+**Homepage data flow:**
 
-1. `getHomePageData()` interroge MongoDB (ou mock).
-2. `mapHomePageData()` transforme les documents en sections UI typées.
-3. Les composants `presse-ivoire/*` rendent chaque bande éditoriale.
+1. `getHomePageData()` queries MongoDB (or falls back to mock data).
+2. `mapHomePageData()` transforms documents into typed UI sections.
+3. `presse-ivoire/*` components render each editorial band.
+
+**Category URLs** use English slugs (`news`, `politics`, `technology`, `health`, `world`, `special-reports`, etc.). Legacy French slugs (e.g. `actualites`, `politique`) are redirected to their English equivalents via `next.config.ts` and `src/lib/category-slugs.ts`.
 
 ---
 
-## Prérequis
+## Prerequisites
 
 - **Node.js** ≥ 20
 - **npm** ≥ 10
-- **MongoDB** : instance locale ou cluster [MongoDB Atlas](https://www.mongodb.com/atlas)
-- *(Optionnel)* Compte Google Cloud pour OAuth (`GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET`)
+- **MongoDB**: local instance or a [MongoDB Atlas](https://www.mongodb.com/atlas) cluster
+- *(Optional)* Google Cloud project for OAuth (`GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET`)
+- *(Optional)* Licensed **Canela** webfont files or an Adobe Fonts kit ID for production typography
 
 ---
 
 ## Installation
 
 ```bash
-# 1. Cloner le dépôt
-git clone <url-du-repo> magasine
+# 1. Clone the repository
+git clone <repo-url> magasine
 cd magasine
 
-# 2. Installer les dépendances
+# 2. Install dependencies
 npm install
 
-# 3. Configurer l'environnement
+# 3. Configure environment
 cp .env.example .env.local
-# Éditer .env.local avec vos valeurs
+# Edit .env.local with your values
 
-# 4. Lancer le serveur de développement
+# 4. Start the development server
 npm run dev
 ```
 
-Ouvrir [http://localhost:3000](http://localhost:3000).
+Open [http://localhost:3000](http://localhost:3000).
 
 ---
 
 ## Configuration
 
-Créer un fichier `.env.local` à la racine (voir `.env.example`) :
+Create a `.env.local` file at the project root (see `.env.example`):
 
-| Variable | Obligatoire | Description |
-|----------|-------------|-------------|
-| `MONGODB_URI` | Recommandé | URI de connexion MongoDB. Sans elle, mode démo activé |
-| `NEXTAUTH_URL` | Oui | URL publique de l'app (ex. `http://localhost:3000`) |
-| `NEXTAUTH_SECRET` | Oui | Secret JWT — générer avec `openssl rand -base64 32` |
-| `GOOGLE_CLIENT_ID` | Non | OAuth Google |
-| `GOOGLE_CLIENT_SECRET` | Non | OAuth Google |
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `MONGODB_URI` | Recommended | MongoDB connection URI. Without it, demo mode is enabled |
+| `NEXTAUTH_URL` | Yes | Public app URL (e.g. `http://localhost:3000`) |
+| `NEXTAUTH_SECRET` | Yes | JWT secret — generate with `openssl rand -base64 32` |
+| `GOOGLE_CLIENT_ID` | No | Google OAuth client ID |
+| `GOOGLE_CLIENT_SECRET` | No | Google OAuth client secret |
+| `NEXT_PUBLIC_ADOBE_FONTS_KIT_ID` | No | Adobe Fonts kit ID for Canela (alternative to self-hosted files) |
 
-> **Sécurité :** ne commitez jamais `.env.local`. En production, utilisez des secrets forts et distincts.
+> **Security:** never commit `.env.local`. Use strong, unique secrets in production.
 
-### Images distantes
+### Remote images
 
-Les domaines autorisés pour `next/image` sont configurés dans `next.config.ts` :
+Allowed domains for `next/image` are configured in `next.config.ts`:
 
-- `images.unsplash.com` (visuels éditoriaux)
-- `api.dicebear.com` (avatars auteurs)
+- `images.unsplash.com` (editorial imagery)
+- `api.dicebear.com` (author avatars)
 
-Pour ajouter un CDN ou bucket S3, étendre `images.remotePatterns`.
+To add a CDN or S3 bucket, extend `images.remotePatterns`.
+
+### Canela font files
+
+Place licensed `.woff2` files in `public/fonts/canela/` (see `src/app/fonts/canela.css` for expected filenames), or set `NEXT_PUBLIC_ADOBE_FONTS_KIT_ID` to load Canela from Adobe Fonts.
 
 ---
 
-## Initialisation des données
+## Data seeding
 
-Une fois MongoDB configuré et le serveur lancé :
+Once MongoDB is configured and the server is running:
 
 ```bash
-# Première initialisation (catégories, auteurs, 24 articles, alertes, admin)
+# First-time initialization (categories, authors, ~50 articles, alerts, admin)
 curl http://localhost:3000/api/seed
 
-# Réinitialisation complète (efface les données existantes)
+# Full reset (wipes existing data — requires super_admin session)
 curl "http://localhost:3000/api/seed?force=true"
 ```
 
-Ou via le script npm (serveur déjà démarré) :
+Or via npm (server must already be running):
 
 ```bash
 npm run seed
 ```
 
-**Compte administrateur créé par le seed :**
+**Administrator account created by the seed:**
 
-| Champ | Valeur |
+| Field | Value |
 |-------|--------|
 | Email | `admin@globalsouthwatch.com` |
-| Mot de passe | `Admin123!` |
+| Password | `Admin123!` |
 
-> Changez ce mot de passe immédiatement en production.
+> Change this password immediately in production.
 
----
-
-## Scripts disponibles
-
-| Commande | Action |
-|----------|--------|
-| `npm run dev` | Serveur de développement avec hot-reload |
-| `npm run build` | Build de production |
-| `npm run start` | Serveur de production (après `build`) |
-| `npm run lint` | Analyse ESLint |
-| `npm run seed` | Appelle `/api/seed` (nécessite `dev` ou `start` actif) |
+**Development shortcut:** in `NODE_ENV=development`, `GET /api/dev/ensure-admin` creates or repairs the default admin account without re-seeding the database.
 
 ---
 
-## Structure du projet
+## Available scripts
+
+| Command | Action |
+|---------|--------|
+| `npm run dev` | Development server with hot reload |
+| `npm run build` | Production build |
+| `npm run start` | Production server (after `build`) |
+| `npm run lint` | ESLint analysis |
+| `npm run seed` | Calls `/api/seed` (requires `dev` or `start` to be running) |
+
+---
+
+## Project structure
 
 ```
 magasine/
 ├── public/
-│   └── images/              # Logo, partenaires presse
+│   ├── fonts/canela/        # Licensed Canela webfont files (optional)
+│   └── images/              # Logo, press partners
 ├── src/
-│   ├── app/                 # Routes App Router
-│   │   ├── api/             # Route Handlers REST
-│   │   ├── admin/           # Back-office rédaction
-│   │   ├── article/         # Pages article
+│   ├── app/                 # App Router routes
+│   │   ├── api/             # REST Route Handlers
+│   │   ├── admin/           # Editorial back office
+│   │   ├── article/         # Article pages
 │   │   ├── category/        # Category pages
 │   │   ├── author/          # Author pages
-│   │   ├── globals.css      # Design system & tokens
-│   │   ├── responsive.css   # Breakpoints mobile
-│   │   └── revolution.css   # Thème « Revolution Edition »
+│   │   ├── fonts/           # Canela @font-face declarations
+│   │   ├── globals.css      # Design tokens & base styles
+│   │   ├── responsive.css   # Mobile breakpoints
+│   │   └── revolution.css   # “Revolution Edition” theme
 │   ├── components/
-│   │   ├── presse-ivoire/   # UI homepage & chrome site
-│   │   ├── article/         # Détail article, paywall, commentaires
-│   │   ├── admin/           # Composants back-office
-│   │   └── ui/              # Primitives partagées
-│   ├── data/                # Données statiques (nav, partenaires)
+│   │   ├── presse-ivoire/   # Homepage & site chrome
+│   │   ├── article/         # Article detail, paywall, comments
+│   │   ├── admin/           # Back-office components
+│   │   └── ui/              # Shared primitives
+│   ├── data/                # Static data (nav, partners)
 │   ├── lib/
-│   │   ├── data.ts          # Couche d'accès données (DB + fallback)
-│   │   ├── auth.ts          # Configuration NextAuth
-│   │   ├── seed-data.ts     # Jeu de données de démo
-│   │   └── mongodb.ts       # Connexion Mongoose (cache global)
-│   ├── models/              # Schémas Mongoose
-│   └── types/               # Types TypeScript partagés
+│   │   ├── data.ts          # Data access layer (DB + fallback)
+│   │   ├── auth.ts          # NextAuth configuration
+│   │   ├── category-slugs.ts # English slugs & legacy redirects
+│   │   ├── seed-data.ts     # Demo / seed dataset
+│   │   └── mongodb.ts       # Mongoose connection (global cache)
+│   ├── models/              # Mongoose schemas
+│   ├── proxy.ts             # Admin route protection (Next.js 16)
+│   └── types/               # Shared TypeScript types
 ├── .env.example
 ├── next.config.ts
 └── package.json
@@ -253,117 +270,168 @@ magasine/
 
 ---
 
-## Authentification & rôles
+## Authentication & roles
 
-L'accès à `/admin` est protégé par un **proxy** (`src/proxy.ts`, convention Next.js 16).
+Access to `/admin` is protected by a **proxy** (`src/proxy.ts`, Next.js 16 convention). Unauthenticated users are redirected to `/login`; users without an editorial role are sent to the homepage.
 
-| Rôle | Accès admin | Droits typiques |
-|------|-------------|-----------------|
-| `super_admin` | Oui | Tout |
-| `admin` | Oui | Gestion éditoriale complète |
-| `editor` | Oui | Articles, commentaires |
-| `author` | Oui | Ses propres contenus |
-| `contributor` | Non | Soumission (selon évolution) |
-| `reader` | Non | Lecture, commentaires, abonnement |
+| Role | Admin access | Typical permissions |
+|------|--------------|-------------------|
+| `super_admin` | Yes | Full access; only role that can force-reseed or assign `super_admin` |
+| `admin` | Yes | Full editorial and user management |
+| `editor` | Yes | Articles, comments, alerts |
+| `author` | Yes | Own content |
+| `contributor` | No | Submission workflow (review queue) |
+| `reader` | No | Reading, comments, saved articles |
 
-**Connexion :** `/login` — email/mot de passe ou Google (si configuré).
+**Login:** `/login` — email/password or Google (when configured).
 
-**Paywall :** les articles `isPremium` sont accessibles aux abonnés premium, auteurs et rôles admin.
+**Paywall:** articles marked `isPremium` are accessible to users with `isPremium: true`, article authors, and admin/editorial roles.
 
 ---
 
-## API REST
+## REST API
 
-| Endpoint | Méthode | Description |
-|----------|---------|-------------|
-| `/api/seed` | GET | Initialise la base (`?force=true` pour réinitialiser) |
-| `/api/search` | GET | Recherche d'articles (`?q=`) |
-| `/api/feed` | GET | Flux RSS |
-| `/api/newsletter` | POST | Inscription newsletter |
-| `/api/register` | POST | Création de compte lecteur |
-| `/api/comments` | GET, POST | Commentaires par article |
-| `/api/contact` | POST | Formulaire de contact |
-| `/api/subscription` | POST | Gestion abonnement |
-| `/api/user/profile` | GET | Profil utilisateur connecté |
-| `/api/user/saved` | POST | Sauvegarder un article |
-| `/api/user/history` | POST | Historique de lecture |
-| `/api/admin/articles` | POST | Créer un article |
-| `/api/admin/articles/[id]` | GET, PATCH, DELETE | CRUD article |
-| `/api/admin/comments` | GET, PATCH | Modération |
-| `/api/admin/meta` | GET | Statistiques admin |
-| `/api/auth/[...nextauth]` | * | Handlers NextAuth |
+### Public & reader
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/seed` | GET | Initialize database (`?force=true` resets; requires `super_admin`) |
+| `/api/search` | GET | Article search (`?q=`) |
+| `/api/feed` | GET | RSS feed |
+| `/api/newsletter` | GET, POST, PATCH | Newsletter subscription management |
+| `/api/register` | POST | Reader account registration |
+| `/api/comments` | GET, POST | Comments by article |
+| `/api/contact` | POST | Contact form |
+| `/api/donate` | POST | Donation form submission |
+| `/api/user/profile` | GET | Authenticated user profile |
+| `/api/user/saved` | POST | Save / unsave an article |
+| `/api/user/history` | POST | Record reading history |
+| `/api/auth/[...nextauth]` | * | NextAuth handlers |
+
+### Admin (authenticated, editorial role)
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/admin/articles` | POST | Create article |
+| `/api/admin/articles/[id]` | GET, PATCH, DELETE | Article CRUD |
+| `/api/admin/comments` | GET, PATCH | Comment moderation |
+| `/api/admin/categories` | GET, POST | List / create categories |
+| `/api/admin/categories/[id]` | PATCH, DELETE | Update / delete category |
+| `/api/admin/authors` | GET, POST | List / create authors |
+| `/api/admin/authors/[id]` | PATCH, DELETE | Update / delete author |
+| `/api/admin/alerts` | GET, POST | Breaking ticker alerts |
+| `/api/admin/alerts/[id]` | PATCH, DELETE | Update / delete alert |
+| `/api/admin/users` | GET, PATCH | User roles and premium flags |
+| `/api/admin/homepage` | GET, PATCH | Homepage section configuration |
+| `/api/admin/settings` | GET, PATCH | Site settings |
+| `/api/admin/branding/upload` | GET, POST | Logo / favicon upload |
+| `/api/admin/meta` | GET | Dashboard statistics |
+| `/api/admin/newsletter/export` | GET | Export subscriber list |
+
+### Development only
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/dev/ensure-admin` | GET | Create or repair the default admin account |
 
 ---
 
 ## Design system
 
-Identité visuelle alignée sur le logo :
+Visual identity aligned with the Global South Watch logo:
 
-| Token | Valeur | Usage |
+| Token | Value | Usage |
 |-------|--------|-------|
-| `--brand-blue` | `#1a3896` | Primaire, tags, CTA |
-| `--brand-brown` | `#94563c` | Accent, badges live |
-| `--cream` / `--white` | Fonds clairs | Thème clair uniquement |
+| `--brand-blue` | `#1a3896` | Primary, tags, CTAs |
+| `--brand-brown` | `#94563c` | Accent, live badges |
+| `--cream` / `--white` | Light backgrounds | Light theme only |
 
-Polices : **Syne** (titres), **DM Sans** (UI), **Newsreader** (corps éditorial).
+**Typography:**
 
-Le thème **Revolution Edition** (`revolution.css`) ajoute glassmorphism, animations de révélation au scroll et layout bento sur la homepage.
+| Font | Role | Source |
+|------|------|--------|
+| **Canela** | Editorial — headlines, body copy, display type | `public/fonts/canela/` or Adobe Fonts (`NEXT_PUBLIC_ADOBE_FONTS_KIT_ID`) |
+| **DM Sans** | UI — navigation, forms, buttons, labels | Google Fonts via `next/font` (`--font-dm-sans`) |
+
+CSS custom properties: `--f-editorial`, `--f-display`, and `--f-body` map to Canela; `--f-ui` maps to DM Sans.
+
+The **Revolution Edition** theme (`revolution.css`) adds glassmorphism, scroll-reveal animations, and a bento-style homepage layout.
+
+**Primary category slugs** (English, canonical):
+
+| Slug | Topic |
+|------|-------|
+| `news` | National and regional news |
+| `politics` | Governance, elections, institutions |
+| `technology` | Innovation, digital infrastructure, startups |
+| `health` | Public health and health systems |
+| `world` | International coverage |
+| `special-reports` | Long-form and cross-border features |
+
+Additional seeded categories include `culture`, `investigations`, `opinion`, `multimedia`, `local`, `africa`, `latin-america`, `south-asia`, and `west-asia`.
 
 ---
 
-## Déploiement
+## Deployment
 
-### Build de production
+### Production build
 
 ```bash
 npm run build
 npm run start
 ```
 
-### Variables d'environnement production
+### Production environment variables
 
-- `NEXTAUTH_URL` → URL HTTPS du domaine final
-- `NEXTAUTH_SECRET` → secret unique et long
-- `MONGODB_URI` → cluster production (IP allowlist / VPC)
+- `NEXTAUTH_URL` → final HTTPS domain URL
+- `NEXTAUTH_SECRET` → unique, long random secret
+- `MONGODB_URI` → production cluster (IP allowlist / VPC)
+- `NEXT_PUBLIC_ADOBE_FONTS_KIT_ID` → optional, for licensed Canela in production
 
-### Plateformes recommandées
+### Recommended platforms
 
-- [Vercel](https://vercel.com/) — déploiement Next.js natif
-- [Render](https://render.com/) — web service Node.js
-- MongoDB Atlas — base managée
+- [Vercel](https://vercel.com/) — native Next.js deployment
+- [Render](https://render.com/) — Node.js web service
+- MongoDB Atlas — managed database
 
-### Checklist avant mise en ligne
+### Pre-launch checklist
 
-- [ ] Changer le mot de passe admin seed
-- [ ] Configurer `metadataBase` dans `layout.tsx` (URL canonique OG)
-- [ ] Vérifier les domaines `remotePatterns` pour vos images
-- [ ] Activer HTTPS et cookies sécurisés NextAuth
-- [ ] Limiter l'accès à `/api/seed` (désactiver ou protéger en prod)
+- [ ] Change the seeded admin password
+- [ ] Set `metadataBase` in `layout.tsx` (canonical OG URL)
+- [ ] Verify `remotePatterns` for your image CDN
+- [ ] Enable HTTPS and secure NextAuth cookies
+- [ ] Restrict or disable `/api/seed` in production
+- [ ] Install licensed Canela font files or configure Adobe Fonts
 
 ---
 
-## Dépannage
+## Troubleshooting
 
-### Les images ne s'affichent pas
+### Images not loading
 
-- Vérifier que l'URL de l'image est dans `remotePatterns` (`next.config.ts`)
-- Les URLs Unsplash invalides sont corrigées à la volée via `resolveFeaturedImage()` dans `src/lib/images.ts`
-- Le logo local doit être présent : `public/images/logo-global-south-watch.png`
+- Confirm the image URL is listed in `remotePatterns` (`next.config.ts`)
+- Invalid Unsplash URLs are repaired at runtime via `resolveFeaturedImage()` in `src/lib/images.ts`
+- The local logo must exist at `public/images/logo-global-south-watch.png`
 
-### Erreur MongoDB / seed
+### MongoDB / seed errors
 
-- Vérifier `MONGODB_URI` sans espace parasite dans le nom de base
-- Atlas gratuit : limite de 500 collections — supprimer les bases de test inutilisées
-- Sans MongoDB : l'app fonctionne en mode mock automatiquement
+- Check `MONGODB_URI` for stray spaces in the database name
+- Atlas free tier: 500-collection limit — remove unused test databases
+- Without MongoDB: the app runs in automatic mock mode
 
-### Accès admin refusé
+### Admin access denied
 
-- Se connecter avec un compte ayant un rôle `admin`, `editor` ou `super_admin`
-- Lancer `/api/seed` si aucun utilisateur admin n'existe
+- Sign in with a account whose role is `admin`, `editor`, `author`, or `super_admin`
+- Run `/api/seed` or `/api/dev/ensure-admin` (development) if no admin user exists
 
-### `npm run seed` échoue sous Windows
+### Canela font not rendering
 
-Utiliser PowerShell :
+- Add `.woff2` files to `public/fonts/canela/`, or set `NEXT_PUBLIC_ADOBE_FONTS_KIT_ID`
+- Without Canela, the stack falls back to Georgia / Times New Roman
+
+### `npm run seed` fails on Windows
+
+Use PowerShell:
 
 ```powershell
 Invoke-WebRequest http://localhost:3000/api/seed
@@ -371,11 +439,11 @@ Invoke-WebRequest http://localhost:3000/api/seed
 
 ---
 
-## Licence
+## License
 
-Projet privé — tous droits réservés.  
-Contact éditorial : [contact@globalsouthwatch.com](mailto:contact@globalsouthwatch.com)
+Private project — all rights reserved.  
+Editorial contact: [contact@globalsouthwatch.com](mailto:contact@globalsouthwatch.com)
 
 ---
 
-**Global South Watch** — L'information au cœur du Sud global
+**Global South Watch** — Journalism at the heart of the Global South

@@ -22,6 +22,6 @@ export async function GET(request: NextRequest) {
     const results = await searchArticles(q, { category, contentType });
     return NextResponse.json({ results });
   } catch {
-    return NextResponse.json({ results: [], error: "Erreur de recherche" }, { status: 500 });
+    return NextResponse.json({ results: [], error: "Search error" }, { status: 500 });
   }
 }

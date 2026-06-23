@@ -33,8 +33,8 @@ export const HOME_SECTIONS: HomeSectionMeta[] = [
   },
   {
     id: "hero",
-    label: "Hero carousel",
-    description: "Main carousel, mini-cards, and top stories sidebar.",
+    label: "Hero lead",
+    description: "Main featured image, story column, and Also read sidebar.",
     articleFlag: "isFeatured",
     articlesHref: "/admin/articles?flag=featured",
   },

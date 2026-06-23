@@ -1,0 +1,81 @@
+/* ═══ Flat images — no rounded corners site-wide ═══ */
+
+:root {
+  --image-radius: 0;
+}
+
+.article-page--premium {
+  --art-radius: 0;
+  --art-radius-sm: 0;
+}
+
+/* Media elements */
+img,
+video,
+picture,
+.section-image-wrap,
+.img-ph,
+
+/* Hero */
+.hero-frame,
+.hero-illustration,
+.hero-illustration-photo,
+.hero-video-native,
+
+/* Home cards & thumbs */
+.mini-card-img,
+.mini-card-h-media,
+.ec-card-img,
+.ec-card-h-media,
+.video-card-thumb,
+.sa-thumb,
+.latest-item-img,
+.latest-featured-img,
+.rubrique-block-featured-media,
+.rubrique-block-item-img,
+
+/* Article */
+.art-hero-frame,
+.art-hero-frame img,
+.article-page--premium .article-content img,
+.article-page--premium .article-media--video,
+.article-page--premium .article-gallery-img,
+.art-related-thumb,
+.art-inline-media,
+.art-author-avatar,
+.article-author-avatar,
+
+/* Category */
+.category-featured .ec-card-h-media,
+.category-page--revolution .ec-card-h-media,
+
+/* Team / admin previews */
+.adm-author-avatar,
+.adm-branding-preview-img,
+
+/* Avatars & portraits */
+.opinion-avatar-img,
+.hero-avatar,
+.trust-strip-logo-img
+{
+  border-radius: 0 !important;
+}
+
+/* Tailwind image containers (legacy ArticleCard, profile, etc.) */
+.overflow-hidden.rounded-sm,
+.rounded-sm.overflow-hidden,
+.rounded-full.overflow-hidden,
+.rounded-full.overflow-hidden img,
+.relative.overflow-hidden.rounded-sm,
+.group.relative.block.overflow-hidden.rounded-sm
+{
+  border-radius: 0 !important;
+}
+
+/* Opinion hero cards — round thumbnails */
+.home-page--revolution .hero-opinion-section .mini-card-h-media,
+.home-page--revolution .hero-opinion-section .mini-card-h-media .section-image-wrap,
+.home-page--revolution .hero-opinion-section .mini-card-h-media .img-ph,
+.home-page--revolution .hero-opinion-section .mini-card-h-media img {
+  border-radius: 50% !important;
+}

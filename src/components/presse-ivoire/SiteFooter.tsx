@@ -27,7 +27,7 @@ export function SiteFooter() {
             <div className="footer-col">
               <div className="footer-col-title">Sections</div>
               <ul>
-                {FOOTER_COLS.rubriques.map((l) => (
+                {FOOTER_COLS.sections.map((l) => (
                   <li key={l.label}><Link href={l.href}>{l.label}</Link></li>
                 ))}
               </ul>
@@ -43,7 +43,7 @@ export function SiteFooter() {
             <div className="footer-col">
               <div className="footer-col-title">Global South Watch</div>
               <ul>
-                {FOOTER_COLS.presse.map((l) => (
+                {FOOTER_COLS.about.map((l) => (
                   <li key={l.label}><Link href={l.href}>{l.label}</Link></li>
                 ))}
               </ul>

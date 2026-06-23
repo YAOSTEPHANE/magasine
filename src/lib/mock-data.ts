@@ -9,6 +9,7 @@ import {
 import { filterRetiredCategories, filterArticlesByRetiredCategories } from "@/lib/retired-categories";
 import { resolveArticleContent } from "@/lib/article-content";
 import { getAuthorAvatarUrl, resolveFeaturedImage } from "@/lib/images";
+import { resolveCategorySlug } from "@/lib/category-slugs";
 
 const categories = SEED_CATEGORIES.map((c, i) => ({
   _id: `mock-cat-${i}`,
@@ -123,11 +124,12 @@ export function getMockArticleBySlug(slug: string) {
 }
 
 export function getMockCategoryBySlug(slug: string) {
-  const category = categories.find((c) => c.slug === slug);
+  const resolvedSlug = resolveCategorySlug(slug);
+  const category = categories.find((c) => c.slug === resolvedSlug);
   if (!category) return null;
 
   const categoryArticles = articles
-    .filter((a) => a.category.slug === slug)
+    .filter((a) => a.category.slug === resolvedSlug)
     .sort(
       (a, b) =>
         new Date(b.publishedAt ?? 0).getTime() -
@@ -192,22 +194,22 @@ export function getMockHomePageData() {
     editorsChoice: by((a) => !!a.isEditorsChoice).slice(0, 3),
     latestUpdates: published.slice(0, 6),
     featuredVideos: published.filter((a) => a.contentType === "video").slice(0, 4),
-    nationalNews: published.filter((a) => a.category.slug === "actualites").slice(0, 6),
-    worldNews: published.filter((a) => a.category.slug === "monde").slice(0, 4),
+    nationalNews: published.filter((a) => a.category.slug === "news").slice(0, 6),
+    worldNews: published.filter((a) => a.category.slug === "world").slice(0, 4),
     multimedia: published.filter((a) => a.category.slug === "multimedia").slice(0, 4),
     opinion: published.filter((a) => a.category.slug === "opinion").slice(0, 3),
     investigations: published.filter((a) => a.category.slug === "investigations").slice(0, 3),
     specialReports: published
-      .filter((a) => a.category.slug === "reportages-speciaux")
+      .filter((a) => a.category.slug === "special-reports")
       .slice(0, 3),
     popularTags: [...tagCounts.entries()]
       .sort((a, b) => b[1] - a[1])
       .slice(0, 12)
       .map(([name, count]) => ({ name, count })),
-    techNews: published.filter((a) => a.category.slug === "technologie").slice(0, 4),
-    santeNews: published.filter((a) => a.category.slug === "sante").slice(0, 4),
+    techNews: published.filter((a) => a.category.slug === "technology").slice(0, 4),
+    healthNews: published.filter((a) => a.category.slug === "health").slice(0, 4),
     localNews: published.filter((a) => a.category.slug === "local").slice(0, 4),
-    politiqueNews: published.filter((a) => a.category.slug === "politique").slice(0, 4),
+    politicsNews: published.filter((a) => a.category.slug === "politics").slice(0, 4),
     cultureNews: published.filter((a) => a.category.slug === "culture").slice(0, 4),
     urgentArticles: published.filter((a) => a.isUrgent || a.isTopStory).slice(0, 8),
     africaNews: published.filter((a) => a.category.slug === "africa").slice(0, 4),
@@ -217,7 +219,7 @@ export function getMockHomePageData() {
   };
 }
 
-/** Slugs utiles pour lier la page d'accueil statique */
+/** Useful slugs for linking static homepage fallbacks */
 export const MOCK_SLUGS = {
   hero: articles[0]?.slug ?? "",
   mini: articles.slice(1, 5).map((a) => a.slug),
