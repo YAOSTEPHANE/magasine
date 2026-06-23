@@ -4,8 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NAV_RUBRIQUES } from "@/data/presse-ivoire-home";
 
-const URGENT_LINK = { label: "Urgent", href: "/urgent", featured: true, icon: "🔥" };
-
 interface HomeQuickNavProps {
   categories?: { name: string; slug: string }[];
 }
@@ -45,25 +43,14 @@ function NavPill({ item, active }: { item: NavItem; active: boolean }) {
   );
 }
 
-export function HomeQuickNav({ categories }: HomeQuickNavProps) {
+export function HomeQuickNav({ categories: _categories }: HomeQuickNavProps) {
   const pathname = usePathname();
 
-  const rubriqueItems: NavItem[] = NAV_RUBRIQUES.filter((r) => !r.featured).map((r) => ({
+  const items: NavItem[] = NAV_RUBRIQUES.map((r) => ({
     label: r.label,
-    href: r.href === "/#urgent" ? "/urgent" : r.href,
+    href: r.href,
     featured: false,
   }));
-
-  if (categories?.length) {
-    for (const category of categories) {
-      const href = `/category/${category.slug}`;
-      if (!rubriqueItems.some((item) => item.href === href)) {
-        rubriqueItems.push({ label: category.name, href, featured: false });
-      }
-    }
-  }
-
-  const items: NavItem[] = [URGENT_LINK, ...rubriqueItems];
 
   return (
     <nav className="home-quick-nav home-quick-nav--revolution" aria-label="Quick sections">

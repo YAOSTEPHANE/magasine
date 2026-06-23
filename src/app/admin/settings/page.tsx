@@ -1,64 +1,60 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { auth } from "@/lib/auth";
-import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
-import { isAdminRole } from "@/lib/permissions";
-import { getFeedUrl, getSiteUrl, PUBLISHER_NAME } from "@/lib/site";
+import { AdminPageTitle } from "@/components/admin/AdminPageTitle";
+import { SettingsForm } from "@/components/admin/SettingsForm";
+import { canManageUsers } from "@/lib/permissions";
+import { getFeedUrl, getSiteUrl } from "@/lib/site";
 
-export default async function AdminParametresPage() {
+export default async function AdminSettingsPage() {
   const session = await auth();
-  if (!session?.user || !isAdminRole(session.user.role)) {
-    redirect("/login");
+  if (!session?.user || !canManageUsers(session.user.role)) {
+    redirect("/admin");
   }
 
-  const settings = [
-    { label: "Site name", value: "Global South Watch" },
-    { label: "Publisher", value: PUBLISHER_NAME },
-    { label: "URL", value: getSiteUrl() },
-    { label: "Contact email", value: "contact@globalsouthwatch.com" },
-    { label: "Seed mode", value: "GET /api/seed?force=true" },
-    { label: "RSS feed", value: getFeedUrl() },
-  ];
-
   return (
-    <div className="min-h-screen bg-muted-bg">
-      <AdminPageHeader title="Settings" />
-      <div className="max-w-3xl mx-auto px-6 py-8 space-y-8">
-        <div className="bg-surface border border-border rounded-sm divide-y divide-border">
-          {settings.map((s) => (
-            <div key={s.label} className="px-6 py-4 flex justify-between gap-4">
-              <span className="text-sm text-muted">{s.label}</span>
-              <span className="text-sm text-charcoal font-medium text-right">{s.value}</span>
-            </div>
-          ))}
-        </div>
+    <>
+      <AdminPageTitle
+        title="Settings"
+        description="Site configuration, feature flags, and operational shortcuts."
+      />
+      <div className="admin-content space-y-8">
+        <SettingsForm />
 
-        <div className="bg-surface border border-border rounded-sm p-6">
-          <h2 className="font-serif text-lg font-bold text-charcoal mb-4">Quick actions</h2>
-          <div className="space-y-3">
-            <Link href="/api/seed?force=true" className="block text-sm text-accent hover:underline">
-              Re-run data seed →
+        <div className="admin-card admin-card-padded max-w-2xl">
+          <h2 className="font-serif text-lg font-bold text-charcoal mb-4">Environment</h2>
+          <dl className="space-y-3 text-sm">
+            <div className="flex justify-between gap-4">
+              <dt className="text-muted">Public URL</dt>
+              <dd className="font-medium">{getSiteUrl()}</dd>
+            </div>
+            <div className="flex justify-between gap-4">
+              <dt className="text-muted">RSS feed</dt>
+              <dd>
+                <Link href={getFeedUrl()} className="text-accent hover:underline">
+                  {getFeedUrl()}
+                </Link>
+              </dd>
+            </div>
+          </dl>
+          <div className="mt-6 pt-6 border-t border-border space-y-2 text-sm">
+            <Link href="/admin/homepage" className="block text-accent hover:underline">
+              Homepage editor →
             </Link>
-            <Link href="/feed.xml" className="block text-sm text-accent hover:underline">
+            <Link href="/feed.xml" className="block text-accent hover:underline">
               Check RSS feed →
             </Link>
-            <Link href="/rss" className="block text-sm text-accent hover:underline">
-              RSS hub page →
-            </Link>
-            <Link href="/sitemap" className="block text-sm text-accent hover:underline">
-              HTML sitemap →
-            </Link>
-            <Link href="/sitemap.xml" className="block text-sm text-accent hover:underline">
+            <Link href="/sitemap.xml" className="block text-accent hover:underline">
               XML sitemap →
             </Link>
+            {session.user.role === "super_admin" && (
+              <Link href="/api/seed?force=true" className="block text-accent hover:underline">
+                Re-run data seed (super admin) →
+              </Link>
+            )}
           </div>
         </div>
-
-        <p className="text-xs text-muted">
-          Advanced settings (Stripe, SendGrid, Google OAuth) are configured via environment
-          variables in <code>.env.local</code>.
-        </p>
       </div>
-    </div>
+    </>
   );
 }

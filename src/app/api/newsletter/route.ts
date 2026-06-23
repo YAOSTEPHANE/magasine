@@ -4,6 +4,7 @@ import { auth } from "@/lib/auth";
 import { connectDB } from "@/lib/mongodb";
 import { Newsletter } from "@/models/Newsletter";
 import { NEWSLETTER_TOPICS, type NewsletterTopicId } from "@/lib/newsletter-topics";
+import { getPublicSiteSettings } from "@/lib/site-settings";
 
 const topicIds = NEWSLETTER_TOPICS.map((t) => t.id) as NewsletterTopicId[];
 
@@ -51,6 +52,11 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
+    const settings = await getPublicSiteSettings();
+    if (!settings.newsletterEnabled) {
+      return NextResponse.json({ error: "Newsletter sign-ups are currently disabled" }, { status: 403 });
+    }
+
     const body = await request.json();
     const parsed = postSchema.safeParse(body);
     if (!parsed.success) {

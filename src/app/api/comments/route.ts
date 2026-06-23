@@ -3,6 +3,7 @@ import { connectDB } from "@/lib/mongodb";
 import { Comment } from "@/models/Comment";
 import { Article } from "@/models/Article";
 import { auth } from "@/lib/auth";
+import { getPublicSiteSettings } from "@/lib/site-settings";
 import { z } from "zod";
 
 const createSchema = z.object({
@@ -18,6 +19,11 @@ export async function GET(request: NextRequest) {
   }
 
   try {
+    const settings = await getPublicSiteSettings();
+    if (!settings.commentsEnabled) {
+      return NextResponse.json({ comments: [] });
+    }
+
     await connectDB();
     const comments = await Comment.find({ article: articleId, isApproved: true, parent: null })
       .populate("user", "name image")
@@ -47,6 +53,11 @@ export async function POST(request: NextRequest) {
   }
 
   try {
+    const settings = await getPublicSiteSettings();
+    if (!settings.commentsEnabled) {
+      return NextResponse.json({ error: "Comments are currently disabled" }, { status: 403 });
+    }
+
     const body = await request.json();
     const parsed = createSchema.safeParse(body);
     if (!parsed.success) {

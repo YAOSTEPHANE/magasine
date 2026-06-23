@@ -15,7 +15,7 @@ export function LatestSection({ data }: LatestSectionProps) {
       <div className="container">
         <SectionHeader
           number="02"
-          eyebrow="Live"
+          eyebrow="News"
           title="Latest Updates"
           linkHref="/search"
           linkLabel="View all"
@@ -24,7 +24,6 @@ export function LatestSection({ data }: LatestSectionProps) {
           <Link href={featured.slug ?? "#"} className="latest-featured-h reveal">
             <div className="latest-featured-h-media">
               <SectionImage src={featured.image} alt={featured.title} sizes="(max-width: 768px) 100vw, 520px" />
-              <span className="latest-live-badge">{featured.badge}</span>
             </div>
             <div className="latest-featured-h-body">
               <span className="tag">{featured.cat}</span>

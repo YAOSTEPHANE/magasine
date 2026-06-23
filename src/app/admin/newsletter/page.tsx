@@ -2,86 +2,83 @@ import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { connectDB } from "@/lib/mongodb";
 import { Newsletter } from "@/models/Newsletter";
-import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
-import { canManageArticles } from "@/lib/permissions";
+import { AdminPageTitle } from "@/components/admin/AdminPageTitle";
 import { formatDate } from "@/lib/utils";
+import { isAdminRole } from "@/lib/permissions";
+import { Download } from "lucide-react";
 
 export default async function AdminNewsletterPage() {
   const session = await auth();
-  if (!session?.user || !canManageArticles(session.user.role)) {
-    redirect("/login");
+  if (!session?.user || !isAdminRole(session.user.role)) {
+    redirect("/admin");
   }
 
-  let subscribers: { email: string; preferences: string[]; isActive: boolean; subscribedAt: Date }[] = [];
-  let total = 0;
-
-  try {
-    await connectDB();
-    const [docs, count] = await Promise.all([
-      Newsletter.find().sort({ subscribedAt: -1 }).limit(50).lean(),
-      Newsletter.countDocuments({ isActive: true }),
-    ]);
-    subscribers = docs;
-    total = count;
-  } catch {
-    subscribers = [];
-  }
+  await connectDB();
+  const [subscribers, total] = await Promise.all([
+    Newsletter.find().sort({ subscribedAt: -1 }).limit(50).lean(),
+    Newsletter.countDocuments({ isActive: true }),
+  ]);
 
   return (
-    <div className="min-h-screen bg-muted-bg">
-      <AdminPageHeader title="Newsletter" />
-      <div className="max-w-7xl mx-auto px-6 py-8">
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
-          <div className="bg-surface border border-border rounded-sm p-6">
-            <p className="text-3xl font-bold text-charcoal">{total}</p>
-            <p className="text-sm text-muted mt-1">Active subscribers</p>
+    <>
+      <AdminPageTitle
+        title="Newsletter"
+        description="Subscriber list and export for email campaigns."
+        actions={
+          <a href="/api/admin/newsletter/export" className="admin-btn admin-btn--secondary">
+            <Download className="w-4 h-4" />
+            Export CSV
+          </a>
+        }
+      />
+      <div className="admin-content">
+        <div className="admin-stats-grid" style={{ gridTemplateColumns: "repeat(2, minmax(0, 1fr))" }}>
+          <div className="admin-stat-card">
+            <p className="admin-stat-card-value">{total}</p>
+            <p className="admin-stat-card-label">Active subscribers</p>
           </div>
-          <div className="bg-surface border border-border rounded-sm p-6">
-            <p className="text-3xl font-bold text-charcoal">{subscribers.length}</p>
-            <p className="text-sm text-muted mt-1">Recent sign-ups</p>
-          </div>
-          <div className="bg-surface border border-border rounded-sm p-6">
-            <p className="text-sm text-muted">Email delivery</p>
-            <p className="text-sm text-charcoal mt-2">Connect SendGrid or Resend in production.</p>
+          <div className="admin-stat-card">
+            <p className="admin-stat-card-value">{subscribers.length}</p>
+            <p className="admin-stat-card-label">Recent sign-ups shown</p>
           </div>
         </div>
 
-        <div className="bg-surface border border-border rounded-sm overflow-hidden">
-          <table className="w-full">
-            <thead className="bg-muted-bg border-b border-border">
+        <div className="admin-card">
+          <table className="admin-table">
+            <thead>
               <tr>
-                <th className="text-left px-6 py-4 text-xs font-bold uppercase text-muted">Email</th>
-                <th className="text-left px-6 py-4 text-xs font-bold uppercase text-muted hidden md:table-cell">Preferences</th>
-                <th className="text-left px-6 py-4 text-xs font-bold uppercase text-muted">Status</th>
-                <th className="text-left px-6 py-4 text-xs font-bold uppercase text-muted hidden lg:table-cell">Date</th>
+                <th>Email</th>
+                <th className="hidden md:table-cell">Preferences</th>
+                <th>Status</th>
+                <th className="hidden lg:table-cell">Date</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-border">
+            <tbody>
               {subscribers.map((sub) => (
                 <tr key={sub.email}>
-                  <td className="px-6 py-4 text-sm text-charcoal">{sub.email}</td>
-                  <td className="px-6 py-4 text-sm text-muted hidden md:table-cell">
+                  <td>{sub.email}</td>
+                  <td className="text-muted hidden md:table-cell">
                     {(sub.preferences ?? []).join(", ") || "general"}
                   </td>
-                  <td className="px-6 py-4 text-sm">
-                    {sub.isActive ? (
-                      <span className="text-green-700">Active</span>
-                    ) : (
-                      <span className="text-muted">Unsubscribed</span>
-                    )}
-                  </td>
-                  <td className="px-6 py-4 text-sm text-muted hidden lg:table-cell">
-                    {formatDate(sub.subscribedAt)}
-                  </td>
+                  <td>{sub.isActive ? (
+                    <span className="admin-status-pill admin-status-pill--active">Active</span>
+                  ) : (
+                    <span className="admin-status-pill admin-status-pill--inactive">Unsubscribed</span>
+                  )}</td>
+                  <td className="text-muted hidden lg:table-cell">{formatDate(sub.subscribedAt)}</td>
                 </tr>
               ))}
             </tbody>
           </table>
           {subscribers.length === 0 && (
-            <p className="p-12 text-center text-muted text-sm">No newsletter subscribers yet.</p>
+            <p className="admin-empty">No newsletter subscribers yet.</p>
           )}
         </div>
+
+        <p className="admin-footnote">
+          Connect SendGrid or Resend via environment variables for production email delivery.
+        </p>
       </div>
-    </div>
+    </>
   );
 }

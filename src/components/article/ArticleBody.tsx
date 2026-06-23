@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Play, Mic } from "lucide-react";
 import type { ArticleDetail } from "@/types";
 import { toVideoEmbedUrl, isVideoFile } from "@/lib/format-article";
+import { resolveFeaturedImage } from "@/lib/images";
 
 interface ArticleBodyProps {
   article: ArticleDetail;
@@ -13,13 +14,14 @@ export function ArticleBody({ article, truncated = false }: ArticleBodyProps) {
   const isVideo = article.contentType === "video";
   const isPodcast = article.contentType === "podcast";
   const isGallery = article.contentType === "gallery";
+  const heroImage = resolveFeaturedImage(article.featuredImage);
 
   return (
     <div className={truncated ? "article-body article-body--truncated" : "article-body"}>
       {isVideo && embedUrl && (
         <div className="article-media article-media--video">
           {isVideoFile(embedUrl) ? (
-            <video controls className="article-video-native" src={embedUrl} poster={article.featuredImage}>
+            <video controls className="article-video-native" src={embedUrl} poster={heroImage}>
               <track kind="captions" />
             </video>
           ) : (
@@ -61,7 +63,7 @@ export function ArticleBody({ article, truncated = false }: ArticleBodyProps) {
           {article.gallery.map((item) => (
             <figure key={item.url} className="article-gallery-item">
               <div className="article-gallery-img">
-                <Image src={item.url} alt={item.caption ?? article.title} fill className="object-cover" sizes="(max-width: 768px) 100vw, 640px" />
+                <Image src={resolveFeaturedImage(item.url)} alt={item.caption ?? article.title} fill className="object-cover" sizes="(max-width: 768px) 100vw, 640px" />
               </div>
               {(item.caption || item.credit) && (
                 <figcaption>

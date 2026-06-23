@@ -1,22 +1,26 @@
 import Link from "next/link";
-import type { HomePageViewModel } from "@/types/home";
+import type { HomeLatest, HomePageViewModel } from "@/types/home";
 import { HeroCarousel } from "@/components/presse-ivoire/HeroCarousel";
+import { LatestNewsColumn } from "@/components/presse-ivoire/LatestNewsColumn";
 import { SectionImage } from "@/components/presse-ivoire/SectionImage";
 
 interface HeroHomeProps {
-  data: Pick<HomePageViewModel, "heroSlides" | "miniCards" | "topStories" | "popularTags">;
+  data: Pick<HomePageViewModel, "heroSlides" | "miniCards">;
+  latest: HomeLatest;
 }
 
-export function HeroHome({ data }: HeroHomeProps) {
+export function HeroHome({ data, latest }: HeroHomeProps) {
   if (data.heroSlides.length === 0) return null;
 
   return (
     <section className="hero hero-premium">
       <div className="container hero-shell">
-        <div className="hero-grid">
-          <div className="hero-main reveal">
+        <div className="hero-grid hero-grid--amargi">
+          <div className="hero-lead reveal">
             <HeroCarousel slides={data.heroSlides} />
+          </div>
 
+          <div className="hero-center reveal" data-reveal-delay={80}>
             <div className="hero-sub-section">
               <div className="hero-sub-header">
                 <h3 className="hero-sub-title">Also read</h3>
@@ -24,13 +28,13 @@ export function HeroHome({ data }: HeroHomeProps) {
                   All news
                 </Link>
               </div>
-              <div className="hero-sub-articles">
-                {data.miniCards.map((card, i) => (
+              <div className="hero-sub-articles hero-sub-articles--stack">
+                {data.miniCards.slice(0, 4).map((card, i) => (
                   <Link
                     key={card.slug ?? card.title}
                     href={card.slug ?? "#"}
-                    className="mini-card-h reveal"
-                    data-reveal-delay={i * 80}
+                    className="mini-card-h reveal visible"
+                    data-reveal-delay={i * 60}
                   >
                     <div className="mini-card-h-media">
                       <SectionImage src={card.image} alt={card.title} sizes="160px" />
@@ -47,56 +51,7 @@ export function HeroHome({ data }: HeroHomeProps) {
             </div>
           </div>
 
-          <aside className="hero-sidebar hero-sidebar-premium reveal" data-reveal-delay={120}>
-            <div className="sidebar-panel sidebar-panel--live">
-              <div className="sidebar-section-title">
-                <span className="sidebar-live-label">
-                  <span className="sidebar-live-dot" />
-                  Top Stories
-                </span>
-                <Link href="/search">View all</Link>
-              </div>
-
-              {data.topStories.map((story) => (
-                <Link key={story.num} href={story.slug} className="sidebar-article">
-                  <div className="sa-num">{story.num}</div>
-                  <div className="sa-thumb">
-                    <SectionImage src={story.image} alt={story.title} sizes="72px" />
-                  </div>
-                  <div className="sa-info">
-                    <div className="sa-cat">{story.cat}</div>
-                    <div className="sa-title">{story.title}</div>
-                    <div className="sa-meta">{story.meta}</div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-
-            <div className="sidebar-panel sidebar-tags-panel sidebar-panel--accent">
-              <div className="sidebar-section-title">Popular tags</div>
-              <div className="tags-cloud">
-                {data.popularTags.map((tag) => (
-                  <Link
-                    key={tag}
-                    href={`/search?q=${encodeURIComponent(tag.replace("#", ""))}`}
-                    className="cloud-tag"
-                  >
-                    {tag}
-                  </Link>
-                ))}
-              </div>
-            </div>
-
-            <div className="sidebar-premium-cta sidebar-newsletter-cta">
-              <span className="sidebar-premium-cta-label">Newsletter</span>
-              <p className="sidebar-premium-cta-text">
-                Free morning briefing and regional editions — curated by our newsroom.
-              </p>
-              <Link href="/newsletter" className="sidebar-premium-cta-btn">
-                Subscribe for free
-              </Link>
-            </div>
-          </aside>
+          <LatestNewsColumn data={latest} />
         </div>
       </div>
     </section>

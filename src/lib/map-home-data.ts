@@ -46,11 +46,8 @@ const RUBRIQUE_SOURCES: {
   { slug: "south-asia", title: "South Asia", key: "southAsiaNews" },
   { slug: "west-asia", title: "West Asia", key: "westAsiaNews" },
   { slug: "actualites", title: "News", key: "nationalNews" },
-  { slug: "finance", title: "Finance", key: "financeNews" },
-  { slug: "sante", title: "Health", key: "santeNews" },
-  { slug: "divertissement", title: "Entertainment", key: "divertissementNews" },
-  { slug: "local", title: "Local", key: "localNews" },
-  { slug: "monde", title: "World", key: "worldNews" },
+  { slug: "politique", title: "Politics", key: "politiqueNews" },
+  { slug: "culture", title: "Culture", key: "cultureNews" },
   { slug: "investigations", title: "Investigations", key: "investigations" },
   { slug: "reportages-speciaux", title: "Special Reports", key: "specialReports" },
   { slug: "multimedia", title: "Multimedia", key: "multimedia" },
@@ -323,11 +320,11 @@ function buildThematicCol(
   };
 }
 
-function buildThematic(source: HomeDataSource & { techNews?: ArticleListItem[]; sportsNews?: ArticleListItem[] }): HomeThematicCol[] {
-  const tech = buildThematicCol("Technologie", "technologie", source.techNews ?? []);
-  const sports = buildThematicCol("Sports", "sports", source.sportsNews ?? []);
+function buildThematic(source: HomeDataSource & { cultureNews?: ArticleListItem[]; investigations?: ArticleListItem[] }): HomeThematicCol[] {
+  const culture = buildThematicCol("Culture", "culture", source.cultureNews ?? []);
+  const investigations = buildThematicCol("Investigations", "investigations", source.investigations ?? []);
 
-  if (tech && sports) return [tech, sports];
+  if (culture && investigations) return [culture, investigations];
 
   return THEMATIC.map((col) => ({
     title: col.title,
@@ -348,7 +345,9 @@ function buildUrgent(source: HomeDataSource): HomeUrgent {
   const alerts =
     source.alerts.length > 0
       ? source.alerts.map((a) => ({ text: a.text, link: a.link }))
-      : TICKER_ITEMS.map((text) => ({ text }));
+      : source.breakingAlertsEnabled !== false
+        ? TICKER_ITEMS.map((text) => ({ text }))
+        : [];
 
   if (source.urgentArticles.length > 0) {
     return {
@@ -387,7 +386,7 @@ function buildRubriques(source: HomeDataSource): HomeRubriqueBlock[] {
         slug,
         title,
         href: `/category/${slug}`,
-        articles: items.slice(0, 3).map(toHomeCard),
+        articles: items.slice(0, 4).map(toHomeCard),
       },
     ];
   });

@@ -1,8 +1,10 @@
 import mongoose from "mongoose";
+import { cache } from "react";
 import { connectDB } from "@/lib/mongodb";
 import { Article } from "@/models/Article";
 import { Category } from "@/models/Category";
 import { Alert } from "@/models/Alert";
+import "@/models/Author";
 import type { ArticleListItem } from "@/types";
 import {
   getMockArticleBySlug,
@@ -14,9 +16,11 @@ import {
   searchMockArticles,
 } from "@/lib/mock-data";
 import { resolveAuthorAvatar, resolveFeaturedImage } from "@/lib/images";
+import { getPublicSiteSettings } from "@/lib/site-settings";
+import { repairBrokenArticleImagesOnce } from "@/lib/repair-article-images";
 
 function serializeArticle(doc: Record<string, unknown>): ArticleListItem {
-  const category = doc.category as Record<string, unknown>;
+  const category = doc.category as Record<string, unknown> | null | undefined;
   const authors = (doc.authors as Record<string, unknown>[]) ?? [];
 
   return {
@@ -26,31 +30,39 @@ function serializeArticle(doc: Record<string, unknown>): ArticleListItem {
     excerpt: doc.excerpt as string,
     featuredImage: resolveFeaturedImage(doc.featuredImage as string),
     featuredImageAlt: doc.featuredImageAlt as string | undefined,
-    category: {
-      _id: String(category._id),
-      name: category.name as string,
-      slug: category.slug as string,
-      color: category.color as string | undefined,
-    },
-    authors: authors.map((a) => ({
-      _id: String(a._id),
-      name: a.name as string,
-      slug: a.slug as string,
-      avatar: resolveAuthorAvatar(a.avatar as string | undefined, a.slug as string),
-    })),
+    category: category?._id
+      ? {
+          _id: String(category._id),
+          name: category.name as string,
+          slug: category.slug as string,
+          color: category.color as string | undefined,
+        }
+      : {
+          _id: "unknown",
+          name: "News",
+          slug: "actualites",
+        },
+    authors: authors
+      .filter((a) => a?._id)
+      .map((a) => ({
+        _id: String(a._id),
+        name: a.name as string,
+        slug: a.slug as string,
+        avatar: resolveAuthorAvatar(a.avatar as string | undefined, a.slug as string),
+      })),
     publishedAt: doc.publishedAt
-      ? new Date(doc.publishedAt as string).toISOString()
+      ? new Date(doc.publishedAt as string | Date).toISOString()
       : undefined,
-    readingTime: doc.readingTime as number,
-    isPremium: doc.isPremium as boolean | undefined,
-    isEditorsChoice: doc.isEditorsChoice as boolean | undefined,
-    isFeatured: doc.isFeatured as boolean | undefined,
-    isTopStory: doc.isTopStory as boolean | undefined,
-    isUrgent: doc.isUrgent as boolean | undefined,
-    views: doc.views as number | undefined,
-    tags: doc.tags as string[] | undefined,
+    readingTime: Number(doc.readingTime ?? 0),
+    isPremium: !!doc.isPremium,
+    isEditorsChoice: !!doc.isEditorsChoice,
+    isFeatured: !!doc.isFeatured,
+    isTopStory: !!doc.isTopStory,
+    isUrgent: !!doc.isUrgent,
+    views: doc.views != null ? Number(doc.views) : undefined,
+    tags: Array.isArray(doc.tags) ? (doc.tags as string[]) : undefined,
     contentType: doc.contentType as ArticleListItem["contentType"],
-    videoUrl: doc.videoUrl as string | undefined,
+    videoUrl: typeof doc.videoUrl === "string" ? doc.videoUrl : undefined,
   };
 }
 
@@ -59,23 +71,32 @@ const articlePopulate = [
   { path: "authors", select: "name slug avatar" },
 ];
 
+let publishedArticleCountCache: boolean | null = null;
+
 async function hasDbArticles(): Promise<boolean> {
+  if (publishedArticleCountCache !== null) {
+    return publishedArticleCountCache;
+  }
   try {
     await connectDB();
     const count = await Article.countDocuments({ status: "published" });
-    return count > 0;
+    publishedArticleCountCache = count > 0;
+    return publishedArticleCountCache;
   } catch {
+    publishedArticleCountCache = false;
     return false;
   }
 }
 
-export async function getHomePageData() {
+export const getHomePageData = cache(async function getHomePageData() {
   if (!(await hasDbArticles())) {
     return getMockHomePageData();
   }
 
   await connectDB();
+  await repairBrokenArticleImagesOnce();
 
+  const siteSettings = await getPublicSiteSettings();
   const baseQuery = { status: "published" as const };
 
   const [
@@ -99,6 +120,8 @@ export async function getHomePageData() {
     santeNews,
     divertissementNews,
     localNews,
+    politiqueNews,
+    cultureNews,
     urgentArticles,
     africaNews,
     latinAmericaNews,
@@ -163,6 +186,8 @@ export async function getHomePageData() {
     getArticlesByCategorySlug("sante", 4),
     getArticlesByCategorySlug("divertissement", 4),
     getArticlesByCategorySlug("local", 4),
+    getArticlesByCategorySlug("politique", 4),
+    getArticlesByCategorySlug("culture", 4),
     Article.find({
       ...baseQuery,
       $or: [{ isUrgent: true }, { isTopStory: true }],
@@ -178,11 +203,14 @@ export async function getHomePageData() {
   ]);
 
   return {
-    alerts: alerts.map((a) => ({
-      _id: String(a._id),
-      text: a.text,
-      link: a.link,
-    })),
+    breakingAlertsEnabled: siteSettings.breakingAlertEnabled,
+    alerts: siteSettings.breakingAlertEnabled
+      ? alerts.map((a) => ({
+          _id: String(a._id),
+          text: a.text,
+          link: a.link,
+        }))
+      : [],
     categories: categories.map((c) => ({
       _id: String(c._id),
       name: c.name,
@@ -210,6 +238,8 @@ export async function getHomePageData() {
     santeNews,
     divertissementNews,
     localNews,
+    politiqueNews,
+    cultureNews,
     urgentArticles: urgentArticles.map((a) =>
       serializeArticle(a as unknown as Record<string, unknown>)
     ),
@@ -218,7 +248,7 @@ export async function getHomePageData() {
     southAsiaNews,
     westAsiaNews,
   };
-}
+});
 
 export async function getAllArticleSlugs(): Promise<string[]> {
   if (!(await hasDbArticles())) {
@@ -280,7 +310,8 @@ export async function getUrgentPageData(limit = 36) {
 }
 
 export async function getArticlesByCategorySlug(slug: string, limit = 12) {
-  if (!(await hasDbArticles())) {
+  const useDb = await hasDbArticles();
+  if (!useDb) {
     return getMockCategoryBySlug(slug)?.articles.slice(0, limit) ?? [];
   }
 
@@ -312,7 +343,7 @@ export async function getArticleBySlug(slug: string) {
   const article = await Article.findOneAndUpdate(
     { slug, status: "published" },
     { $inc: { views: 1 } },
-    { new: true }
+    { returnDocument: "after" }
   )
     .populate(articlePopulate)
     .populate("secondaryCategories", "name slug color")
@@ -362,7 +393,10 @@ export async function getArticleBySlug(slug: string) {
       content: article.content,
       seoTitle: article.seoTitle,
       seoDescription: article.seoDescription,
-      gallery: article.gallery,
+      gallery: article.gallery?.map((item) => ({
+        ...item,
+        url: resolveFeaturedImage(item.url),
+      })),
       shareCount: article.shareCount,
       featuredImageCaption: article.featuredImageCaption,
     },
@@ -606,30 +640,41 @@ export async function getAllAuthors() {
   }));
 }
 
-export async function getLayoutNavData() {
+export const getLayoutNavData = cache(async function getLayoutNavData() {
   try {
+    const siteSettings = await getPublicSiteSettings();
     await connectDB();
     const [categories, alerts, articleCount] = await Promise.all([
       Category.find({ isActive: true }).sort({ order: 1 }).lean(),
-      Alert.find({ isActive: true }).sort({ order: 1 }).limit(5).lean(),
+      siteSettings.breakingAlertEnabled
+        ? Alert.find({ isActive: true }).sort({ order: 1 }).limit(5).lean()
+        : Promise.resolve([]),
       Article.countDocuments({ status: "published" }),
     ]);
 
     if (articleCount === 0) {
       return {
         categories: mockCategories,
-        alerts: mockAlerts.map((a) => ({ text: a.text, link: a.link })),
+        alerts: siteSettings.breakingAlertEnabled
+          ? mockAlerts.map((a) => ({ text: a.text, link: a.link }))
+          : [],
+        siteSettings,
       };
     }
 
     return {
       categories: categories.map((c) => ({ name: c.name, slug: c.slug })),
       alerts: alerts.map((a) => ({ text: a.text, link: a.link })),
+      siteSettings,
     };
   } catch {
+    const siteSettings = await getPublicSiteSettings();
     return {
       categories: mockCategories,
-      alerts: mockAlerts.map((a) => ({ text: a.text, link: a.link })),
+      alerts: siteSettings.breakingAlertEnabled
+        ? mockAlerts.map((a) => ({ text: a.text, link: a.link }))
+        : [],
+      siteSettings,
     };
   }
-}
+});

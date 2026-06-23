@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
 import { Syne, DM_Sans, Newsreader } from "next/font/google";
-import { TopBar } from "@/components/presse-ivoire/TopBar";
 import { SiteHeader } from "@/components/presse-ivoire/SiteHeader";
 import { HomeQuickNav } from "@/components/presse-ivoire/HomeQuickNav";
 import { SiteFooter } from "@/components/presse-ivoire/SiteFooter";
 import { ProgressBar } from "@/components/presse-ivoire/ProgressBar";
 import { ScrollReveal } from "@/components/presse-ivoire/ScrollReveal";
 import { getLayoutNavData } from "@/lib/data";
-import { getEditorialDateString } from "@/lib/editorial-date";
 import { Providers } from "@/components/Providers";
+import { MaintenanceGate } from "@/components/MaintenanceGate";
 import "./globals.css";
 import "./responsive.css";
 import "./revolution.css";
+import "./home-page.css";
 
 const syne = Syne({
   variable: "--font-syne",
@@ -72,8 +72,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { categories, alerts } = await getLayoutData();
-  const formattedDate = getEditorialDateString();
+  const { categories, siteSettings } = await getLayoutData();
 
   return (
     <html
@@ -83,13 +82,17 @@ export default async function RootLayout({
     >
       <body className="notranslate" suppressHydrationWarning translate="no">
         <Providers>
-          <ProgressBar />
-          <TopBar alerts={alerts} formattedDate={formattedDate} />
-          <SiteHeader />
-          <HomeQuickNav categories={categories} />
-          <main>{children}</main>
-          <SiteFooter />
-          <ScrollReveal />
+          <MaintenanceGate
+            maintenanceMode={siteSettings.maintenanceMode}
+            siteName={siteSettings.siteName}
+          >
+            <ProgressBar />
+            <SiteHeader />
+            <HomeQuickNav categories={categories} />
+            <main>{children}</main>
+            <SiteFooter />
+            <ScrollReveal />
+          </MaintenanceGate>
         </Providers>
       </body>
     </html>

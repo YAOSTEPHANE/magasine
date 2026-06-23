@@ -1,4 +1,16 @@
-export function HomePulseStrip() {
+import type { PulseStat } from "@/lib/site-settings";
+
+interface HomePulseStripProps {
+  stats?: PulseStat[];
+}
+
+export function HomePulseStrip({ stats }: HomePulseStripProps) {
+  const items = stats ?? [
+    { value: "54", label: "countries" },
+    { value: "127", label: "stories / week" },
+    { value: "2M+", label: "readers" },
+  ];
+
   return (
     <div
       className="home-pulse-strip notranslate"
@@ -7,18 +19,12 @@ export function HomePulseStrip() {
       lang="en"
     >
       <div className="container home-pulse-strip-inner">
-        <div className="home-pulse-item home-pulse-stat">
-          <strong>54</strong>
-          <span className="home-pulse-stat-label">countries</span>
-        </div>
-        <div className="home-pulse-item home-pulse-stat">
-          <strong>127</strong>
-          <span className="home-pulse-stat-label">stories / week</span>
-        </div>
-        <div className="home-pulse-item home-pulse-stat">
-          <strong>2M+</strong>
-          <span className="home-pulse-stat-label">readers</span>
-        </div>
+        {items.map((item) => (
+          <div key={`${item.value}-${item.label}`} className="home-pulse-item home-pulse-stat">
+            <strong>{item.value}</strong>
+            <span className="home-pulse-stat-label">{item.label}</span>
+          </div>
+        ))}
       </div>
     </div>
   );

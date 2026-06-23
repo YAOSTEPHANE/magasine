@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
+import { AdminPageTitle } from "@/components/admin/AdminPageTitle";
 import { formatRelativeDate } from "@/lib/utils";
 
 interface CommentRow {
@@ -15,11 +15,15 @@ interface CommentRow {
   article: { title: string; slug: string };
 }
 
-export default function AdminCommentairesPage() {
+type Filter = "all" | "pending" | "approved";
+
+export default function AdminCommentsPage() {
   const [comments, setComments] = useState<CommentRow[]>([]);
   const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState<Filter>("all");
 
   const load = () => {
+    setLoading(true);
     fetch("/api/admin/comments")
       .then((r) => r.json())
       .then((data) => setComments(data.comments ?? []))
@@ -39,42 +43,73 @@ export default function AdminCommentairesPage() {
     load();
   };
 
+  const filtered = comments.filter((c) => {
+    if (filter === "pending") return !c.isApproved;
+    if (filter === "approved") return c.isApproved;
+    return true;
+  });
+
   return (
-    <div className="min-h-screen bg-muted-bg">
-      <AdminPageHeader title="Comment moderation" />
-      <div className="max-w-7xl mx-auto px-6 py-8">
+    <>
+      <AdminPageTitle
+        title="Comment moderation"
+        description="Approve, hide, or remove reader comments."
+      />
+      <div className="admin-content">
+        <div className="admin-toolbar">
+          <div className="admin-toolbar-filters">
+            {(
+              [
+                ["all", "All"],
+                ["pending", "Pending"],
+                ["approved", "Approved"],
+              ] as const
+            ).map(([value, label]) => (
+              <button
+                key={value}
+                type="button"
+                className={`admin-filter-pill${filter === value ? " admin-filter-pill--active" : ""}`}
+                onClick={() => setFilter(value)}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        </div>
+
         {loading ? (
-          <p className="text-muted text-center py-12">Loading...</p>
-        ) : comments.length === 0 ? (
-          <p className="text-muted text-center py-12">No comments.</p>
+          <p className="admin-loading">Loading comments…</p>
+        ) : filtered.length === 0 ? (
+          <p className="admin-empty">No comments in this view.</p>
         ) : (
-          <div className="space-y-4">
-            {comments.map((c) => (
+          <div className="admin-comment-list">
+            {filtered.map((c) => (
               <div
                 key={c._id}
-                className={`bg-surface border rounded-sm p-5 ${
-                  c.isApproved ? "border-border" : "border-gold/50 bg-gold-light/30"
-                }`}
+                className={`admin-comment-card${c.isApproved ? "" : " admin-comment-card--pending"}`}
               >
-                <div className="flex items-start justify-between gap-4 mb-3">
+                <div className="admin-comment-head">
                   <div>
-                    <p className="text-sm font-medium text-charcoal">{c.user?.name}</p>
-                    <p className="text-xs text-muted">{c.user?.email}</p>
+                    <p className="admin-comment-author">{c.user?.name}</p>
+                    <p className="admin-comment-email">{c.user?.email}</p>
                   </div>
-                  <span className="text-xs text-muted">{formatRelativeDate(c.createdAt)}</span>
+                  <span className="admin-comment-time">{formatRelativeDate(c.createdAt)}</span>
                 </div>
-                <p className="text-sm text-charcoal/80 mb-3">{c.content}</p>
+                <p className="admin-comment-body">{c.content}</p>
+                {c.isReported && (
+                  <p className="admin-comment-flag">Reported by readers</p>
+                )}
                 {c.article?.slug && (
-                  <Link href={`/article/${c.article.slug}`} className="text-xs text-accent hover:underline">
+                  <Link href={`/article/${c.article.slug}`} className="admin-comment-article">
                     On: {c.article.title}
                   </Link>
                 )}
-                <div className="flex gap-3 mt-4 pt-4 border-t border-border">
+                <div className="admin-comment-actions">
                   {!c.isApproved && (
                     <button
                       type="button"
                       onClick={() => moderate(c._id, "approve")}
-                      className="text-xs text-green-700 hover:underline"
+                      className="admin-btn admin-btn--sm admin-btn--secondary"
                     >
                       Approve
                     </button>
@@ -83,7 +118,7 @@ export default function AdminCommentairesPage() {
                     <button
                       type="button"
                       onClick={() => moderate(c._id, "reject")}
-                      className="text-xs text-amber-700 hover:underline"
+                      className="admin-btn admin-btn--sm admin-btn--secondary"
                     >
                       Hide
                     </button>
@@ -91,7 +126,7 @@ export default function AdminCommentairesPage() {
                   <button
                     type="button"
                     onClick={() => moderate(c._id, "delete")}
-                    className="text-xs text-red-600 hover:underline"
+                    className="admin-btn admin-btn--sm admin-btn--danger"
                   >
                     Delete
                   </button>
@@ -101,6 +136,6 @@ export default function AdminCommentairesPage() {
           </div>
         )}
       </div>
-    </div>
+    </>
   );
 }

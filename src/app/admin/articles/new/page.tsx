@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import { AdminPageTitle } from "@/components/admin/AdminPageTitle";
+import { RichTextEditor } from "@/components/admin/RichTextEditor";
 
 interface Category {
   _id: string;
@@ -67,64 +67,46 @@ export default function NewArticlePage() {
     }
   };
 
-  const inputClass =
-    "w-full px-4 py-3 bg-muted-bg border border-border rounded-sm focus:outline-none focus:ring-2 focus:ring-gold/30 text-charcoal";
-  const labelClass = "block text-xs font-medium tracking-wider uppercase text-muted mb-2";
-
   return (
-    <div className="min-h-screen bg-muted-bg">
-      <div className="bg-charcoal text-white">
-        <div className="max-w-4xl mx-auto px-6 py-6 flex items-center gap-4">
-          <Link href="/admin/articles" className="text-white/60 hover:text-white">
-            <ArrowLeft className="w-5 h-5" />
-          </Link>
-          <h1 className="font-serif text-xl font-bold">New article</h1>
-        </div>
-      </div>
-
-      <form onSubmit={handleSubmit} className="max-w-4xl mx-auto px-6 py-8 space-y-6">
-        <div className="bg-surface border border-border rounded-sm p-6 space-y-5">
-          <div>
-            <label className={labelClass}>Title</label>
+    <>
+      <AdminPageTitle title="New article" backHref="/admin/articles" />
+      <form onSubmit={handleSubmit} className="admin-content max-w-4xl">
+        <div className="admin-form-panel admin-form-grid">
+          <h2 className="admin-form-panel-title">Story</h2>
+          <div className="admin-field">
+            <label>Title</label>
             <input
-              className={inputClass}
               value={form.title}
               onChange={(e) => setForm({ ...form, title: e.target.value })}
               required
             />
           </div>
-          <div>
-            <label className={labelClass}>Subtitle</label>
+          <div className="admin-field">
+            <label>Subtitle</label>
             <input
-              className={inputClass}
               value={form.subtitle}
               onChange={(e) => setForm({ ...form, subtitle: e.target.value })}
             />
           </div>
-          <div>
-            <label className={labelClass}>Lead / Excerpt</label>
+          <div className="admin-field">
+            <label>Lead / Excerpt</label>
             <textarea
-              className={`${inputClass} resize-none`}
               rows={3}
               value={form.excerpt}
               onChange={(e) => setForm({ ...form, excerpt: e.target.value })}
               required
             />
           </div>
-          <div>
-            <label className={labelClass}>Content (HTML)</label>
-            <textarea
-              className={`${inputClass} resize-y font-mono text-sm`}
-              rows={12}
+          <div className="admin-field">
+            <label>Content</label>
+            <RichTextEditor
               value={form.content}
-              onChange={(e) => setForm({ ...form, content: e.target.value })}
-              required
+              onChange={(content) => setForm({ ...form, content })}
             />
           </div>
-          <div>
-            <label className={labelClass}>Featured image (URL)</label>
+          <div className="admin-field">
+            <label>Featured image (URL)</label>
             <input
-              className={inputClass}
               value={form.featuredImage}
               onChange={(e) => setForm({ ...form, featuredImage: e.target.value })}
               required
@@ -132,11 +114,11 @@ export default function NewArticlePage() {
           </div>
         </div>
 
-        <div className="bg-surface border border-border rounded-sm p-6 grid grid-cols-1 md:grid-cols-2 gap-5">
-          <div>
-            <label className={labelClass}>Category</label>
+        <div className="admin-form-panel admin-form-grid-2">
+          <h2 className="admin-form-panel-title" style={{ gridColumn: "1 / -1" }}>Metadata</h2>
+          <div className="admin-field">
+            <label>Category</label>
             <select
-              className={inputClass}
               value={form.categoryId}
               onChange={(e) => setForm({ ...form, categoryId: e.target.value })}
               required
@@ -147,10 +129,9 @@ export default function NewArticlePage() {
               ))}
             </select>
           </div>
-          <div>
-            <label className={labelClass}>Author</label>
+          <div className="admin-field">
+            <label>Author</label>
             <select
-              className={inputClass}
               value={form.authorId}
               onChange={(e) => setForm({ ...form, authorId: e.target.value })}
               required
@@ -161,18 +142,16 @@ export default function NewArticlePage() {
               ))}
             </select>
           </div>
-          <div>
-            <label className={labelClass}>Tags (comma-separated)</label>
+          <div className="admin-field">
+            <label>Tags (comma-separated)</label>
             <input
-              className={inputClass}
               value={form.tags}
               onChange={(e) => setForm({ ...form, tags: e.target.value })}
             />
           </div>
-          <div>
-            <label className={labelClass}>Status</label>
+          <div className="admin-field">
+            <label>Status</label>
             <select
-              className={inputClass}
               value={form.status}
               onChange={(e) => setForm({ ...form, status: e.target.value })}
             >
@@ -184,22 +163,21 @@ export default function NewArticlePage() {
           </div>
         </div>
 
-        <div className="bg-surface border border-border rounded-sm p-6">
-          <label className={labelClass}>Editorial options</label>
-          <div className="flex flex-wrap gap-4 mt-2">
+        <div className="admin-form-panel">
+          <h2 className="admin-form-panel-title">Editorial options</h2>
+          <div className="admin-checkbox-grid">
             {[
               { key: "isFeatured", label: "Featured" },
               { key: "isTopStory", label: "Top Story" },
-              { key: "isUrgent", label: "🔥 Urgent" },
+              { key: "isUrgent", label: "Urgent" },
               { key: "isEditorsChoice", label: "Editor's choice" },
               { key: "isPremium", label: "Premium" },
             ].map(({ key, label }) => (
-              <label key={key} className="flex items-center gap-2 text-sm text-charcoal cursor-pointer">
+              <label key={key} className="admin-checkbox-label">
                 <input
                   type="checkbox"
                   checked={form[key as keyof typeof form] as boolean}
                   onChange={(e) => setForm({ ...form, [key]: e.target.checked })}
-                  className="rounded border-border text-gold focus:ring-gold"
                 />
                 {label}
               </label>
@@ -207,7 +185,7 @@ export default function NewArticlePage() {
           </div>
         </div>
 
-        <div className="flex gap-4">
+        <div className="admin-form-actions">
           <Button type="submit" variant="gold" disabled={loading}>
             {loading ? "Saving..." : "Save article"}
           </Button>
@@ -216,6 +194,6 @@ export default function NewArticlePage() {
           </Button>
         </div>
       </form>
-    </div>
+    </>
   );
 }

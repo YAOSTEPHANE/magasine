@@ -76,10 +76,9 @@ export function MobileNavDrawer({ open, onClose }: MobileNavDrawerProps) {
   };
 
   const mainLinks = HEADER_NAV.filter((item) => !item.mega);
-  const sectionLinks = NAV_RUBRIQUES.map((item) => ({
-    ...item,
-    href: item.href === "/#urgent" ? "/urgent" : item.href,
-  })).filter((item) => !REGION_NAV.some((region) => region.href === item.href));
+  const sectionLinks = NAV_RUBRIQUES.filter(
+    (item) => !REGION_NAV.some((region) => region.href === item.href)
+  );
 
   if (!mounted) {
     return null;

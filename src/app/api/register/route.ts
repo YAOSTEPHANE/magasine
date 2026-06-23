@@ -19,7 +19,8 @@ export async function POST(request: NextRequest) {
     }
 
     await connectDB();
-    const existing = await User.findOne({ email: parsed.data.email });
+    const email = parsed.data.email.toLowerCase().trim();
+    const existing = await User.findOne({ email });
     if (existing) {
       return NextResponse.json({ error: "Email already in use" }, { status: 409 });
     }
@@ -27,7 +28,7 @@ export async function POST(request: NextRequest) {
     const hashed = await bcrypt.hash(parsed.data.password, 12);
     await User.create({
       name: parsed.data.name,
-      email: parsed.data.email,
+      email,
       password: hashed,
       role: "reader",
     });

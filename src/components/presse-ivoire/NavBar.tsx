@@ -7,21 +7,14 @@ interface NavBarProps {
 
 export function NavBar({ categories }: NavBarProps) {
   const items = categories?.length
-    ? [
-        { label: "🔥 Urgent", href: "/#urgent", featured: true },
-        ...categories.map((c) => ({ label: c.name, href: `/category/${c.slug}`, featured: false })),
-      ]
+    ? categories.map((c) => ({ label: c.name, href: `/category/${c.slug}` }))
     : NAV_RUBRIQUES;
 
   return (
     <nav className="nav-bar">
       <div className="nav-bar-inner">
         {items.map((item) => (
-          <Link
-            key={item.label}
-            href={item.href}
-            className={item.featured ? "featured" : undefined}
-          >
+          <Link key={item.label} href={item.href}>
             {item.label}
           </Link>
         ))}

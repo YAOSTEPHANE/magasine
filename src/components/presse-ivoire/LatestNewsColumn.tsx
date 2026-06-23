@@ -1,0 +1,57 @@
+import Link from "next/link";
+import type { HomeLatest } from "@/types/home";
+import { SectionImage } from "@/components/presse-ivoire/SectionImage";
+
+interface LatestNewsColumnProps {
+  data: HomeLatest;
+}
+
+export function LatestNewsColumn({ data }: LatestNewsColumnProps) {
+  const { featured, items } = data;
+
+  return (
+    <aside className="hero-latest-column reveal visible" data-reveal-delay={160}>
+      <div className="hero-latest-panel">
+        <div className="hero-latest-header">
+          <h3 className="hero-latest-title">Latest News</h3>
+          <Link href="/search" className="hero-latest-link">
+            View all
+          </Link>
+        </div>
+
+        {featured.slug && (
+          <Link href={featured.slug} className="hero-latest-featured">
+            <div className="hero-latest-featured-media">
+              <SectionImage src={featured.image} alt={featured.title} sizes="320px" />
+            </div>
+            <div className="hero-latest-featured-body">
+              <span className="hero-latest-cat">{featured.cat}</span>
+              <p className="hero-latest-featured-title">{featured.title}</p>
+              <span className="hero-latest-meta">{featured.meta}</span>
+            </div>
+          </Link>
+        )}
+
+        <ul className="hero-latest-list">
+          {items.map((item, i) => (
+            <li key={item.slug ?? `${item.title}-${i}`}>
+              {item.slug ? (
+                <Link href={item.slug} className="hero-latest-item">
+                  <span className="hero-latest-item-cat">{item.cat}</span>
+                  <span className="hero-latest-item-title">{item.title}</span>
+                  <span className="hero-latest-item-meta">{item.meta}</span>
+                </Link>
+              ) : (
+                <div className="hero-latest-item">
+                  <span className="hero-latest-item-cat">{item.cat}</span>
+                  <span className="hero-latest-item-title">{item.title}</span>
+                  <span className="hero-latest-item-meta">{item.meta}</span>
+                </div>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </aside>
+  );
+}

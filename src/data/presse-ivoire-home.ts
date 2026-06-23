@@ -18,29 +18,22 @@ export const REGION_NAV = [
 export const HEADER_NAV = [
   { label: "Home", href: "/", active: true },
   { label: "Regions", href: "/category/africa", mega: true },
-  { label: "Politics", href: "/category/actualites" },
+  { label: "Politics", href: "/category/politique" },
   { label: "Economy", href: "/category/finance" },
-  { label: "Sports", href: "/category/sports" },
+  { label: "Culture", href: "/category/culture" },
 ];
 
 export const NAV_RUBRIQUES = [
-  { label: "🔥 Urgent", href: "/urgent", featured: true },
   { label: "Africa", href: "/category/africa" },
   { label: "Latin America", href: "/category/latin-america" },
   { label: "South Asia", href: "/category/south-asia" },
   { label: "West Asia", href: "/category/west-asia" },
   { label: "News", href: "/category/actualites" },
   { label: "Politics", href: "/category/politique" },
-  { label: "Sports", href: "/category/sports" },
-  { label: "Finance", href: "/category/finance" },
-  { label: "Technology", href: "/category/technologie" },
-  { label: "Health", href: "/category/sante" },
-  { label: "Entertainment", href: "/category/divertissement" },
   { label: "Opinion", href: "/category/opinion" },
-  { label: "Multimedia", href: "/category/multimedia" },
+  { label: "Culture", href: "/category/culture" },
   { label: "Investigations", href: "/category/investigations" },
-  { label: "Local", href: "/category/local" },
-  { label: "World", href: "/category/monde" },
+  { label: "Multimedia", href: "/category/multimedia" },
   { label: "Special Reports", href: "/category/reportages-speciaux" },
 ];
 

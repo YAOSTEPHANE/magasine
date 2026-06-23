@@ -22,21 +22,32 @@ export const IMG = {
   portrait2: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop",
   portrait3: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop",
   latinAmerica: "https://images.unsplash.com/photo-1483729558449-99ef09a8c325?w=1200&h=800&fit=crop",
-  southAsia: "https://images.unsplash.com/photo-1524492412937-280c33fd95dd?w=1200&h=800&fit=crop",
+  southAsia: "https://images.unsplash.com/photo-1548013146-72479768bada?w=1200&h=800&fit=crop",
   westAsia: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=1200&h=800&fit=crop",
-  sahel: "https://images.unsplash.com/photo-1509316785289-025f5b846b8e?w=1200&h=800&fit=crop",
+  sahel: "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=1200&h=800&fit=crop",
 } as const;
 
 export const SITE_LOGO = "/images/logo-global-south-watch.png";
 
-const BROKEN_FEATURED_IMAGES: Record<string, string> = {
-  "https://images.unsplash.com/photo-1574943325722-55f388851e73?w=1200&h=800&fit=crop": IMG.agriculture,
-  "https://images.unsplash.com/photo-1611162617474-5b21e939e113?w=1200&h=800&fit=crop": IMG.tech,
+/** Photos Unsplash retirées — remplacement par ID (indépendant des query params). */
+const REMOVED_UNSPLASH_PHOTO_IDS: Record<string, string> = {
+  "photo-1574943325722-55f388851e73": IMG.agriculture,
+  "photo-1611162617474-5b21e939e113": IMG.tech,
+  "photo-1509316785289-025f5b846b8e": IMG.sahel,
+  "photo-1524492412937-280c33fd95dd": IMG.southAsia,
 };
 
 export function resolveFeaturedImage(url: string | undefined | null): string {
   if (!url) return IMG.finance;
-  return BROKEN_FEATURED_IMAGES[url] ?? url;
+
+  const trimmed = url.trim();
+  for (const [photoId, replacement] of Object.entries(REMOVED_UNSPLASH_PHOTO_IDS)) {
+    if (trimmed.includes(photoId)) {
+      return replacement;
+    }
+  }
+
+  return trimmed;
 }
 
 export function getAuthorAvatarUrl(seed: string): string {

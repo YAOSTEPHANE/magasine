@@ -5,6 +5,31 @@ import bcrypt from "bcryptjs";
 import { connectDB } from "@/lib/mongodb";
 import { User } from "@/models/User";
 import type { UserRole } from "@/types";
+import {
+  DEFAULT_ADMIN_EMAIL,
+  ensureDefaultAdmin,
+} from "@/lib/ensure-admin";
+
+function normalizeEmail(email: string) {
+  return email.trim().toLowerCase();
+}
+
+async function findUserByEmail(email: string) {
+  const normalized = normalizeEmail(email);
+  let user = await User.findOne({ email: normalized });
+  if (user) return user;
+
+  user = await User.findOne({
+    email: { $regex: new RegExp(`^${normalized.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}$`, "i") },
+  });
+
+  if (user && user.email !== normalized) {
+    user.email = normalized;
+    await user.save();
+  }
+
+  return user;
+}
 
 declare module "next-auth" {
   interface Session {
@@ -45,15 +70,27 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null;
 
-        await connectDB();
-        const user = await User.findOne({ email: credentials.email as string });
-        if (!user?.password) return null;
+        const email = normalizeEmail(credentials.email as string);
+        const password = (credentials.password as string).trim();
 
-        const isValid = await bcrypt.compare(
-          credentials.password as string,
-          user.password
-        );
-        if (!isValid) return null;
+        await connectDB();
+
+        let user = await findUserByEmail(email);
+        let isValid =
+          !!user?.password && (await bcrypt.compare(password, user.password));
+
+        if (
+          !isValid &&
+          process.env.NODE_ENV === "development" &&
+          email === DEFAULT_ADMIN_EMAIL.toLowerCase()
+        ) {
+          await ensureDefaultAdmin({ resetPassword: true });
+          user = await findUserByEmail(email);
+          isValid =
+            !!user?.password && (await bcrypt.compare(password, user.password));
+        }
+
+        if (!user?.password || !isValid) return null;
 
         return {
           id: user._id.toString(),
@@ -70,11 +107,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async signIn({ user, account }) {
       if (account?.provider === "google" && user.email) {
         await connectDB();
-        const existing = await User.findOne({ email: user.email });
+        const email = normalizeEmail(user.email);
+        const existing = await User.findOne({ email });
         if (!existing) {
           await User.create({
             name: user.name ?? "Lecteur",
-            email: user.email,
+            email,
             image: user.image ?? undefined,
             role: "reader",
           });
@@ -85,7 +123,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async jwt({ token, user, trigger, session }) {
       if (user) {
         await connectDB();
-        const dbUser = await User.findOne({ email: user.email });
+        const dbUser = await findUserByEmail(user.email ?? "");
         if (dbUser) {
           token.id = dbUser._id.toString();
           token.role = dbUser.role;
@@ -112,5 +150,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     signIn: "/login",
   },
   session: { strategy: "jwt" },
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET,
+  trustHost: true,
 });

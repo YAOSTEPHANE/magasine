@@ -2,10 +2,15 @@ import { getEditorialDateParts } from "@/lib/editorial-date";
 
 interface HomeMastheadProps {
   dateParts?: ReturnType<typeof getEditorialDateParts>;
+  tagline?: string;
+  volume?: string;
+  cities?: string;
+  badge?: string;
 }
 
-export function HomeMasthead({ dateParts }: HomeMastheadProps) {
+export function HomeMasthead({ dateParts, tagline, volume, cities, badge }: HomeMastheadProps) {
   const { weekday: weekdayCap, dayMonth } = dateParts ?? getEditorialDateParts();
+  const citiesParts = (cities ?? "Abidjan · Dakar · Nairobi").split("·").map((c) => c.trim());
 
   return (
     <div className="home-masthead home-masthead--revolution notranslate" translate="no" lang="en">
@@ -14,8 +19,8 @@ export function HomeMasthead({ dateParts }: HomeMastheadProps) {
         <div className="home-masthead-card">
           <div className="home-masthead-bar">
             <div className="home-masthead-left">
-              <span className="home-masthead-badge">Today&apos;s Edition</span>
-              <span className="home-masthead-volume">Vol. XII · N° 1847</span>
+              <span className="home-masthead-badge">{badge ?? "Today's Edition"}</span>
+              <span className="home-masthead-volume">{volume ?? "Vol. XII · N° 1847"}</span>
             </div>
 
             <p className="home-masthead-date" aria-label={`${weekdayCap} ${dayMonth}`} suppressHydrationWarning>
@@ -33,7 +38,12 @@ export function HomeMasthead({ dateParts }: HomeMastheadProps) {
               </span>
               <span className="home-masthead-divider" aria-hidden />
               <span className="home-masthead-stat">
-                <strong>Abidjan</strong> · Dakar · Nairobi
+                {citiesParts.map((city, i) => (
+                  <span key={city}>
+                    {i > 0 && " · "}
+                    {i === 0 ? <strong>{city}</strong> : city}
+                  </span>
+                ))}
               </span>
             </div>
           </div>
@@ -42,7 +52,7 @@ export function HomeMasthead({ dateParts }: HomeMastheadProps) {
             <span className="home-masthead-diamond" aria-hidden>
               ◆
             </span>
-            The voice of the Global South — independent &amp; committed journalism
+            {tagline ?? "The voice of the Global South — independent & committed journalism"}
             <span className="home-masthead-diamond" aria-hidden>
               ◆
             </span>

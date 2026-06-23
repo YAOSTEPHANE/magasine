@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IMG, resolveFeaturedImage } from "@/lib/images";
 
 interface SectionImageProps {
@@ -19,21 +19,28 @@ export function SectionImage({
   priority = false,
   className = "",
 }: SectionImageProps) {
-  const [currentSrc, setCurrentSrc] = useState(() => resolveFeaturedImage(src));
+  const resolvedSrc = resolveFeaturedImage(src);
+  const [currentSrc, setCurrentSrc] = useState(resolvedSrc);
+
+  useEffect(() => {
+    setCurrentSrc(resolveFeaturedImage(src));
+  }, [src]);
 
   return (
-    <Image
-      src={currentSrc}
-      alt={alt}
-      fill
-      sizes={sizes}
-      priority={priority}
-      className={`img-ph ${className}`.trim()}
-      onError={() => {
-        if (currentSrc !== IMG.finance) {
-          setCurrentSrc(IMG.finance);
-        }
-      }}
-    />
+    <span className="section-image-wrap">
+      <Image
+        src={currentSrc}
+        alt={alt}
+        fill
+        sizes={sizes}
+        priority={priority}
+        className={`img-ph ${className}`.trim()}
+        onError={() => {
+          if (currentSrc !== IMG.finance) {
+            setCurrentSrc(IMG.finance);
+          }
+        }}
+      />
+    </span>
   );
 }

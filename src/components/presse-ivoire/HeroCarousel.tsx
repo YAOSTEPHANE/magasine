@@ -35,7 +35,7 @@ export function HeroCarousel({ slides }: HeroCarouselProps) {
       setActive((i) => (i + 1) % count);
     }, AUTO_MS);
     return () => window.clearInterval(timer);
-  }, [count, paused, active]);
+  }, [count, paused]);
 
   if (!slide) return null;
 
@@ -87,10 +87,7 @@ export function HeroCarousel({ slides }: HeroCarouselProps) {
 
             <div className="hero-illustration-text">
               <div className="hero-cover-badges">
-                <span className="breaking-badge">
-                  <span className="breaking-dot" />
-                  {slide.badge}
-                </span>
+                <span className="hero-story-badge">{slide.badge}</span>
                 {slide.isPremium && (
                   <span className="premium-badge premium-badge-glow">★ Premium</span>
                 )}

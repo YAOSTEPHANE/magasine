@@ -5,6 +5,7 @@ import type { ArticleDetail, ArticleListItem } from "@/types";
 import type { Session } from "next-auth";
 import { formatDate, formatRelativeDate } from "@/lib/utils";
 import { articleBadge } from "@/lib/format-article";
+import { resolveFeaturedImage } from "@/lib/images";
 import { ShareButtons } from "@/components/article/ShareButtons";
 import { SaveArticleButton } from "@/components/article/SaveArticleButton";
 import { CommentsSection } from "@/components/article/CommentsSection";
@@ -33,6 +34,7 @@ export function ArticleDetailView({
 }: ArticleDetailViewProps) {
   const author = article.authors[0];
   const badge = articleBadge(article);
+  const heroImage = resolveFeaturedImage(article.featuredImage);
 
   return (
     <article className="article-page article-page--revolution">
@@ -107,7 +109,7 @@ export function ArticleDetailView({
         <figure className="article-hero article-reveal article-reveal--delay-2">
           <div className="article-hero-img">
             <Image
-              src={article.featuredImage}
+              src={heroImage}
               alt={article.featuredImageAlt ?? article.title}
               fill
               priority

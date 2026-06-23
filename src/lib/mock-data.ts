@@ -172,6 +172,7 @@ export function getMockHomePageData() {
   }
 
   return {
+    breakingAlertsEnabled: true,
     alerts: mockAlerts,
     categories: categories.map((c) => ({
       _id: c._id,
@@ -202,6 +203,8 @@ export function getMockHomePageData() {
     santeNews: articles.filter((a) => a.category.slug === "sante").slice(0, 4),
     divertissementNews: articles.filter((a) => a.category.slug === "divertissement").slice(0, 4),
     localNews: articles.filter((a) => a.category.slug === "local").slice(0, 4),
+    politiqueNews: articles.filter((a) => a.category.slug === "politique").slice(0, 4),
+    cultureNews: articles.filter((a) => a.category.slug === "culture").slice(0, 4),
     urgentArticles: articles.filter((a) => a.isUrgent || a.isTopStory).slice(0, 8),
     africaNews: articles.filter((a) => a.category.slug === "africa").slice(0, 4),
     latinAmericaNews: articles.filter((a) => a.category.slug === "latin-america").slice(0, 4),

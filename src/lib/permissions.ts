@@ -11,6 +11,14 @@ export function canManageArticles(role?: UserRole): boolean {
   return role !== undefined && EDITOR_ROLES.includes(role);
 }
 
+export function canManageUsers(role?: UserRole): boolean {
+  return role === "super_admin" || role === "admin";
+}
+
+export function isSuperAdmin(role?: UserRole): boolean {
+  return role === "super_admin";
+}
+
 export function canAccessPremium(
   isPremiumArticle: boolean,
   user?: { isPremium: boolean; role: UserRole } | null

@@ -1,18 +1,14 @@
 import { getHomePageData } from "@/lib/data";
-import { getEditorialDateParts } from "@/lib/editorial-date";
 import { mapHomePageData } from "@/lib/map-home-data";
+import { getPublicSiteSettings } from "@/lib/site-settings";
 import { HomeBackdrop } from "@/components/presse-ivoire/HomeBackdrop";
-import { HomeMasthead } from "@/components/presse-ivoire/HomeMasthead";
-import { HomePulseStrip } from "@/components/presse-ivoire/HomePulseStrip";
 import { RevolutionShell } from "@/components/presse-ivoire/RevolutionShell";
-import { TrustStrip } from "@/components/presse-ivoire/TrustStrip";
-import { UrgentSection } from "@/components/presse-ivoire/UrgentSection";
 import { HeroHome } from "@/components/presse-ivoire/HeroHome";
 import { MegaAd } from "@/components/presse-ivoire/MegaAd";
 import { EditorsChoiceSection } from "@/components/presse-ivoire/EditorsChoiceSection";
 import { LatestSection } from "@/components/presse-ivoire/LatestSection";
 import { VideoSectionHome } from "@/components/presse-ivoire/VideoSectionHome";
-import { HomeInsightsBand } from "@/components/presse-ivoire/HomeInsightsBand";
+import { OpinionSectionHome } from "@/components/presse-ivoire/OpinionSectionHome";
 import { HomeRubriquesBand } from "@/components/presse-ivoire/HomeRubriquesBand";
 import { HomeClosingBand } from "@/components/presse-ivoire/HomeClosingBand";
 import { SectionDivider } from "@/components/presse-ivoire/SectionDivider";
@@ -20,58 +16,68 @@ import { SectionDivider } from "@/components/presse-ivoire/SectionDivider";
 export const revalidate = 60;
 
 export default async function HomePage() {
-  const raw = await getHomePageData();
+  const [raw, siteSettings] = await Promise.all([getHomePageData(), getPublicSiteSettings()]);
   const data = mapHomePageData(raw);
-  const dateParts = getEditorialDateParts();
+  const sections = siteSettings.homeSections;
 
   return (
     <div className="home-page home-page--revolution">
       <HomeBackdrop />
       <RevolutionShell />
 
-      <header className="home-band home-band--intro notranslate" translate="no" lang="en">
-        <HomeMasthead dateParts={dateParts} />
-        <HomePulseStrip />
-        <TrustStrip />
-      </header>
+      {sections.hero && (
+        <section className="home-band home-band--hero">
+          <HeroHome data={data} latest={data.latest} />
+        </section>
+      )}
 
-      <UrgentSection data={data.urgent} />
+      {sections.megaAd && (
+        <section className="home-band home-band--ad">
+          <MegaAd />
+        </section>
+      )}
 
-      <SectionDivider label="Lead story" />
+      {sections.editorial && (
+        <>
+          <SectionDivider label="Editorial" />
+          <section className="home-band home-band--editorial">
+            <EditorsChoiceSection data={data.editorsChoice} />
+          </section>
+        </>
+      )}
 
-      <section className="home-band home-band--hero">
-        <HeroHome data={data} />
-      </section>
+      {sections.insights && data.opinions.length > 0 && (
+        <section className="home-band home-band--opinion">
+          <OpinionSectionHome data={data.opinions} />
+        </section>
+      )}
 
-      <section className="home-band home-band--ad">
-        <MegaAd />
-      </section>
+      {sections.rubriques && (
+        <>
+          <SectionDivider label="By subject" />
+          <HomeRubriquesBand rubriques={data.rubriques} />
+        </>
+      )}
 
-      <SectionDivider label="Editorial" />
+      {sections.live && (
+        <>
+          <SectionDivider label="Latest" />
+          <section className="home-band home-band--live">
+            <LatestSection data={data.latest} />
+          </section>
+        </>
+      )}
 
-      <section className="home-band home-band--editorial">
-        <EditorsChoiceSection data={data.editorsChoice} />
-      </section>
+      {sections.media && (
+        <>
+          <SectionDivider label="Multimedia" />
+          <section className="home-band home-band--media">
+            <VideoSectionHome data={data.videos} />
+          </section>
+        </>
+      )}
 
-      <SectionDivider label="Live feed" />
-
-      <section className="home-band home-band--live">
-        <LatestSection data={data.latest} />
-      </section>
-
-      <SectionDivider label="Multimedia" />
-
-      <section className="home-band home-band--media">
-        <VideoSectionHome data={data.videos} />
-      </section>
-
-      <HomeInsightsBand opinions={data.opinions} thematic={data.thematic} />
-
-      <SectionDivider label="Sections" />
-
-      <HomeRubriquesBand rubriques={data.rubriques} />
-
-      <HomeClosingBand />
+      {sections.closing && <HomeClosingBand settings={siteSettings} />}
     </div>
   );
 }

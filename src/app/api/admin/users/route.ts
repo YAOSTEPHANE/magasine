@@ -1,0 +1,79 @@
+import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
+import { requireAdminApi } from "@/lib/admin-api";
+import { connectDB } from "@/lib/mongodb";
+import { User } from "@/models/User";
+import type { UserRole } from "@/types";
+
+const patchSchema = z.object({
+  role: z
+    .enum(["super_admin", "admin", "editor", "author", "contributor", "reader"])
+    .optional(),
+  isPremium: z.boolean().optional(),
+});
+
+export async function GET() {
+  const guard = await requireAdminApi("users");
+  if (guard.error) return guard.error;
+
+  await connectDB();
+  const users = await User.find()
+    .select("name email role isPremium createdAt")
+    .sort({ createdAt: -1 })
+    .limit(200)
+    .lean();
+
+  return NextResponse.json({
+    users: users.map((u) => ({
+      _id: String(u._id),
+      name: u.name,
+      email: u.email,
+      role: u.role as UserRole,
+      isPremium: u.isPremium,
+      createdAt: u.createdAt,
+    })),
+  });
+}
+
+export async function PATCH(request: NextRequest) {
+  const guard = await requireAdminApi("users");
+  if (guard.error) return guard.error;
+
+  const body = await request.json();
+  const parsed = z
+    .object({
+      userId: z.string(),
+      ...patchSchema.shape,
+    })
+    .safeParse(body);
+
+  if (!parsed.success) {
+    return NextResponse.json({ error: "Invalid data" }, { status: 400 });
+  }
+
+  const { userId, role, isPremium } = parsed.data;
+
+  if (role === "super_admin" && guard.session!.user.role !== "super_admin") {
+    return NextResponse.json({ error: "Only super admins can assign super_admin role" }, { status: 403 });
+  }
+
+  if (userId === guard.session!.user.id && role && role !== guard.session!.user.role) {
+    return NextResponse.json({ error: "You cannot change your own role" }, { status: 400 });
+  }
+
+  await connectDB();
+  const user = await User.findById(userId);
+  if (!user) {
+    return NextResponse.json({ error: "User not found" }, { status: 404 });
+  }
+
+  if (role) user.role = role;
+  if (isPremium !== undefined) user.isPremium = isPremium;
+
+  await user.save();
+  return NextResponse.json({
+    _id: String(user._id),
+    role: user.role,
+    isPremium: user.isPremium,
+  });
+}

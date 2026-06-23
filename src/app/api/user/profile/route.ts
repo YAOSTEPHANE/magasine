@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { connectDB } from "@/lib/mongodb";
 import { User } from "@/models/User";
-import { Article } from "@/models/Article";
+import { resolveFeaturedImage } from "@/lib/images";
 
 const articleSelect = "title slug excerpt featuredImage publishedAt readingTime";
 
@@ -28,7 +28,7 @@ export async function GET() {
       title: a.title as string,
       slug: a.slug as string,
       excerpt: a.excerpt as string,
-      featuredImage: a.featuredImage as string,
+      featuredImage: resolveFeaturedImage(a.featuredImage as string),
       publishedAt: a.publishedAt
         ? new Date(a.publishedAt as string).toISOString()
         : undefined,

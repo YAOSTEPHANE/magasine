@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { auth } from "@/lib/auth";
 import { connectDB } from "@/lib/mongodb";
 import { Category } from "@/models/Category";
 import { Author } from "@/models/Author";
@@ -15,7 +16,8 @@ import {
   SEED_CATEGORIES,
   SEED_NEWSLETTER,
 } from "@/lib/seed-data";
-import { getAuthorAvatarUrl } from "@/lib/images";
+import { getAuthorAvatarUrl, resolveFeaturedImage } from "@/lib/images";
+import { ensureDefaultAdmin, DEFAULT_ADMIN_PASSWORD } from "@/lib/ensure-admin";
 import { resolveArticleContent } from "@/lib/article-content";
 
 async function clearDatabase() {
@@ -31,15 +33,33 @@ async function clearDatabase() {
 
 export async function GET(request: NextRequest) {
   try {
-    await connectDB();
-
     const force = request.nextUrl.searchParams.get("force") === "true";
+
+    if (force) {
+      const session = await auth();
+      if (!session?.user || session.user.role !== "super_admin") {
+        return NextResponse.json({ error: "Super admin access required" }, { status: 403 });
+      }
+    }
+
+    await connectDB();
     const existing = await Category.countDocuments();
 
     if (existing > 0 && !force) {
+      const repairAdmin =
+        request.nextUrl.searchParams.get("repairAdmin") !== "false" &&
+        process.env.NODE_ENV === "development";
+      const admin = await ensureDefaultAdmin({ resetPassword: repairAdmin });
       return NextResponse.json({
-        message: "Database already initialized. Add ?force=true to reset.",
+        message: repairAdmin
+          ? "Admin account repaired. Use the credentials below to sign in."
+          : "Database already initialized. Add ?force=true to reset, or ?repairAdmin=true to reset admin password.",
         seeded: false,
+        admin: {
+          email: admin.email,
+          password: admin.repaired || admin.created ? DEFAULT_ADMIN_PASSWORD : undefined,
+          ensured: admin.repaired || admin.created,
+        },
       });
     }
 
@@ -74,7 +94,7 @@ export async function GET(request: NextRequest) {
         slug,
         excerpt: article.excerpt,
         content: resolveArticleContent(article.title, article.excerpt, article.content, slug),
-        featuredImage: article.image,
+        featuredImage: resolveFeaturedImage(article.image),
         featuredImageAlt: article.title,
         category: catMap[article.category],
         authors: [createdAuthors[authorIndex]._id],
@@ -89,6 +109,10 @@ export async function GET(request: NextRequest) {
         isPremium: article.isPremium ?? false,
         contentType: article.contentType ?? "article",
         videoUrl: article.videoUrl,
+        gallery: article.gallery?.map((item) => ({
+          ...item,
+          url: resolveFeaturedImage(item.url),
+        })),
         views: Math.floor(Math.random() * 8000) + 200,
       };
     });
@@ -100,7 +124,7 @@ export async function GET(request: NextRequest) {
     const adminPassword = await bcrypt.hash("Admin123!", 12);
     await User.create({
       name: "Administrator",
-      email: "admin@globalsouthwatch.com",
+      email: "admin@globalsouthwatch.com".toLowerCase(),
       password: adminPassword,
       role: "super_admin",
     });

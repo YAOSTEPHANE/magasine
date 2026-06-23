@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Clock, Play } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 import { formatRelativeDate } from "@/lib/utils";
+import { resolveFeaturedImage } from "@/lib/images";
 import type { ArticleListItem } from "@/types";
 import { cn } from "@/lib/utils";
 
@@ -20,6 +21,7 @@ export function ArticleCard({
   priority = false,
 }: ArticleCardProps) {
   const authorName = article.authors[0]?.name ?? "Editorial";
+  const imageSrc = resolveFeaturedImage(article.featuredImage);
 
   if (variant === "hero") {
     return (
@@ -29,7 +31,7 @@ export function ArticleCard({
       >
         <div className="relative aspect-[16/10] overflow-hidden">
           <Image
-            src={article.featuredImage}
+            src={imageSrc}
             alt={article.featuredImageAlt ?? article.title}
             fill
             priority={priority}
@@ -75,7 +77,7 @@ export function ArticleCard({
       >
         <div className="relative w-20 h-16 shrink-0 overflow-hidden rounded-sm">
           <Image
-            src={article.featuredImage}
+            src={imageSrc}
             alt={article.title}
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-500"
@@ -102,7 +104,7 @@ export function ArticleCard({
       >
         <div className="relative w-32 h-24 shrink-0 overflow-hidden rounded-sm">
           <Image
-            src={article.featuredImage}
+            src={imageSrc}
             alt={article.title}
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-500"
@@ -128,7 +130,7 @@ export function ArticleCard({
       >
         <div className="relative aspect-video overflow-hidden rounded-sm mb-3">
           <Image
-            src={article.featuredImage}
+            src={imageSrc}
             alt={article.title}
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-500"
@@ -152,7 +154,7 @@ export function ArticleCard({
     <Link href={`/article/${article.slug}`} className={cn("group block", className)}>
       <div className="relative aspect-[4/3] overflow-hidden rounded-sm mb-4">
         <Image
-          src={article.featuredImage}
+          src={imageSrc}
           alt={article.featuredImageAlt ?? article.title}
           fill
           className="object-cover transition-transform duration-700 group-hover:scale-105"
