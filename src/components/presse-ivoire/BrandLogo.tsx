@@ -10,6 +10,8 @@ interface BrandLogoProps {
   showTagline?: boolean;
   /** When false, renders markup only (use inside an existing link). */
   linked?: boolean;
+  href?: string;
+  onNavigate?: () => void;
 }
 
 export function BrandLogo({
@@ -17,6 +19,8 @@ export function BrandLogo({
   className,
   showTagline,
   linked = true,
+  href = "/",
+  onNavigate,
 }: BrandLogoProps) {
   const { siteLogo, siteName } = useSiteBranding();
   const height = variant === "header" ? 52 : 44;
@@ -48,9 +52,10 @@ export function BrandLogo({
 
   return (
     <Link
-      href="/"
+      href={href}
       className={logoClassName}
-      aria-label={`${siteName} — Home`}
+      aria-label={`${siteName} — ${href === "/" ? "Home" : "Tableau de bord"}`}
+      onClick={onNavigate}
     >
       {content}
     </Link>

@@ -1,5 +1,10 @@
-.admin-root {
-  min-height: 100vh;
+.admin-root.admin-root--cms {
+  min-height: 100dvh;
+  background: #08090f;
+}
+
+.admin-layout-root {
+  min-height: 100dvh;
 }
 
 .admin-shell {

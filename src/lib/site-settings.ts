@@ -50,6 +50,12 @@ export interface PublicSiteSettings {
   trustStripLabel: string;
   trustStripEnabled: boolean;
   trustPartners: TrustPartner[];
+  seoTitle: string;
+  seoDescription: string;
+  ogImage: string;
+  canonicalUrl: string;
+  mailchimpConnected: boolean;
+  brevoConnected: boolean;
   updatedAt?: Date;
 }
 
@@ -95,6 +101,12 @@ export function mapSiteSettings(doc: ISiteSettings): PublicSiteSettings {
     trustStripLabel: doc.trustStripLabel ?? DEFAULT_TRUST_STRIP_LABEL,
     trustStripEnabled: doc.trustStripEnabled ?? false,
     trustPartners: allPartners,
+    seoTitle: doc.seoTitle ?? doc.siteName,
+    seoDescription: doc.seoDescription ?? doc.tagline,
+    ogImage: doc.ogImage ?? "",
+    canonicalUrl: doc.canonicalUrl ?? "https://pressivoire.ci",
+    mailchimpConnected: doc.mailchimpConnected ?? false,
+    brevoConnected: doc.brevoConnected ?? false,
     updatedAt: doc.updatedAt,
   };
 }
@@ -134,6 +146,13 @@ export const getPublicSiteSettings = cache(async (): Promise<PublicSiteSettings>
       trustStripLabel: DEFAULT_TRUST_STRIP_LABEL,
       trustStripEnabled: false,
       trustPartners: [],
+      seoTitle: "",
+      seoDescription: "",
+      ogImage: "",
+      canonicalUrl: "https://pressivoire.ci",
+      mailchimpConnected: false,
+      brevoConnected: false,
+      adZones: [],
       updatedAt: new Date(),
     });
   }
@@ -201,6 +220,12 @@ function applySettingsPatch(
     "trustStripLabel",
     "trustStripEnabled",
     "trustPartners",
+    "seoTitle",
+    "seoDescription",
+    "ogImage",
+    "canonicalUrl",
+    "mailchimpConnected",
+    "brevoConnected",
   ];
 
   for (const key of assignable) {

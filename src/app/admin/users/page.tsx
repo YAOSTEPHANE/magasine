@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
-import { UsersManager } from "@/components/admin/UsersManager";
+import { CmsUsersView } from "@/components/admin/cms/CmsUsersView";
 import { canManageUsers } from "@/lib/permissions";
 
 export default async function AdminUsersPage() {
@@ -9,9 +9,5 @@ export default async function AdminUsersPage() {
     redirect("/admin");
   }
 
-  return (
-    <div className="admin-content admin-content--premium">
-      <UsersManager />
-    </div>
-  );
+  return <CmsUsersView />;
 }

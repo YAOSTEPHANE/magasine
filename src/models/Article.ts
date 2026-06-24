@@ -31,6 +31,9 @@ export interface IArticle {
   gallery?: { url: string; caption?: string; credit?: string }[];
   seoTitle?: string;
   seoDescription?: string;
+  sendPushOnPublish: boolean;
+  commentsDisabled: boolean;
+  allowSocialShare: boolean;
   version: number;
   createdAt: Date;
   updatedAt: Date;
@@ -80,6 +83,9 @@ const ArticleSchema = new Schema<IArticle>(
     ],
     seoTitle: { type: String },
     seoDescription: { type: String },
+    sendPushOnPublish: { type: Boolean, default: false },
+    commentsDisabled: { type: Boolean, default: false },
+    allowSocialShare: { type: Boolean, default: true },
     version: { type: Number, default: 1 },
   },
   { timestamps: true }

@@ -91,6 +91,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         }
 
         if (!user?.password || !isValid) return null;
+        if (user.isBanned) return null;
 
         return {
           id: user._id.toString(),

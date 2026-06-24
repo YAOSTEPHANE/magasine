@@ -21,7 +21,7 @@ export function SiteChrome({ children, categories }: SiteChromeProps) {
   const admin = isAdminRoute(pathname);
 
   if (admin) {
-    return <div className="admin-root">{children}</div>;
+    return <div className="admin-root admin-root--cms">{children}</div>;
   }
 
   return (

@@ -1,9 +1,5 @@
-import { CommentsManager } from "@/components/admin/CommentsManager";
+import { CmsCommentsView } from "@/components/admin/cms/CmsCommentsView";
 
 export default function AdminCommentsPage() {
-  return (
-    <div className="admin-content admin-content--premium">
-      <CommentsManager />
-    </div>
-  );
+  return <CmsCommentsView />;
 }

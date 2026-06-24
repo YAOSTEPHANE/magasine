@@ -7,7 +7,7 @@ import { filterRetiredCategories } from "@/lib/retired-categories";
 
 export async function GET() {
   const session = await auth();
-  if (!session?.user || !["super_admin", "admin", "editor"].includes(session.user.role)) {
+  if (!session?.user || !["super_admin", "admin", "editor", "author"].includes(session.user.role)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   }
 
@@ -20,7 +20,7 @@ export async function GET() {
   return NextResponse.json({
     categories: filterRetiredCategories(
       categories.map((c) => ({ _id: String(c._id), name: c.name, slug: c.slug }))
-    ).map(({ _id, name }) => ({ _id, name })),
+    ),
     authors: authors.map((a) => ({ _id: String(a._id), name: a.name })),
   });
 }

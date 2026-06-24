@@ -9,6 +9,7 @@ export interface IUser {
   image?: string;
   role: UserRole;
   isPremium: boolean;
+  isBanned: boolean;
   savedArticles: mongoose.Types.ObjectId[];
   readingHistory: mongoose.Types.ObjectId[];
   searchHistory: string[];
@@ -29,6 +30,7 @@ const UserSchema = new Schema<IUser>(
       default: "reader",
     },
     isPremium: { type: Boolean, default: false },
+    isBanned: { type: Boolean, default: false },
     savedArticles: [{ type: Schema.Types.ObjectId, ref: "Article" }],
     readingHistory: [{ type: Schema.Types.ObjectId, ref: "Article" }],
     searchHistory: [{ type: String }],

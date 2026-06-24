@@ -13,15 +13,23 @@ const updateSchema = z.object({
   excerpt: z.string().min(1).optional(),
   content: z.string().min(1).optional(),
   featuredImage: z.string().url().optional(),
+  featuredImageCaption: z.string().optional(),
   categoryId: z.string().optional(),
   authorId: z.string().optional(),
   tags: z.array(z.string()).optional(),
   status: z.enum(["draft", "review", "scheduled", "published", "archived"]).optional(),
+  scheduledAt: z.string().optional(),
+  seoTitle: z.string().optional(),
+  seoDescription: z.string().optional(),
+  slug: z.string().optional(),
   isFeatured: z.boolean().optional(),
   isTopStory: z.boolean().optional(),
   isUrgent: z.boolean().optional(),
   isEditorsChoice: z.boolean().optional(),
   isPremium: z.boolean().optional(),
+  commentsDisabled: z.boolean().optional(),
+  allowSocialShare: z.boolean().optional(),
+  sendPushOnPublish: z.boolean().optional(),
 });
 
 interface RouteContext {
@@ -48,16 +56,24 @@ export async function GET(_request: NextRequest, context: RouteContext) {
     excerpt: article.excerpt,
     content: article.content,
     featuredImage: article.featuredImage,
+    featuredImageCaption: article.featuredImageCaption ?? "",
     categoryId: String(article.category),
     authorId: String(article.authors[0]),
     tags: article.tags,
     status: article.status,
+    scheduledAt: article.scheduledAt ? new Date(article.scheduledAt).toISOString() : undefined,
+    seoTitle: article.seoTitle ?? "",
+    seoDescription: article.seoDescription ?? "",
     isFeatured: article.isFeatured,
     isTopStory: article.isTopStory,
     isUrgent: article.isUrgent,
     isEditorsChoice: article.isEditorsChoice,
     isPremium: article.isPremium,
+    commentsDisabled: article.commentsDisabled ?? false,
+    allowSocialShare: article.allowSocialShare ?? true,
+    sendPushOnPublish: article.sendPushOnPublish ?? false,
     slug: article.slug,
+    version: article.version ?? 1,
   });
 }
 
@@ -81,8 +97,10 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
   }
 
   const data = parsed.data;
-  if (data.title) {
-    article.title = data.title;
+  if (data.title) article.title = data.title;
+  if (data.slug) {
+    article.slug = slugify(data.slug, { lower: true, strict: true });
+  } else if (data.title) {
     article.slug = slugify(data.title, { lower: true, strict: true });
   }
   if (data.subtitle !== undefined) article.subtitle = data.subtitle;
@@ -92,23 +110,35 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
     article.readingTime = estimateReadingTime(data.content);
   }
   if (data.featuredImage) article.featuredImage = data.featuredImage;
+  if (data.featuredImageCaption !== undefined) {
+    article.featuredImageCaption = data.featuredImageCaption;
+  }
   if (data.categoryId) article.category = data.categoryId as never;
   if (data.authorId) article.authors = [data.authorId as never];
   if (data.tags) article.tags = data.tags;
+  if (data.seoTitle !== undefined) article.seoTitle = data.seoTitle;
+  if (data.seoDescription !== undefined) article.seoDescription = data.seoDescription;
   if (data.status) {
     article.status = data.status;
     if (data.status === "published" && !article.publishedAt) {
       article.publishedAt = new Date();
     }
   }
+  if (data.scheduledAt) {
+    article.scheduledAt = new Date(data.scheduledAt);
+    if (!data.status) article.status = "scheduled";
+  }
   if (data.isFeatured !== undefined) article.isFeatured = data.isFeatured;
   if (data.isTopStory !== undefined) article.isTopStory = data.isTopStory;
   if (data.isUrgent !== undefined) article.isUrgent = data.isUrgent;
   if (data.isEditorsChoice !== undefined) article.isEditorsChoice = data.isEditorsChoice;
   if (data.isPremium !== undefined) article.isPremium = data.isPremium;
+  if (data.commentsDisabled !== undefined) article.commentsDisabled = data.commentsDisabled;
+  if (data.allowSocialShare !== undefined) article.allowSocialShare = data.allowSocialShare;
+  if (data.sendPushOnPublish !== undefined) article.sendPushOnPublish = data.sendPushOnPublish;
 
   await article.save();
-  return NextResponse.json({ _id: String(article._id), slug: article.slug });
+  return NextResponse.json({ _id: String(article._id), slug: article.slug, version: article.version });
 }
 
 export async function DELETE(_request: NextRequest, context: RouteContext) {

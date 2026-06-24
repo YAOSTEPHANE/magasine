@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { connectDB } from "@/lib/mongodb";
 import { Comment } from "@/models/Comment";
+import { User } from "@/models/User";
 import { canManageArticles } from "@/lib/permissions";
 
 export async function GET() {
@@ -28,6 +29,7 @@ export async function GET() {
           content: c.content,
           isApproved: c.isApproved,
           isReported: c.isReported,
+          isRejected: c.isRejected ?? false,
           createdAt: c.createdAt.toISOString(),
           user: { name: user?.name, email: user?.email },
           article: { title: article?.title, slug: article?.slug },
@@ -46,23 +48,76 @@ export async function PATCH(request: NextRequest) {
   }
 
   try {
-    const { commentId, action } = await request.json();
-    if (!commentId || !["approve", "reject", "delete"].includes(action)) {
+    const { commentId, action, replyContent } = await request.json();
+    const allowed = [
+      "approve",
+      "reject",
+      "delete",
+      "ignore_report",
+      "ban_user",
+      "reply",
+    ];
+    if (!commentId || !allowed.includes(action)) {
       return NextResponse.json({ error: "Invalid action" }, { status: 400 });
     }
 
     await connectDB();
+    const comment = await Comment.findById(commentId);
+    if (!comment) {
+      return NextResponse.json({ error: "Comment not found" }, { status: 404 });
+    }
 
     if (action === "delete") {
       await Comment.findByIdAndDelete(commentId);
       return NextResponse.json({ success: true });
     }
 
-    await Comment.findByIdAndUpdate(commentId, {
-      isApproved: action === "approve",
-    });
+    if (action === "approve") {
+      comment.isApproved = true;
+      comment.isRejected = false;
+      comment.isReported = false;
+      await comment.save();
+      return NextResponse.json({ success: true });
+    }
 
-    return NextResponse.json({ success: true });
+    if (action === "reject") {
+      comment.isApproved = false;
+      comment.isRejected = true;
+      await comment.save();
+      return NextResponse.json({ success: true });
+    }
+
+    if (action === "ignore_report") {
+      comment.isReported = false;
+      await comment.save();
+      return NextResponse.json({ success: true });
+    }
+
+    if (action === "ban_user") {
+      await User.findByIdAndUpdate(comment.user, { isBanned: true });
+      comment.isRejected = true;
+      comment.isApproved = false;
+      await comment.save();
+      return NextResponse.json({ success: true });
+    }
+
+    if (action === "reply") {
+      if (!replyContent?.trim()) {
+        return NextResponse.json({ error: "Réponse vide." }, { status: 400 });
+      }
+      await Comment.create({
+        article: comment.article,
+        user: session.user.id,
+        parent: comment._id,
+        content: replyContent.trim(),
+        isApproved: true,
+        isReported: false,
+        isRejected: false,
+      });
+      return NextResponse.json({ success: true });
+    }
+
+    return NextResponse.json({ error: "Invalid action" }, { status: 400 });
   } catch {
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }

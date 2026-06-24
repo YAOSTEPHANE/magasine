@@ -52,6 +52,12 @@ const updateSchema = z.object({
       })
     )
     .optional(),
+  seoTitle: z.string().optional(),
+  seoDescription: z.string().optional(),
+  ogImage: z.string().optional(),
+  canonicalUrl: z.string().optional(),
+  mailchimpConnected: z.boolean().optional(),
+  brevoConnected: z.boolean().optional(),
 });
 
 export async function GET() {

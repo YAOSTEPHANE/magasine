@@ -8,6 +8,7 @@ export interface IComment {
   content: string;
   isApproved: boolean;
   isReported: boolean;
+  isRejected: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -20,6 +21,7 @@ const CommentSchema = new Schema<IComment>(
     content: { type: String, required: true, maxlength: 2000 },
     isApproved: { type: Boolean, default: true },
     isReported: { type: Boolean, default: false },
+    isRejected: { type: Boolean, default: false },
   },
   { timestamps: true }
 );

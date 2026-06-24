@@ -12,15 +12,23 @@ const schema = z.object({
   excerpt: z.string().min(1),
   content: z.string().min(1),
   featuredImage: z.string().url(),
+  featuredImageCaption: z.string().optional(),
   categoryId: z.string(),
   authorId: z.string(),
   tags: z.array(z.string()).optional(),
   status: z.enum(["draft", "review", "scheduled", "published", "archived"]),
+  scheduledAt: z.string().optional(),
+  seoTitle: z.string().optional(),
+  seoDescription: z.string().optional(),
+  slug: z.string().optional(),
   isFeatured: z.boolean().optional(),
   isTopStory: z.boolean().optional(),
   isUrgent: z.boolean().optional(),
   isEditorsChoice: z.boolean().optional(),
   isPremium: z.boolean().optional(),
+  commentsDisabled: z.boolean().optional(),
+  allowSocialShare: z.boolean().optional(),
+  sendPushOnPublish: z.boolean().optional(),
 });
 
 export async function POST(request: NextRequest) {
@@ -37,11 +45,13 @@ export async function POST(request: NextRequest) {
     }
 
     await connectDB();
-    const slug = slugify(parsed.data.title, { lower: true, strict: true });
+    const slug = parsed.data.slug
+      ? slugify(parsed.data.slug, { lower: true, strict: true })
+      : slugify(parsed.data.title, { lower: true, strict: true });
 
     const existing = await Article.findOne({ slug });
     if (existing) {
-      return NextResponse.json({ error: "An article with this title already exists" }, { status: 409 });
+      return NextResponse.json({ error: "Un article avec ce slug existe déjà" }, { status: 409 });
     }
 
     const article = await Article.create({
@@ -51,20 +61,27 @@ export async function POST(request: NextRequest) {
       excerpt: parsed.data.excerpt,
       content: parsed.data.content,
       featuredImage: parsed.data.featuredImage,
+      featuredImageCaption: parsed.data.featuredImageCaption,
       category: parsed.data.categoryId,
       authors: [parsed.data.authorId],
       tags: parsed.data.tags ?? [],
       status: parsed.data.status,
       publishedAt: parsed.data.status === "published" ? new Date() : undefined,
+      scheduledAt: parsed.data.scheduledAt ? new Date(parsed.data.scheduledAt) : undefined,
       readingTime: estimateReadingTime(parsed.data.content),
+      seoTitle: parsed.data.seoTitle,
+      seoDescription: parsed.data.seoDescription,
       isFeatured: parsed.data.isFeatured ?? false,
       isTopStory: parsed.data.isTopStory ?? false,
       isUrgent: parsed.data.isUrgent ?? false,
       isEditorsChoice: parsed.data.isEditorsChoice ?? false,
       isPremium: parsed.data.isPremium ?? false,
+      commentsDisabled: parsed.data.commentsDisabled ?? false,
+      allowSocialShare: parsed.data.allowSocialShare ?? true,
+      sendPushOnPublish: parsed.data.sendPushOnPublish ?? false,
     });
 
-    return NextResponse.json({ _id: String(article._id) }, { status: 201 });
+    return NextResponse.json({ _id: String(article._id), slug: article.slug }, { status: 201 });
   } catch {
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }

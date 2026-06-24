@@ -21,6 +21,17 @@ export interface TrustPartnerDoc {
   isActive: boolean;
 }
 
+export interface AdZoneDoc {
+  key: string;
+  name: string;
+  position: string;
+  size: string;
+  active: boolean;
+  impressions: number;
+  clicks: number;
+  revenueFcfa: number;
+}
+
 export interface ISiteSettings {
   _id: mongoose.Types.ObjectId;
   siteName: string;
@@ -45,6 +56,13 @@ export interface ISiteSettings {
   trustStripLabel: string;
   trustStripEnabled: boolean;
   trustPartners: TrustPartnerDoc[];
+  seoTitle: string;
+  seoDescription: string;
+  ogImage: string;
+  canonicalUrl: string;
+  mailchimpConnected: boolean;
+  brevoConnected: boolean;
+  adZones: AdZoneDoc[];
   updatedAt: Date;
 }
 
@@ -100,6 +118,27 @@ const SiteSettingsSchema = new Schema<ISiteSettings>(
           height: Number,
           url: String,
           isActive: { type: Boolean, default: true },
+        },
+      ],
+      default: [],
+    },
+    seoTitle: { type: String, default: "" },
+    seoDescription: { type: String, default: "" },
+    ogImage: { type: String, default: "" },
+    canonicalUrl: { type: String, default: "https://pressivoire.ci" },
+    mailchimpConnected: { type: Boolean, default: false },
+    brevoConnected: { type: Boolean, default: false },
+    adZones: {
+      type: [
+        {
+          key: String,
+          name: String,
+          position: String,
+          size: String,
+          active: { type: Boolean, default: true },
+          impressions: { type: Number, default: 0 },
+          clicks: { type: Number, default: 0 },
+          revenueFcfa: { type: Number, default: 0 },
         },
       ],
       default: [],

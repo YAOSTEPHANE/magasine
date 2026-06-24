@@ -4,6 +4,7 @@ import { User } from "@/models/User";
 import { Comment } from "@/models/Comment";
 import { Newsletter } from "@/models/Newsletter";
 import { Category } from "@/models/Category";
+import { getTodayMetrics } from "@/lib/admin-today-metrics";
 
 export interface DashboardKpi {
   label: string;
@@ -50,6 +51,50 @@ export interface RecentArticleRow {
   updatedAt: string;
 }
 
+export interface PendingArticleRow {
+  _id: string;
+  title: string;
+  status: string;
+  category: string;
+  categoryColor: string;
+  authorName: string;
+  readingTime: number;
+  updatedAt: string;
+  scheduledAt?: string;
+}
+
+export type ActivityTone = "green" | "amber" | "blue" | "red" | "purple";
+
+export interface DashboardActivityItem {
+  id: string;
+  tone: ActivityTone;
+  icon: string;
+  actor?: string;
+  action: string;
+  subject?: string;
+  subjectEmphasis?: "em" | "strong";
+  at: string;
+  href?: string;
+}
+
+export interface TodayStats {
+  publishedToday: number;
+  commentsToday: number;
+  subscribersToday: number;
+  uniqueReadersToday: number;
+}
+
+export interface WeeklyReport {
+  articlesPublished: number;
+  commentsReceived: number;
+  newSubscribers: number;
+  topCategory: string;
+  topArticleTitle: string;
+  topArticleViews: number;
+  pendingReview: number;
+  pendingComments: number;
+}
+
 export interface AdminDashboardData {
   kpis: DashboardKpi[];
   timeline: TimelinePoint[];
@@ -57,9 +102,16 @@ export interface AdminDashboardData {
   pipeline: PipelineSlice[];
   topArticles: TopArticleRow[];
   recentArticles: RecentArticleRow[];
+  pendingArticles: PendingArticleRow[];
+  activityFeed: DashboardActivityItem[];
+  todayStats: TodayStats;
+  weeklyReport: WeeklyReport;
+  totalComments: number;
   totalViews: number;
   pendingReview: number;
   pendingComments: number;
+  scheduledCount: number;
+  monthlyNewSubscribers: number;
   avgReadingTime: number;
 }
 
@@ -73,7 +125,114 @@ function daysAgo(n: number) {
 }
 
 function formatDayLabel(date: Date) {
-  return date.toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+  return date.toLocaleDateString("fr-FR", { day: "numeric", month: "short" });
+}
+
+function firstAuthorName(authors: unknown): string | undefined {
+  if (!Array.isArray(authors) || authors.length === 0) return undefined;
+  const first = authors[0];
+  if (first && typeof first === "object" && "name" in first && typeof first.name === "string") {
+    return first.name;
+  }
+  return undefined;
+}
+
+function buildActivityFeed(input: {
+  recentPublished: Array<{ _id: unknown; title: string; publishedAt?: Date; authors?: unknown }>;
+  recentEdits: Array<{ _id: unknown; title: string; updatedAt?: Date; authors?: unknown; status: string }>;
+  recentUsers: Array<{ _id: unknown; name: string; createdAt?: Date; role: string }>;
+  pendingComments: number;
+  scheduledPlanner?: { actor: string; count: number; nextAt: Date };
+  now: Date;
+}): DashboardActivityItem[] {
+  const items: DashboardActivityItem[] = [];
+
+  for (const article of input.recentPublished) {
+    const author = firstAuthorName(article.authors) ?? "Un auteur";
+    items.push({
+      id: `pub-${String(article._id)}`,
+      tone: "green",
+      icon: "✓",
+      actor: author,
+      action: "a publié",
+      subject: article.title,
+      subjectEmphasis: "em",
+      at: article.publishedAt
+        ? new Date(article.publishedAt).toISOString()
+        : input.now.toISOString(),
+      href: `/admin/articles/${String(article._id)}`,
+    });
+  }
+
+  if (input.pendingComments > 0) {
+    items.push({
+      id: "mod-comments",
+      tone: "amber",
+      icon: "💬",
+      action: `${input.pendingComments} commentaire${input.pendingComments > 1 ? "s" : ""} en attente de`,
+      subject: "modération",
+      subjectEmphasis: "strong",
+      at: input.now.toISOString(),
+      href: "/admin/comments",
+    });
+  }
+
+  for (const article of input.recentEdits) {
+    const author = firstAuthorName(article.authors) ?? "Un auteur";
+    items.push({
+      id: `edit-${String(article._id)}`,
+      tone: "blue",
+      icon: "✏️",
+      actor: author,
+      action: article.status === "review" ? "a soumis" : "a modifié",
+      subject: article.title,
+      subjectEmphasis: "em",
+      at: article.updatedAt
+        ? new Date(article.updatedAt).toISOString()
+        : input.now.toISOString(),
+      href: `/admin/articles/${String(article._id)}`,
+    });
+  }
+
+  for (const user of input.recentUsers) {
+    items.push({
+      id: `user-${String(user._id)}`,
+      tone: "red",
+      icon: "👤",
+      actor: user.name,
+      action: "a rejoint l'équipe éditoriale",
+      at: user.createdAt ? new Date(user.createdAt).toISOString() : input.now.toISOString(),
+      href: "/admin/users",
+    });
+  }
+
+  if (input.scheduledPlanner && input.scheduledPlanner.count > 0) {
+    const { actor, count, nextAt } = input.scheduledPlanner;
+    const tomorrow = new Date(input.now);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const timeLabel = nextAt.toLocaleTimeString("fr-FR", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+    const when =
+      nextAt.toDateString() === tomorrow.toDateString()
+        ? `demain ${timeLabel}`
+        : `${nextAt.toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit" })} ${timeLabel}`;
+
+    items.push({
+      id: "scheduled-batch",
+      tone: "green",
+      icon: "📅",
+      actor,
+      action: `a planifié ${count} article${count > 1 ? "s" : ""} pour ${when}`,
+      at: input.now.toISOString(),
+      href: "/admin/articles?status=scheduled",
+    });
+  }
+
+  return items
+    .sort((a, b) => new Date(b.at).getTime() - new Date(a.at).getTime())
+    .slice(0, 6);
 }
 
 function trendPercent(current: number, previous: number) {
@@ -105,7 +264,6 @@ export async function getAdminDashboardData(): Promise<AdminDashboardData> {
 
   const [
     published,
-    users,
     comments,
     subscribers,
     pendingReview,
@@ -114,12 +272,11 @@ export async function getAdminDashboardData(): Promise<AdminDashboardData> {
     categoryAgg,
     topArticles,
     recentArticles,
+    pendingQueueRaw,
     viewsAgg,
     readingAgg,
-    ...dailyCounts
   ] = await Promise.all([
     Article.countDocuments({ status: "published" }),
-    User.countDocuments(),
     Comment.countDocuments(),
     Newsletter.countDocuments({ isActive: true }),
     Article.countDocuments({ status: "review" }),
@@ -143,6 +300,13 @@ export async function getAdminDashboardData(): Promise<AdminDashboardData> {
       .limit(6)
       .select("title status category updatedAt")
       .lean(),
+    Article.find({ status: { $in: ["review", "scheduled"] } })
+      .populate("category", "name color")
+      .populate("authors", "name")
+      .sort({ updatedAt: -1 })
+      .limit(5)
+      .select("title status category authors readingTime updatedAt scheduledAt")
+      .lean(),
     Article.aggregate([
       { $match: { status: "published" } },
       { $group: { _id: null, total: { $sum: "$views" } } },
@@ -159,8 +323,7 @@ export async function getAdminDashboardData(): Promise<AdminDashboardData> {
     periodQueries.push(
       countInRange(Article, "publishedAt", start, end, { status: "published" }),
       countInRange(Comment, "createdAt", start, end),
-      countInRange(Newsletter, "subscribedAt", start, end, { isActive: true }),
-      countInRange(User, "createdAt", start, end)
+      countInRange(Newsletter, "subscribedAt", start, end, { isActive: true })
     );
   }
 
@@ -169,14 +332,12 @@ export async function getAdminDashboardData(): Promise<AdminDashboardData> {
   const articlesPerDay: number[] = [];
   const commentsPerDay: number[] = [];
   const subscribersPerDay: number[] = [];
-  const usersPerDay: number[] = [];
 
   for (let i = 0; i < rangeDays; i++) {
-    const base = i * 4;
+    const base = i * 3;
     articlesPerDay.push(periodResults[base] ?? 0);
     commentsPerDay.push(periodResults[base + 1] ?? 0);
     subscribersPerDay.push(periodResults[base + 2] ?? 0);
-    usersPerDay.push(periodResults[base + 3] ?? 0);
   }
 
   const last7Articles = articlesPerDay.slice(-7).reduce((a, b) => a + b, 0);
@@ -185,8 +346,6 @@ export async function getAdminDashboardData(): Promise<AdminDashboardData> {
   const prev7Comments = commentsPerDay.slice(0, 7).reduce((a, b) => a + b, 0);
   const last7Subs = subscribersPerDay.slice(-7).reduce((a, b) => a + b, 0);
   const prev7Subs = subscribersPerDay.slice(0, 7).reduce((a, b) => a + b, 0);
-  const last7Users = usersPerDay.slice(-7).reduce((a, b) => a + b, 0);
-  const prev7Users = usersPerDay.slice(0, 7).reduce((a, b) => a + b, 0);
 
   const totalViews = (viewsAgg[0] as { total?: number } | undefined)?.total ?? 0;
   const avgReadingTime = Math.round(
@@ -212,10 +371,11 @@ export async function getAdminDashboardData(): Promise<AdminDashboardData> {
   });
 
   const statusLabels: Record<string, string> = {
-    published: "Published",
-    review: "In review",
-    draft: "Drafts",
-    scheduled: "Scheduled",
+    published: "Publiés",
+    review: "En révision",
+    draft: "Brouillons",
+    scheduled: "Planifiés",
+    archived: "Archivés",
   };
 
   const pipeline: PipelineSlice[] = (pipelineRaw as { _id: string; count: number }[]).map(
@@ -255,18 +415,102 @@ export async function getAdminDashboardData(): Promise<AdminDashboardData> {
       sparkline: buildSparkline(subscribersPerDay),
     },
     {
-      label: "Registered readers",
-      value: users,
-      trend: trendPercent(last7Users, prev7Users),
-      sparkline: buildSparkline(usersPerDay),
+      label: "Comments",
+      value: comments,
+      trend: trendPercent(last7Comments, prev7Comments),
+      sparkline: buildSparkline(commentsPerDay),
     },
   ];
+
+  const todayStart = daysAgo(0);
+  const tomorrow = new Date(todayStart.getTime() + DAY_MS);
+  const monthStart = daysAgo(30);
+  const weekAgo = daysAgo(7);
+
+  const [
+    todayMetrics,
+    monthlyNewSubscribers,
+    scheduledCount,
+    latestScheduled,
+    recentPublished,
+    recentEdits,
+    recentEditorialUsers,
+  ] = await Promise.all([
+    getTodayMetrics(),
+    countInRange(Newsletter, "subscribedAt", monthStart, tomorrow, { isActive: true }),
+    Article.countDocuments({ status: "scheduled" }),
+    Article.findOne({ status: "scheduled" })
+      .populate("authors", "name")
+      .sort({ updatedAt: -1 })
+      .select("authors scheduledAt")
+      .lean(),
+    Article.find({ status: "published", publishedAt: { $gte: weekAgo } })
+      .populate("authors", "name")
+      .sort({ publishedAt: -1 })
+      .limit(4)
+      .select("title publishedAt authors")
+      .lean(),
+    Article.find({
+      status: { $in: ["review", "draft"] },
+      updatedAt: { $gte: daysAgo(5) },
+    })
+      .populate("authors", "name")
+      .sort({ updatedAt: -1 })
+      .limit(3)
+      .select("title updatedAt authors status")
+      .lean(),
+    User.find({
+      role: { $in: ["super_admin", "admin", "editor", "author", "contributor"] },
+      createdAt: { $gte: daysAgo(30) },
+    })
+      .sort({ createdAt: -1 })
+      .limit(2)
+      .select("name createdAt role")
+      .lean(),
+  ]);
+
+  const scheduledPlanner =
+    scheduledCount > 0
+      ? {
+          actor: firstAuthorName(latestScheduled?.authors) ?? "Un éditeur",
+          count: scheduledCount,
+          nextAt: latestScheduled?.scheduledAt
+            ? new Date(latestScheduled.scheduledAt)
+            : now,
+        }
+      : undefined;
+
+  const activityFeed = buildActivityFeed({
+    recentPublished,
+    recentEdits,
+    recentUsers: recentEditorialUsers,
+    pendingComments,
+    scheduledPlanner,
+    now,
+  });
+
+  const weeklyReport: WeeklyReport = {
+    articlesPublished: last7Articles,
+    commentsReceived: last7Comments,
+    newSubscribers: last7Subs,
+    topCategory: categories[0]?.name ?? "—",
+    topArticleTitle: topArticles[0]?.title ?? "—",
+    topArticleViews: topArticles[0]?.views ?? 0,
+    pendingReview,
+    pendingComments,
+  };
 
   return {
     kpis,
     timeline,
     categories,
     pipeline,
+    activityFeed,
+    todayStats: todayMetrics,
+    weeklyReport,
+    totalComments: comments,
+    scheduledCount,
+    monthlyNewSubscribers,
     topArticles: topArticles.map((a) => ({
       _id: String(a._id),
       title: a.title,
@@ -281,6 +525,22 @@ export async function getAdminDashboardData(): Promise<AdminDashboardData> {
       category: (a.category as { name?: string } | null)?.name ?? "—",
       updatedAt: a.updatedAt ? new Date(a.updatedAt).toISOString() : now.toISOString(),
     })),
+    pendingArticles: pendingQueueRaw.map((a) => {
+      const authors = a.authors as { name?: string }[] | undefined;
+      const firstAuthor = Array.isArray(authors) ? authors[0]?.name : undefined;
+      const categoryDoc = a.category as { name?: string; color?: string } | null;
+      return {
+        _id: String(a._id),
+        title: a.title,
+        status: a.status,
+        category: categoryDoc?.name ?? "—",
+        categoryColor: categoryDoc?.color ?? "#6b6b6b",
+        authorName: firstAuthor ?? "—",
+        readingTime: a.readingTime ?? 1,
+        updatedAt: a.updatedAt ? new Date(a.updatedAt).toISOString() : now.toISOString(),
+        scheduledAt: a.scheduledAt ? new Date(a.scheduledAt).toISOString() : undefined,
+      };
+    }),
     totalViews,
     pendingReview,
     pendingComments,

@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+import mongoose from "mongoose";
 import { requireAdminApi } from "@/lib/admin-api";
 import { connectDB } from "@/lib/mongodb";
 import { User } from "@/models/User";
+import { Article } from "@/models/Article";
 import type { UserRole } from "@/types";
 
 const patchSchema = z.object({
@@ -18,10 +20,19 @@ export async function GET() {
 
   await connectDB();
   const users = await User.find()
-    .select("name email role isPremium createdAt")
+    .select("name email role isPremium isBanned createdAt")
     .sort({ createdAt: -1 })
     .limit(200)
     .lean();
+
+  const articleCounts = await Article.aggregate<{ _id: mongoose.Types.ObjectId; count: number }>([
+    { $unwind: "$authors" },
+    { $group: { _id: "$authors", count: { $sum: 1 } } },
+  ]);
+
+  const countMap = new Map(
+    articleCounts.map((row) => [String(row._id), row.count])
+  );
 
   return NextResponse.json({
     users: users.map((u) => ({
@@ -30,6 +41,8 @@ export async function GET() {
       email: u.email,
       role: u.role as UserRole,
       isPremium: u.isPremium,
+      isBanned: u.isBanned ?? false,
+      articleCount: countMap.get(String(u._id)) ?? 0,
       createdAt: u.createdAt,
     })),
   });
