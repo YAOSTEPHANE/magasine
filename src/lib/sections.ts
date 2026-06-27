@@ -76,6 +76,10 @@ export const SECTION_META: Record<string, SectionMeta> = {
     relatedSlugs: ["commentary", "explainer", "culture", "africa", "investigations"],
     linkHref: "/rss?category=news",
     linkLabel: "News RSS",
+    formatLinks: [
+      { label: "All news hub", href: "/news" },
+      { label: "Breaking news", href: "/urgent" },
+    ],
   },
   commentary: {
     slug: "commentary",
@@ -116,6 +120,10 @@ export const SECTION_META: Record<string, SectionMeta> = {
     relatedSlugs: ["news", "world", "opinion", "investigations", "africa"],
     linkHref: "/rss?category=politics",
     linkLabel: "Politics RSS",
+    formatLinks: [
+      { label: "All news", href: "/news" },
+      { label: "News desk", href: "/category/news" },
+    ],
   },
   health: {
     slug: "health",
@@ -160,6 +168,10 @@ export const SECTION_META: Record<string, SectionMeta> = {
     relatedSlugs: ["special-reports", "politics", "news", "world", "multimedia"],
     linkHref: "/rss?category=investigations",
     linkLabel: "Investigations RSS",
+    formatLinks: [
+      { label: "All news", href: "/news" },
+      { label: "Special reports", href: "/category/special-reports" },
+    ],
   },
   local: {
     slug: "local",
@@ -180,6 +192,10 @@ export const SECTION_META: Record<string, SectionMeta> = {
     relatedSlugs: ["africa", "west-asia", "south-asia", "latin-america", "politics"],
     linkHref: "/rss?category=world",
     linkLabel: "World RSS",
+    formatLinks: [
+      { label: "All news", href: "/news" },
+      { label: "Politics", href: "/category/politics" },
+    ],
   },
   "special-reports": {
     slug: "special-reports",
@@ -190,6 +206,10 @@ export const SECTION_META: Record<string, SectionMeta> = {
     relatedSlugs: ["investigations", "multimedia", "opinion", "world", "africa"],
     linkHref: "/rss?category=special-reports",
     linkLabel: "Special reports RSS",
+    formatLinks: [
+      { label: "All news", href: "/news" },
+      { label: "Investigations", href: "/category/investigations" },
+    ],
   },
 };
 

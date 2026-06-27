@@ -73,7 +73,7 @@ interface SocialLinksProps {
   networks?: SocialNetwork[];
   className?: string;
   iconClassName?: string;
-  variant?: "footer" | "inline" | "topbar";
+  variant?: "footer" | "inline" | "topbar" | "header";
 }
 
 export function SocialLinks({
@@ -87,7 +87,9 @@ export function SocialLinks({
       ? `footer-social ${className ?? ""}`
       : variant === "topbar"
         ? `top-bar-social ${className ?? ""}`
-        : `social-links-inline ${className ?? ""}`;
+        : variant === "header"
+          ? `header-top-social ${className ?? ""}`
+          : `social-links-inline ${className ?? ""}`;
 
   return (
     <div className={wrapperClass}>

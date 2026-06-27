@@ -1,12 +1,15 @@
 "use client";
 
 import Link from "next/link";
+import { Suspense } from "react";
 import { usePathname } from "next/navigation";
 import {
   PRIMARY_NAV,
   REGION_NAV,
-  SECONDARY_NAV,
 } from "@/data/presse-ivoire-home";
+import { GswNavNewsMenu } from "@/components/presse-ivoire/GswNavNewsMenu";
+import { GswNavSearchLink } from "@/components/presse-ivoire/GswNavSearchLink";
+import { GswNavSubscribeLink } from "@/components/presse-ivoire/GswNavSubscribeLink";
 
 function isActive(pathname: string, href: string) {
   if (href === "/") return pathname === "/";
@@ -18,10 +21,12 @@ function NavLink({
   href,
   label,
   variant = "section",
+  className,
 }: {
   href: string;
   label: string;
   variant?: "section" | "region";
+  className?: string;
 }) {
   const pathname = usePathname();
   const active = isActive(pathname, href);
@@ -29,7 +34,7 @@ function NavLink({
   return (
     <Link
       href={href}
-      className={`gsw-nav-link gsw-nav-link--${variant}${active ? " is-active" : ""}`}
+      className={`gsw-nav-link gsw-nav-link--${variant}${active ? " is-active" : ""}${className ? ` ${className}` : ""}`}
       aria-current={active ? "page" : undefined}
     >
       {label}
@@ -43,21 +48,30 @@ export function HomeQuickNav() {
       <nav className="gsw-nav" aria-label="Main navigation">
         <div className="container gsw-nav-inner gsw-nav-inner--single">
           <div className="gsw-nav-track">
-            {PRIMARY_NAV.map((item) => (
-              <NavLink key={item.href} href={item.href} label={item.label} />
-            ))}
-            {SECONDARY_NAV.map((item) => (
-              <NavLink key={item.href} href={item.href} label={item.label} />
-            ))}
-            <span className="gsw-nav-divider" aria-hidden />
-            {REGION_NAV.map((region) => (
-              <NavLink
-                key={region.href}
-                href={region.href}
-                label={region.label}
-                variant="region"
-              />
-            ))}
+            <div className="gsw-nav-track-group">
+              <Suspense fallback={<span className="gsw-nav-link">News</span>}>
+                <GswNavNewsMenu />
+              </Suspense>
+              {PRIMARY_NAV.filter((item) => item.label !== "News").map((item) => (
+                <NavLink key={item.href} href={item.href} label={item.label} />
+              ))}
+              <NavLink href="/about" label="About" />
+            </div>
+            <div className="gsw-nav-track-group gsw-nav-track-group--regions">
+              <span className="gsw-nav-divider" aria-hidden />
+              {REGION_NAV.map((region) => (
+                <NavLink
+                  key={region.href}
+                  href={region.href}
+                  label={region.label}
+                  variant="region"
+                />
+              ))}
+            </div>
+          </div>
+          <div className="gsw-nav-end-actions">
+            <GswNavSearchLink className="gsw-nav-search-end" />
+            <GswNavSubscribeLink />
           </div>
         </div>
       </nav>

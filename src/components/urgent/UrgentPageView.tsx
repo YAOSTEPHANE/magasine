@@ -25,7 +25,9 @@ export function UrgentPageView({ articles, alerts }: UrgentPageViewProps) {
           <nav className="category-breadcrumb section-page-breadcrumb" aria-label="Breadcrumb">
             <Link href="/">Home</Link>
             <span aria-hidden>/</span>
-            <span>Urgent</span>
+            <Link href="/news">All news</Link>
+            <span aria-hidden>/</span>
+            <span>Breaking</span>
           </nav>
 
           <div className="section-page-hero-main">
@@ -40,6 +42,9 @@ export function UrgentPageView({ articles, alerts }: UrgentPageViewProps) {
           </div>
 
           <div className="section-page-hero-actions">
+            <Link href="/news" className="section-page-hero-link">
+              All news hub
+            </Link>
             <Link href="/rss" className="section-page-hero-link">
               Subscribe to RSS
             </Link>

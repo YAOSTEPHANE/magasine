@@ -13,6 +13,7 @@ interface SectionPageHeroProps {
   linkHref?: string;
   linkLabel?: string;
   formatLinks?: { label: string; href: string }[];
+  parentCrumb?: { label: string; href: string };
 }
 
 export function SectionPageHero({
@@ -26,6 +27,7 @@ export function SectionPageHero({
   linkHref,
   linkLabel,
   formatLinks,
+  parentCrumb,
 }: SectionPageHeroProps) {
   const displayLead = description?.trim() || lead;
 
@@ -40,7 +42,15 @@ export function SectionPageHero({
         <nav className="category-breadcrumb section-page-breadcrumb" aria-label="Breadcrumb">
           <Link href="/">Home</Link>
           <span aria-hidden>/</span>
-          <span>{name}</span>
+          {parentCrumb ? (
+            <>
+              <Link href={parentCrumb.href}>{parentCrumb.label}</Link>
+              <span aria-hidden>/</span>
+              <span>{name}</span>
+            </>
+          ) : (
+            <span>{name}</span>
+          )}
         </nav>
 
         <div className="section-page-hero-main">

@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import type { HomeLatest } from "@/types/home";
+import { VIEW_ALL_STORIES_LINK } from "@/data/presse-ivoire-home";
 import { SectionImage } from "@/components/presse-ivoire/SectionImage";
 import { HeroLatestNewsletter } from "@/components/presse-ivoire/HeroLatestNewsletter";
 import { formatHomeCardMeta } from "@/lib/format-article";
@@ -17,9 +19,6 @@ export function LatestNewsColumn({ data, newsletterEnabled = true }: LatestNewsC
       <div className="hero-latest-panel">
         <div className="hero-latest-header">
           <h3 className="hero-latest-title">Latest News</h3>
-          <Link href="/news" className="hero-latest-link">
-            View all
-          </Link>
         </div>
 
         {featured.slug && (
@@ -63,6 +62,13 @@ export function LatestNewsColumn({ data, newsletterEnabled = true }: LatestNewsC
             );
           })}
         </ul>
+
+        <div className="hero-latest-all-stories-wrap">
+          <Link href={VIEW_ALL_STORIES_LINK.href} className="hero-latest-all-stories">
+            <span>{VIEW_ALL_STORIES_LINK.label}</span>
+            <ArrowRight className="hero-latest-all-stories-icon" size={16} strokeWidth={2.25} aria-hidden />
+          </Link>
+        </div>
 
         <HeroLatestNewsletter enabled={newsletterEnabled} />
       </div>

@@ -16,6 +16,47 @@ export const REGION_NAV = [
 
 export const ALL_NEWS_LINK = { label: "All news", href: "/news" } as const;
 
+export const VIEW_ALL_STORIES_LINK = { label: "View all stories", href: "/news" } as const;
+
+/** News dropdown — desktop main menu */
+export const NEWS_MENU_NAV = [
+  {
+    label: "All news",
+    href: "/news",
+    description: "Latest stories across every section",
+  },
+  {
+    label: "News desk",
+    href: "/category/news",
+    description: "Breaking and daily reporting",
+  },
+  {
+    label: "Breaking news",
+    href: "/urgent",
+    description: "Live updates and urgent alerts",
+  },
+  {
+    label: "Investigations",
+    href: "/category/investigations",
+    description: "Accountability journalism and probes",
+  },
+  {
+    label: "Special reports",
+    href: "/category/special-reports",
+    description: "In-depth features and cross-border series",
+  },
+  {
+    label: "Politics",
+    href: "/category/politics",
+    description: "Elections, parliaments, and governance",
+  },
+  {
+    label: "World",
+    href: "/category/world",
+    description: "International affairs from the Global South",
+  },
+] as const;
+
 export const PRIMARY_NAV = [
   { label: "News", href: "/category/news" },
   { label: "Commentary", href: "/category/commentary" },
@@ -25,10 +66,27 @@ export const PRIMARY_NAV = [
 
 export const SECONDARY_NAV: { label: string; href: string }[] = [];
 
-export const HEADER_TOP_ACTIONS = [
-  { label: "Subscribe", href: "/newsletter" },
-  { label: "Donate", href: "/donate" },
+export const HEADER_UTILITY_LINKS = [
+  { label: "About", href: "/about" },
+  { label: "Our mission", href: "/about#mission" },
+  { label: "Newsletter", href: "/newsletter" },
 ] as const;
+
+export const HEADER_TOP_ACTIONS = [
+  { label: "Support our work", href: "/donate" },
+] as const;
+
+export const HEADER_SOCIAL_NETWORKS = [
+  "facebook",
+  "twitter",
+  "instagram",
+  "youtube",
+  "linkedin",
+] as const;
+
+export const NAV_SUBSCRIBE_LINK = { label: "Subscribe", href: "/newsletter" } as const;
+
+export const NAV_SEARCH_LINK = { label: "Search", href: "/search" } as const;
 
 export const SITE_TAGLINE = "Decolonizing media";
 
@@ -57,11 +115,40 @@ export const HEADER_NAV = [...PRIMARY_NAV, ...SECONDARY_NAV];
 /** @deprecated Second menu removed */
 export const NAV_SECTIONS: { label: string; href: string }[] = [];
 
-/** About & mission — footer, mobile menu, sitemap */
+/** About & mission — footer, mobile menu, sitemap, desktop nav */
 export const ABOUT_NAV = [
   { label: "About us", href: "/about" },
   { label: "Our mission", href: "/about#mission" },
   { label: "Our team", href: "/team" },
+] as const;
+
+/** About dropdown — desktop main menu */
+export const ABOUT_MENU_NAV = [
+  {
+    label: "About us",
+    href: "/about",
+    description: "Our story and independent newsroom",
+  },
+  {
+    label: "Our mission",
+    href: "/about#mission",
+    description: "Why we report from the Global South",
+  },
+  {
+    label: "Our team",
+    href: "/team",
+    description: "Journalists and correspondents worldwide",
+  },
+  {
+    label: "Contact",
+    href: "/contact",
+    description: "Editorial desk, partnerships, and tips",
+  },
+  {
+    label: "Write for us",
+    href: "/write-for-us",
+    description: "Pitch commentary and field reporting",
+  },
 ] as const;
 
 export const HERO_MAIN = {
@@ -243,9 +330,14 @@ export const FOOTER_COLS = {
 
 /** Mobile drawer — mirrors footer structure */
 export const MOBILE_NAV = {
-  sections: FOOTER_COLS.sections,
+  news: NEWS_MENU_NAV.map(({ label, href }) => ({ label, href })),
+  sections: PRIMARY_NAV.filter((item) => item.label !== "News").map(({ label, href }) => ({
+    label,
+    href,
+  })),
   regions: FOOTER_COLS.regions,
   formats: FOOTER_COLS.formats,
-  about: FOOTER_COLS.about,
+  about: ABOUT_MENU_NAV.map(({ label, href }) => ({ label, href })),
+  support: FOOTER_SUPPORT_LINKS.map(({ label, href }) => ({ label, href })),
   legal: FOOTER_COLS.legal,
 } as const;

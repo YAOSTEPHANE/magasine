@@ -471,6 +471,53 @@
   flex: 1;
 }
 
+.home-page--revolution .hero-latest-all-stories-wrap {
+  padding: 4px 18px 14px;
+  margin-top: auto;
+}
+
+.home-page--revolution .hero-latest-all-stories {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 11px 16px;
+  border: 1.5px solid rgba(26, 56, 150, 0.22);
+  border-radius: 999px;
+  background: var(--white);
+  font-family: var(--f-ui);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--brand-blue, #1a3896);
+  transition:
+    color 0.22s ease,
+    background 0.22s ease,
+    border-color 0.22s ease,
+    transform 0.22s ease,
+    gap 0.22s ease;
+}
+
+.home-page--revolution .hero-latest-all-stories:hover {
+  background: var(--brand-blue, #1a3896);
+  border-color: var(--brand-blue, #1a3896);
+  color: var(--white);
+  gap: 12px;
+  transform: translateY(-1px);
+}
+
+.home-page--revolution .hero-latest-all-stories-icon {
+  flex-shrink: 0;
+  transition: transform 0.22s ease;
+}
+
+.home-page--revolution .hero-latest-all-stories:hover .hero-latest-all-stories-icon {
+  transform: translateX(2px);
+}
+
 .home-page--revolution .hero-latest-item {
   padding: 10px 0;
   display: flex;

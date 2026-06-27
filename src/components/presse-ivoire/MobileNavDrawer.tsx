@@ -4,7 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { HEADER_TOP_ACTIONS, MOBILE_NAV } from "@/data/presse-ivoire-home";
+import { HeartHandshake } from "lucide-react";
+import { HEADER_TOP_ACTIONS, MOBILE_NAV, NAV_SUBSCRIBE_LINK } from "@/data/presse-ivoire-home";
 
 interface MobileNavDrawerProps {
   open: boolean;
@@ -130,6 +131,12 @@ export function MobileNavDrawer({ open, onClose }: MobileNavDrawerProps) {
 
         <nav className="mobile-nav-body" aria-label="Mobile navigation">
           <MobileNavSection
+            label="News"
+            links={MOBILE_NAV.news}
+            onClose={onClose}
+          />
+
+          <MobileNavSection
             label="Sections"
             links={MOBILE_NAV.sections}
             onClose={onClose}
@@ -151,9 +158,26 @@ export function MobileNavDrawer({ open, onClose }: MobileNavDrawerProps) {
         </nav>
 
         <div className="mobile-nav-about">
-          <p className="mobile-nav-about-label">About &amp; support</p>
+          <p className="mobile-nav-about-label">About</p>
           <ul className="mobile-nav-about-list">
             {MOBILE_NAV.about.map((item) => (
+              <li key={item.href + item.label}>
+                <Link
+                  href={item.href}
+                  className={`mobile-nav-about-link${isActive(item.href) ? " is-active" : ""}`}
+                  onClick={onClose}
+                >
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="mobile-nav-about mobile-nav-about--support">
+          <p className="mobile-nav-about-label">Support</p>
+          <ul className="mobile-nav-about-list">
+            {MOBILE_NAV.support.map((item) => (
               <li key={item.href + item.label}>
                 <Link
                   href={item.href}
@@ -195,25 +219,19 @@ export function MobileNavDrawer({ open, onClose }: MobileNavDrawerProps) {
 
         <div className="mobile-nav-footer">
           <Link
-            href={HEADER_TOP_ACTIONS[0].href}
+            href={NAV_SUBSCRIBE_LINK.href}
             className="mobile-nav-cta mobile-nav-cta--primary"
             onClick={onClose}
           >
-            {HEADER_TOP_ACTIONS[0].label}
+            {NAV_SUBSCRIBE_LINK.label}
           </Link>
           <Link
-            href={HEADER_TOP_ACTIONS[1].href}
+            href={HEADER_TOP_ACTIONS[0].href}
             className="mobile-nav-cta mobile-nav-cta--secondary"
             onClick={onClose}
           >
-            {HEADER_TOP_ACTIONS[1].label}
-          </Link>
-          <Link
-            href="/search"
-            className="mobile-nav-cta mobile-nav-cta--ghost"
-            onClick={onClose}
-          >
-            Search
+            <HeartHandshake size={16} strokeWidth={2} aria-hidden />
+            {HEADER_TOP_ACTIONS[0].label}
           </Link>
         </div>
       </div>

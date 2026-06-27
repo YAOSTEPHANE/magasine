@@ -21,6 +21,7 @@ import { filterRetiredCategories, filterArticlesByRetiredCategories } from "@/li
 import { repairBrokenArticleImagesOnce } from "@/lib/repair-article-images";
 import { migrateCategorySlugsOnce } from "@/lib/migrate-category-slugs";
 import { resolveCategorySlug } from "@/lib/category-slugs";
+import { buildNewsHubSectionCounts } from "@/lib/news-hub";
 
 function mapHomeArticles(
   docs: unknown[],
@@ -366,6 +367,22 @@ export async function getAllNewsArticles(options?: { categorySlug?: string; limi
   let list = sortArticlesByDate(getMockArticles());
   if (resolvedSlug) list = filterArticlesByCategory(list, resolvedSlug);
   return list.slice(0, limit);
+}
+
+export async function getNewsHubPageData(options?: { categorySlug?: string; limit?: number }) {
+  const limit = options?.limit ?? 48;
+  const [articles, urgentData, catalog] = await Promise.all([
+    getAllNewsArticles({ categorySlug: options?.categorySlug, limit }),
+    getUrgentPageData(8),
+    getAllNewsArticles({ limit: 120 }),
+  ]);
+
+  return {
+    articles,
+    urgentArticles: urgentData.articles,
+    alerts: urgentData.alerts,
+    sectionCounts: buildNewsHubSectionCounts(catalog, urgentData.articles.length),
+  };
 }
 
 export async function getArticlesByCategorySlug(slug: string, limit = 12) {

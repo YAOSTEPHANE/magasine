@@ -3,18 +3,25 @@ import type { ArticleListItem } from "@/types";
 import { PageBackdrop } from "@/components/presse-ivoire/PageBackdrop";
 import { SectionImage } from "@/components/presse-ivoire/SectionImage";
 import { SectionRelatedNav } from "@/components/category/SectionRelatedNav";
-import { PRIMARY_NAV, REGION_NAV } from "@/data/presse-ivoire-home";
+import { NEWS_MENU_NAV, REGION_NAV } from "@/data/presse-ivoire-home";
 import { ALL_NEWS_SECTION } from "@/lib/sections";
 import { formatArticleCardMeta } from "@/lib/format-article";
+import { newsHubActiveHref, newsHubFilterHref, newsMenuCategorySlug } from "@/lib/news-hub";
+import { NewsHubSections } from "@/components/news/NewsHubSections";
+import { NewsBreakingStrip } from "@/components/news/NewsBreakingStrip";
 
 interface AllNewsPageViewProps {
   articles: ArticleListItem[];
   activeCategory?: string;
+  sectionCounts: Record<string, number>;
+  urgentArticles: ArticleListItem[];
+  alerts: { text: string; link?: string }[];
 }
 
-const SECTION_FILTERS = PRIMARY_NAV.map((item) => ({
+const NEWS_FILTERS = NEWS_MENU_NAV.map((item) => ({
   label: item.label,
-  slug: item.href.replace("/category/", ""),
+  href: newsHubFilterHref(item.href),
+  slug: newsMenuCategorySlug(item.href),
 }));
 
 const REGION_FILTERS = REGION_NAV.map((item) => ({
@@ -26,10 +33,18 @@ function filterHref(slug?: string) {
   return slug ? `/news?category=${slug}` : "/news";
 }
 
-export function AllNewsPageView({ articles, activeCategory }: AllNewsPageViewProps) {
+export function AllNewsPageView({
+  articles,
+  activeCategory,
+  sectionCounts,
+  urgentArticles,
+  alerts,
+}: AllNewsPageViewProps) {
   const [featured, ...rest] = articles;
+  const activeNewsHref = newsHubActiveHref(activeCategory);
   const activeLabel =
-    [...SECTION_FILTERS, ...REGION_FILTERS].find((item) => item.slug === activeCategory)?.label ??
+    NEWS_FILTERS.find((item) => item.slug === activeCategory)?.label ??
+    REGION_FILTERS.find((item) => item.slug === activeCategory)?.label ??
     null;
 
   return (
@@ -43,14 +58,20 @@ export function AllNewsPageView({ articles, activeCategory }: AllNewsPageViewPro
           <nav className="category-breadcrumb section-page-breadcrumb" aria-label="Breadcrumb">
             <Link href="/">Home</Link>
             <span aria-hidden>/</span>
-            <span>All news</span>
+            <span>{activeLabel ?? "All news"}</span>
           </nav>
 
           <div className="section-page-hero-main">
             <div>
               <span className="section-page-hero-eyebrow">{ALL_NEWS_SECTION.eyebrow}</span>
-              <h1 className="section-page-hero-title">{ALL_NEWS_SECTION.title}</h1>
-              <p className="section-page-hero-lead">{ALL_NEWS_SECTION.lead}</p>
+              <h1 className="section-page-hero-title">
+                {activeLabel ? `${activeLabel}` : ALL_NEWS_SECTION.title}
+              </h1>
+              <p className="section-page-hero-lead">
+                {activeLabel
+                  ? `Stories from ${activeLabel.toLowerCase()} — filter, browse, or jump to another news desk.`
+                  : ALL_NEWS_SECTION.lead}
+              </p>
             </div>
           </div>
 
@@ -69,23 +90,33 @@ export function AllNewsPageView({ articles, activeCategory }: AllNewsPageViewPro
       </header>
 
       <div className="container all-news-page-inner">
+        {!activeCategory && (
+          <>
+            <NewsBreakingStrip alerts={alerts} urgentArticles={urgentArticles} />
+            <NewsHubSections sectionCounts={sectionCounts} activeHref={activeNewsHref} />
+          </>
+        )}
+
         <div className="all-news-filters search-page-filters">
           <div className="search-page-filter-group">
-            <span className="search-page-filter-label">Sections</span>
+            <span className="search-page-filter-label">News desks</span>
             <div className="search-page-chips">
-              <Link
-                href="/news"
-                className={`search-page-chip${!activeCategory ? " is-active" : ""}`}
-                aria-current={!activeCategory ? "page" : undefined}
-              >
-                All
-              </Link>
-              {SECTION_FILTERS.map((item) => (
+              {NEWS_FILTERS.map((item) => (
                 <Link
-                  key={item.slug}
-                  href={filterHref(item.slug)}
-                  className={`search-page-chip${activeCategory === item.slug ? " is-active" : ""}`}
-                  aria-current={activeCategory === item.slug ? "page" : undefined}
+                  key={item.href}
+                  href={item.href}
+                  className={`search-page-chip${
+                    (item.slug && activeCategory === item.slug) ||
+                    (!activeCategory && item.href === "/news")
+                      ? " is-active"
+                      : ""
+                  }`}
+                  aria-current={
+                    (item.slug && activeCategory === item.slug) ||
+                    (!activeCategory && item.href === "/news")
+                      ? "page"
+                      : undefined
+                  }
                 >
                   {item.label}
                 </Link>
@@ -109,6 +140,10 @@ export function AllNewsPageView({ articles, activeCategory }: AllNewsPageViewPro
             </div>
           </div>
         </div>
+
+        {activeCategory && (
+          <NewsHubSections sectionCounts={sectionCounts} activeHref={activeNewsHref} />
+        )}
 
         {activeLabel && (
           <p className="all-news-active-filter">

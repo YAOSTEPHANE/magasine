@@ -7,6 +7,7 @@ import { SectionImage } from "@/components/presse-ivoire/SectionImage";
 import { SectionPageHero } from "@/components/category/SectionPageHero";
 import { SectionRelatedNav } from "@/components/category/SectionRelatedNav";
 import { formatArticleCardMeta } from "@/lib/format-article";
+import { isNewsHubCategory } from "@/lib/news-hub";
 
 interface CategoryPageViewProps {
   category: {
@@ -55,6 +56,11 @@ export function CategoryPageView({ category, sectionMeta, articles }: CategoryPa
         linkHref={sectionMeta.linkHref}
         linkLabel={sectionMeta.linkLabel}
         formatLinks={sectionMeta.formatLinks}
+        parentCrumb={
+          isNewsHubCategory(category.slug)
+            ? { label: "All news", href: "/news" }
+            : undefined
+        }
       />
 
       <div className="container category-page-inner">
