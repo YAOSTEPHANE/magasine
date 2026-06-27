@@ -87,8 +87,8 @@ export const CMS_NEWSLETTER_CAMPAIGNS = [
     status: "pub" as const,
   },
   {
-    title: "Newsletter Tech & Finance — 15 juin",
-    sub: "Wave, 5G et marchés de la semaine",
+    title: "Newsletter Économie — 15 juin",
+    sub: "Marchés et politiques publiques de la semaine",
     sent: "13 750",
     opens: "4 950 (36,0%)",
     clicks: "1 540 (11,2%)",
@@ -108,7 +108,6 @@ export const CMS_NEWSLETTER_LISTS = [
   { name: "Actualités générales", count: 8214, pct: 57, color: "var(--cms-red)" },
   { name: "Sport", count: 4890, pct: 34, color: "var(--blue)" },
   { name: "Finance & Économie", count: 3740, pct: 26, color: "var(--green)" },
-  { name: "Technologie", count: 2180, pct: 15, color: "var(--purple)" },
 ] as const;
 
 export const CMS_ROLE_MATRIX = [

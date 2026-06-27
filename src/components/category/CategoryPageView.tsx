@@ -6,7 +6,7 @@ import { PageBackdrop } from "@/components/presse-ivoire/PageBackdrop";
 import { SectionImage } from "@/components/presse-ivoire/SectionImage";
 import { SectionPageHero } from "@/components/category/SectionPageHero";
 import { SectionRelatedNav } from "@/components/category/SectionRelatedNav";
-import { formatRelativeDate } from "@/lib/utils";
+import { formatArticleCardMeta } from "@/lib/format-article";
 
 interface CategoryPageViewProps {
   category: {
@@ -27,11 +27,6 @@ interface CategoryPageViewProps {
   articles: ArticleListItem[];
 }
 
-function formatMeta(article: ArticleListItem) {
-  const author = article.authors[0]?.name ?? "Editorial";
-  const date = article.publishedAt ? formatRelativeDate(article.publishedAt) : "";
-  return `${author} · ${date} · ${article.readingTime} min`;
-}
 
 export function CategoryPageView({ category, sectionMeta, articles }: CategoryPageViewProps) {
   const [featured, ...rest] = articles;
@@ -101,7 +96,7 @@ export function CategoryPageView({ category, sectionMeta, articles }: CategoryPa
                   <h2 className="ec-card-title large">{featured.title}</h2>
                   <p className="ec-card-excerpt">{featured.excerpt}</p>
                   <p className="ec-card-meta">
-                    <span>{formatMeta(featured)}</span>
+                    <span>{formatArticleCardMeta(featured)}</span>
                   </p>
                 </div>
               </Link>
@@ -135,7 +130,7 @@ export function CategoryPageView({ category, sectionMeta, articles }: CategoryPa
                         <div className="ec-card-title ec-card-title-sm">{article.title}</div>
                         <p className="ec-card-excerpt ec-card-excerpt-sm">{article.excerpt}</p>
                         <div className="ec-card-meta">
-                          <span>{formatMeta(article)}</span>
+                          <span>{formatArticleCardMeta(article)}</span>
                         </div>
                       </div>
                     </Link>

@@ -27,8 +27,10 @@ export function SiteChrome({ children, categories }: SiteChromeProps) {
   return (
     <>
       <ProgressBar />
-      <SiteHeader />
-      <HomeQuickNav categories={categories} />
+      <div className="site-header-stack">
+        <SiteHeader />
+        <HomeQuickNav />
+      </div>
       <main>{children}</main>
       <SiteFooter />
       <ScrollReveal />

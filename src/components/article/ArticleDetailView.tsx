@@ -1,15 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Clock, Eye, ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import type { CSSProperties } from "react";
 import type { ArticleDetail, ArticleListItem } from "@/types";
 import type { Session } from "next-auth";
-import { formatRelativeDate } from "@/lib/utils";
 import {
   articleBadge,
   authorInitials,
+  formatArticleDisplayDate,
   formatPublishedDate,
-  formatViews,
 } from "@/lib/format-article";
 import { resolveFeaturedImage } from "@/lib/images";
 import { CommentsSection } from "@/components/article/CommentsSection";
@@ -123,22 +122,8 @@ export function ArticleDetailView({
                     dateTime={article.publishedAt}
                     title={formatPublishedDate(article.publishedAt)}
                   >
-                    {formatRelativeDate(article.publishedAt)}
+                    {formatArticleDisplayDate(article.publishedAt)}
                   </time>
-                )}
-                <span className="art-meta-divider" aria-hidden />
-                <span className="art-meta-item">
-                  <Clock className="w-3.5 h-3.5" aria-hidden />
-                  {article.readingTime} min read
-                </span>
-                {typeof article.views === "number" && article.views > 0 && (
-                  <>
-                    <span className="art-meta-divider" aria-hidden />
-                    <span className="art-meta-item">
-                      <Eye className="w-3.5 h-3.5" aria-hidden />
-                      {formatViews(article.views)}
-                    </span>
-                  </>
                 )}
               </div>
             </div>
@@ -168,7 +153,6 @@ export function ArticleDetailView({
             url={articleUrl}
             title={article.title}
             articleId={article._id}
-            readingTime={article.readingTime}
           />
 
           <div className="art-main">

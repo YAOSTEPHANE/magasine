@@ -125,7 +125,7 @@ export const getPublicSiteSettings = cache(async (): Promise<PublicSiteSettings>
     return mapSiteSettings({
       _id: undefined as never,
       siteName: "Global South Watch",
-      tagline: "The voice of the Global South — independent & committed journalism",
+      tagline: "Decolonizing media",
       contactEmail: "contact@globalsouthwatch.com",
       siteLogo: resolveSiteLogo(undefined),
       favicon: resolveFavicon(undefined),

@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Clock, Play } from "lucide-react";
+import { Play } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
-import { formatRelativeDate } from "@/lib/utils";
+import { formatArticleCardMeta } from "@/lib/format-article";
 import { resolveFeaturedImage } from "@/lib/images";
 import type { ArticleListItem } from "@/types";
 import { cn } from "@/lib/utils";
@@ -20,7 +20,6 @@ export function ArticleCard({
   className,
   priority = false,
 }: ArticleCardProps) {
-  const authorName = article.authors[0]?.name ?? "Editorial";
   const imageSrc = resolveFeaturedImage(article.featuredImage);
 
   if (variant === "hero") {
@@ -50,17 +49,8 @@ export function ArticleCard({
               {article.excerpt}
             </p>
             <div className="flex items-center gap-4 text-xs text-white/50">
-              <span>{authorName}</span>
-              <span>•</span>
-              <span className="flex items-center gap-1">
-                <Clock className="w-3 h-3" />
-                {article.readingTime} min
-              </span>
               {article.publishedAt && (
-                <>
-                  <span>•</span>
-                  <span>{formatRelativeDate(article.publishedAt)}</span>
-                </>
+                <span>{formatArticleCardMeta(article)}</span>
               )}
             </div>
           </div>
@@ -89,7 +79,7 @@ export function ArticleCard({
             {article.title}
           </h3>
           <span className="text-[11px] text-muted mt-1 block">
-            {formatRelativeDate(article.publishedAt ?? new Date())}
+            {formatArticleCardMeta(article)}
           </span>
         </div>
       </Link>
@@ -172,12 +162,7 @@ export function ArticleCard({
       </h3>
       <p className="text-sm text-muted line-clamp-2 mb-3">{article.excerpt}</p>
       <div className="flex items-center gap-3 text-xs text-muted">
-        <span>{authorName}</span>
-        <span>•</span>
-        <span className="flex items-center gap-1">
-          <Clock className="w-3 h-3" />
-          {article.readingTime} min
-        </span>
+        <span>{formatArticleCardMeta(article)}</span>
       </div>
     </Link>
   );

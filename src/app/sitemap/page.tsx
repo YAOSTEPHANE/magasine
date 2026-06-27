@@ -16,6 +16,7 @@ export const metadata: Metadata = {
 
 const MAIN_LINKS = [
   { label: "Home", href: "/" },
+  { label: "All news", href: "/news" },
   { label: "About us", href: "/about" },
   { label: "Our mission", href: "/about#mission" },
   { label: "Breaking news", href: "/urgent" },

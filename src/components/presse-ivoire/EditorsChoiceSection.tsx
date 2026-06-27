@@ -57,9 +57,9 @@ function HorizontalCard({
         <div className={`ec-card-title${compact ? " ec-card-title-sm" : " large"}`}>{title}</div>
         {excerpt && <p className={`ec-card-excerpt${compact ? " ec-card-excerpt-sm" : ""}`}>{excerpt}</p>}
         <div className="ec-card-meta">
-          <span>{author}</span>
-          <span>·</span>
-          <span>{meta}</span>
+          {author && <span>{author}</span>}
+          {author && meta && <span>·</span>}
+          {meta && <span>{meta}</span>}
         </div>
       </div>
     </Link>

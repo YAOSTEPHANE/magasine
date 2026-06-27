@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { getCategoryBySlug } from "@/lib/data";
-import { getSectionMeta } from "@/lib/sections";
+import { getSectionMeta, resolveSectionMeta } from "@/lib/sections";
 import { CategoryPageView } from "@/components/category/CategoryPageView";
 import type { Metadata } from "next";
 
@@ -31,10 +31,11 @@ export default async function CategoryPage({ params }: Props) {
   const data = await getCategoryBySlug(slug);
   if (!data) notFound();
 
-  const meta = getSectionMeta(slug);
-  if (!meta) notFound();
-
   const { category, articles } = data;
+  const meta = resolveSectionMeta(slug, {
+    name: category.name,
+    description: category.description,
+  });
 
   return (
     <CategoryPageView

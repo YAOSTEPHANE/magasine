@@ -20,7 +20,6 @@ const CATEGORY_COLORS: Record<string, string> = {
   actualites: "var(--cms-red)",
   sports: "var(--blue)",
   finance: "var(--green)",
-  technologie: "var(--purple)",
   opinion: "var(--gold)",
   sante: "var(--t3)",
   investigations: "var(--cms-red)",

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { HomeRubriqueBlock } from "@/types/home";
 import { SectionImage } from "@/components/presse-ivoire/SectionImage";
+import { formatHomeCardMeta } from "@/lib/format-article";
 
 interface TopicRowHomeProps {
   block: HomeRubriqueBlock;
@@ -45,7 +46,7 @@ export function TopicRowHome({ block, index }: TopicRowHomeProps) {
               <div className="topic-row-card-body">
                 <span className="topic-row-card-cat">{article.cat}</span>
                 <h4 className="topic-row-card-title">{article.title}</h4>
-                <span className="topic-row-card-meta">{article.meta}</span>
+                <span className="topic-row-card-meta">{formatHomeCardMeta(article)}</span>
               </div>
             </Link>
           ) : null

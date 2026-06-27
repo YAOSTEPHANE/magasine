@@ -133,7 +133,6 @@ export const getHomePageData = cache(async function getHomePageData() {
     investigations,
     specialReports,
     popularTags,
-    techNews,
     healthNews,
     localNews,
     politicsNews,
@@ -196,7 +195,7 @@ export const getHomePageData = cache(async function getHomePageData() {
       { $sort: { count: -1 } },
       { $limit: 12 },
     ]),
-    getArticlesByCategorySlug("technology", 4),
+
     getArticlesByCategorySlug("health", 4),
     getArticlesByCategorySlug("local", 4),
     getArticlesByCategorySlug("politics", 4),
@@ -247,7 +246,7 @@ export const getHomePageData = cache(async function getHomePageData() {
       name: t._id,
       count: t.count,
     })),
-    techNews: filterHomeArticleList(techNews, 4),
+
     healthNews: filterHomeArticleList(healthNews, 4),
     localNews: filterHomeArticleList(localNews, 4),
     politicsNews: filterHomeArticleList(politicsNews, 4),
@@ -317,6 +316,56 @@ export async function getUrgentPageData(limit = 36) {
   }
 
   return { articles, alerts };
+}
+
+function sortArticlesByDate(articles: ArticleListItem[]) {
+  return [...articles].sort((a, b) => {
+    const ta = a.publishedAt ? new Date(a.publishedAt).getTime() : 0;
+    const tb = b.publishedAt ? new Date(b.publishedAt).getTime() : 0;
+    return tb - ta;
+  });
+}
+
+function filterArticlesByCategory(articles: ArticleListItem[], categorySlug: string) {
+  return articles.filter((article) => article.category.slug === categorySlug);
+}
+
+export async function getAllNewsArticles(options?: { categorySlug?: string; limit?: number }) {
+  const limit = options?.limit ?? 48;
+  const resolvedSlug = options?.categorySlug
+    ? resolveCategorySlug(options.categorySlug)
+    : undefined;
+
+  if (!(await hasDbArticles())) {
+    const { getMockArticles } = await import("@/lib/mock-data");
+    let list = sortArticlesByDate(getMockArticles());
+    if (resolvedSlug) list = filterArticlesByCategory(list, resolvedSlug);
+    return list.slice(0, limit);
+  }
+
+  await connectDB();
+
+  const filter: Record<string, unknown> = { status: "published" };
+  if (resolvedSlug) {
+    const category = await Category.findOne({ slug: resolvedSlug }).lean();
+    if (category) {
+      filter.$or = [{ category: category._id }, { secondaryCategories: category._id }];
+    }
+  }
+
+  const articles = await Article.find(filter)
+    .populate(articlePopulate)
+    .sort({ publishedAt: -1 })
+    .limit(limit)
+    .lean();
+
+  const result = articles.map((a) => serializeArticle(a as unknown as Record<string, unknown>));
+  if (result.length > 0) return result;
+
+  const { getMockArticles } = await import("@/lib/mock-data");
+  let list = sortArticlesByDate(getMockArticles());
+  if (resolvedSlug) list = filterArticlesByCategory(list, resolvedSlug);
+  return list.slice(0, limit);
 }
 
 export async function getArticlesByCategorySlug(slug: string, limit = 12) {
@@ -461,7 +510,29 @@ export async function searchArticles(
     .lean();
 
   const result = articles.map((a) => serializeArticle(a as unknown as Record<string, unknown>));
-  return result.length > 0 ? result : searchMockArticles(query).slice(0, 20);
+  if (result.length > 0) return result;
+
+  const regex = new RegExp(query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i");
+  const fallbackFilter: Record<string, unknown> = {
+    status: "published",
+    $or: [{ title: regex }, { excerpt: regex }, { tags: regex }],
+  };
+  if (filters?.category) {
+    const cat = await Category.findOne({ slug: filters.category });
+    if (cat) fallbackFilter.category = cat._id;
+  }
+  if (filters?.contentType) fallbackFilter.contentType = filters.contentType;
+
+  const fallback = await Article.find(fallbackFilter)
+    .populate(articlePopulate)
+    .sort({ publishedAt: -1 })
+    .limit(20)
+    .lean();
+
+  const fallbackResult = fallback.map((a) =>
+    serializeArticle(a as unknown as Record<string, unknown>)
+  );
+  return fallbackResult.length > 0 ? fallbackResult : searchMockArticles(query).slice(0, 20);
 }
 
 export async function getCategoryBySlug(slug: string) {

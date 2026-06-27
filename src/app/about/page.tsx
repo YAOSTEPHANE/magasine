@@ -103,7 +103,7 @@ export default function AProposPage() {
             the diaspora.
           </p>
           <p>
-            From elections and economic policy to culture, climate, and technology, we cover the
+            From elections and economic policy to culture, climate, and health, we cover the
             stories that shape societies south of the equator — for readers who want reliable
             reporting without Western-centric filters.
           </p>

@@ -1,14 +1,19 @@
 import Link from "next/link";
-import { NAV_SECTIONS } from "@/data/presse-ivoire-home";
+import { PRIMARY_NAV, REGION_NAV } from "@/data/presse-ivoire-home";
 
 interface NavBarProps {
   categories?: { name: string; slug: string }[];
 }
 
+const DEFAULT_NAV = [
+  ...PRIMARY_NAV,
+  ...REGION_NAV.map(({ label, href }) => ({ label, href })),
+];
+
 export function NavBar({ categories }: NavBarProps) {
   const items = categories?.length
     ? categories.map((c) => ({ label: c.name, href: `/category/${c.slug}` }))
-    : NAV_SECTIONS;
+    : DEFAULT_NAV;
 
   return (
     <nav className="nav-bar">

@@ -2,82 +2,65 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { NAV_SECTIONS } from "@/data/presse-ivoire-home";
-
-interface HomeQuickNavProps {
-  categories?: { name: string; slug: string }[];
-}
-
-type NavItem = { label: string; href: string; featured: boolean; icon?: string };
+import {
+  PRIMARY_NAV,
+  REGION_NAV,
+  SECONDARY_NAV,
+} from "@/data/presse-ivoire-home";
 
 function isActive(pathname: string, href: string) {
-  if (href === "/urgent" || href === "/#urgent") {
-    return pathname === "/urgent" || pathname === "/";
-  }
-  if (href.startsWith("/category/")) {
-    return pathname === href || pathname.startsWith(`${href}/`);
-  }
-  return pathname === href;
+  if (href === "/") return pathname === "/";
+  const base = href.split("#")[0] ?? href;
+  return pathname === base || pathname.startsWith(`${base}/`);
 }
 
-function NavPill({ item, active }: { item: NavItem; active: boolean }) {
+function NavLink({
+  href,
+  label,
+  variant = "section",
+}: {
+  href: string;
+  label: string;
+  variant?: "section" | "region";
+}) {
+  const pathname = usePathname();
+  const active = isActive(pathname, href);
+
   return (
     <Link
-      href={item.href}
-      className={[
-        "home-quick-pill",
-        item.featured ? "home-quick-pill--featured" : "",
-        active ? "home-quick-pill--active" : "",
-      ]
-        .filter(Boolean)
-        .join(" ")}
+      href={href}
+      className={`gsw-nav-link gsw-nav-link--${variant}${active ? " is-active" : ""}`}
       aria-current={active ? "page" : undefined}
     >
-      {item.icon && (
-        <span className="home-quick-pill-icon" aria-hidden>
-          {item.icon}
-        </span>
-      )}
-      {item.label}
+      {label}
     </Link>
   );
 }
 
-export function HomeQuickNav({ categories: _categories }: HomeQuickNavProps) {
-  const pathname = usePathname();
-
-  const items: NavItem[] = NAV_SECTIONS.map((r) => ({
-    label: r.label,
-    href: r.href,
-    featured: false,
-  }));
-
+export function HomeQuickNav() {
   return (
-    <nav className="home-quick-nav home-quick-nav--revolution" aria-label="Quick sections">
-      <div className="container home-quick-nav-wrap">
-        <div className="home-quick-nav-head">
-          <div className="home-quick-nav-actions">
-            <Link href="/donate" className="home-quick-nav-donate btn-donate">
-              Donate
-            </Link>
-            <Link href="/newsletter" className="home-quick-nav-newsletter" aria-label="Newsletter">
-              Newsletter
-            </Link>
-          </div>
-        </div>
-
-        <div className="home-quick-nav-rail">
-          <div className="home-quick-nav-track">
-            {items.map((item) => (
-              <NavPill
-                key={item.href + item.label}
-                item={item}
-                active={isActive(pathname, item.href)}
+    <div className="gsw-site-nav" translate="no">
+      <nav className="gsw-nav" aria-label="Main navigation">
+        <div className="container gsw-nav-inner gsw-nav-inner--single">
+          <div className="gsw-nav-track">
+            {PRIMARY_NAV.map((item) => (
+              <NavLink key={item.href} href={item.href} label={item.label} />
+            ))}
+            {SECONDARY_NAV.map((item) => (
+              <NavLink key={item.href} href={item.href} label={item.label} />
+            ))}
+            <span className="gsw-nav-divider" aria-hidden />
+            {REGION_NAV.map((region) => (
+              <NavLink
+                key={region.href}
+                href={region.href}
+                label={region.label}
+                variant="region"
               />
             ))}
           </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </div>
   );
 }

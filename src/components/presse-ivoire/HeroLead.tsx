@@ -51,18 +51,6 @@ export function HeroLeadStory({ slide }: { slide: HeroSlide }) {
     <div className="hero-carousel-story">
       <div className="hero-carousel-story-head">
         <span className="tag outline">{slide.category}</span>
-        <Link href={`/article/${slide.slug}`} className="hero-cta">
-          Read now
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
-            <path
-              d="M2 7h10M8 3l4 4-4 4"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </Link>
       </div>
 
       <h2 className="hero-carousel-story-title">
@@ -77,9 +65,7 @@ export function HeroLeadStory({ slide }: { slide: HeroSlide }) {
           By <strong>{slide.author}</strong>
         </span>
         <span aria-hidden>·</span>
-        <span>{slide.readingTime}</span>
-        <span aria-hidden>·</span>
-        <span>{slide.timeAgo}</span>
+        <span>{slide.date}</span>
       </p>
 
       {slide.excerpt ? (

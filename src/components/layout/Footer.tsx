@@ -9,7 +9,6 @@ const footerLinks = {
   sections: [
     { label: "News", href: "/category/news" },
     { label: "World", href: "/category/world" },
-    { label: "Technology", href: "/category/technology" },
     { label: "Culture", href: "/category/culture" },
     { label: "Health", href: "/category/health" },
   ],

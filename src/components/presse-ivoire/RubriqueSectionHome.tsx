@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { HomeRubriqueBlock } from "@/types/home";
 import { SectionImage } from "@/components/presse-ivoire/SectionImage";
+import { formatHomeCardMeta } from "@/lib/format-article";
 
 interface RubriqueSectionHomeProps {
   block: HomeRubriqueBlock;
@@ -33,7 +34,7 @@ export function RubriqueSectionHome({ block, index }: RubriqueSectionHomeProps) 
               <div className="ec-card-title ec-card-title-sm">{featured.title}</div>
               {featured.excerpt && <p className="ec-card-excerpt ec-card-excerpt-sm">{featured.excerpt}</p>}
               <div className="ec-card-meta">
-                <span>{featured.author ?? "Editorial team"}</span>
+                <span>{featured.author ?? "Editorial"}</span>
                 <span>·</span>
                 <span>{featured.meta}</span>
               </div>
@@ -52,7 +53,7 @@ export function RubriqueSectionHome({ block, index }: RubriqueSectionHomeProps) 
                   <div className="rubrique-block-item-body">
                     <div className="rubrique-block-item-cat">{item.cat}</div>
                     <div className="rubrique-block-item-title">{item.title}</div>
-                    <div className="rubrique-block-item-meta">{item.meta}</div>
+                    <div className="rubrique-block-item-meta">{formatHomeCardMeta(item)}</div>
                   </div>
                 </Link>
               ) : null

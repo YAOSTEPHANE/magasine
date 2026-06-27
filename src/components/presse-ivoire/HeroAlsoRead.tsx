@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { HomeCard } from "@/types/home";
 import { SectionImage } from "@/components/presse-ivoire/SectionImage";
+import { formatHomeCardMeta } from "@/lib/format-article";
 
 interface HeroAlsoReadProps {
   cards: HomeCard[];
@@ -23,7 +24,7 @@ function AlsoReadRow({ cards, rowOffset }: { cards: HomeCard[]; rowOffset: numbe
           <div className="mini-card-h-body">
             <div className="mini-card-cat">{card.cat}</div>
             <div className="mini-card-title">{card.title}</div>
-            <div className="mini-card-meta">{card.meta}</div>
+            <div className="mini-card-meta">{formatHomeCardMeta(card)}</div>
           </div>
         </Link>
       ))}
@@ -41,7 +42,7 @@ export function HeroAlsoRead({ cards }: HeroAlsoReadProps) {
     <div className="hero-sub-section">
       <div className="hero-sub-header">
         <h3 className="hero-sub-title">Also read</h3>
-        <Link href="/search" className="hero-sub-link">
+        <Link href="/news" className="hero-sub-link">
           All news
         </Link>
       </div>

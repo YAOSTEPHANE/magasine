@@ -19,6 +19,13 @@ export const URGENT_SECTION = {
   relatedSlugs: ["news", "world", "investigations", "africa", "west-asia"],
 } as const;
 
+export const ALL_NEWS_SECTION = {
+  eyebrow: "News feed",
+  title: "All news",
+  lead: "Every story from Global South Watch — reports, analysis, and updates across regions and sections, sorted by date.",
+  relatedSlugs: ["news", "commentary", "explainer", "culture", "africa", "latin-america"],
+} as const;
+
 export const SECTION_META: Record<string, SectionMeta> = {
   africa: {
     slug: "africa",
@@ -26,7 +33,7 @@ export const SECTION_META: Record<string, SectionMeta> = {
     kind: "region",
     eyebrow: "Region",
     lead: "News, analysis, and investigations across the African continent â€” from the Sahel to the Cape.",
-    relatedSlugs: ["west-asia", "world", "politics", "investigations", "local"],
+    relatedSlugs: ["west-asia", "world", "politics", "investigations", "commentary"],
     linkHref: "/rss?category=africa",
     linkLabel: "Africa RSS feed",
   },
@@ -46,7 +53,7 @@ export const SECTION_META: Record<string, SectionMeta> = {
     kind: "region",
     eyebrow: "Region",
     lead: "India, Pakistan, Bangladesh, Sri Lanka, and the wider subcontinent â€” trade, tech, and public policy.",
-    relatedSlugs: ["world", "technology", "politics", "health", "opinion"],
+    relatedSlugs: ["world", "politics", "news", "commentary", "health"],
     linkHref: "/rss?category=south-asia",
     linkLabel: "South Asia RSS",
   },
@@ -65,10 +72,40 @@ export const SECTION_META: Record<string, SectionMeta> = {
     label: "News",
     kind: "topic",
     eyebrow: "News desk",
-    lead: "National and local news from the Global South â€” institutions, society, and daily affairs.",
-    relatedSlugs: ["politics", "world", "local", "opinion", "investigations"],
+    lead: "National and local news from the Global South — institutions, society, and daily affairs.",
+    relatedSlugs: ["commentary", "explainer", "culture", "africa", "investigations"],
     linkHref: "/rss?category=news",
     linkLabel: "News RSS",
+  },
+  commentary: {
+    slug: "commentary",
+    label: "Commentary",
+    kind: "format",
+    eyebrow: "Commentary",
+    lead: "Analysis, columns, and debate from economists, activists, and public intellectuals across the Global South.",
+    relatedSlugs: ["news", "explainer", "culture", "africa", "investigations"],
+    linkHref: "/rss?category=commentary",
+    linkLabel: "Commentary RSS",
+  },
+  explainer: {
+    slug: "explainer",
+    label: "Explainer",
+    kind: "format",
+    eyebrow: "Explainer",
+    lead: "Context and background to help readers understand complex stories — institutions, policy, and history.",
+    relatedSlugs: ["news", "commentary", "world", "africa", "west-asia"],
+    linkHref: "/rss?category=explainer",
+    linkLabel: "Explainer RSS",
+  },
+  culture: {
+    slug: "culture",
+    label: "Culture",
+    kind: "topic",
+    eyebrow: "Culture",
+    lead: "Arts, literature, heritage, sport, and cultural life across the Global South.",
+    relatedSlugs: ["news", "commentary", "africa", "latin-america", "local"],
+    linkHref: "/rss?category=culture",
+    linkLabel: "Culture RSS",
   },
   politics: {
     slug: "politics",
@@ -79,16 +116,6 @@ export const SECTION_META: Record<string, SectionMeta> = {
     relatedSlugs: ["news", "world", "opinion", "investigations", "africa"],
     linkHref: "/rss?category=politics",
     linkLabel: "Politics RSS",
-  },
-  technology: {
-    slug: "technology",
-    label: "Technology",
-    kind: "topic",
-    eyebrow: "Technology",
-    lead: "Innovation, digital infrastructure, AI, and startups reshaping the Global South.",
-    relatedSlugs: ["politics", "news", "multimedia", "south-asia", "africa"],
-    linkHref: "/rss?category=technology",
-    linkLabel: "Tech RSS",
   },
   health: {
     slug: "health",
@@ -170,19 +197,49 @@ export const ALL_SECTION_SLUGS = Object.keys(SECTION_META);
 
 export const REGION_SLUGS = ["africa", "latin-america", "south-asia", "west-asia"] as const;
 
+export const MENU_TOPIC_SLUGS = ["news", "commentary", "explainer", "culture"] as const;
+
+export function buildFallbackSectionMeta(
+  slug: string,
+  category: { name: string; description?: string }
+): SectionMeta {
+  const isRegion = (REGION_SLUGS as readonly string[]).includes(slug);
+  const relatedSlugs = isRegion
+    ? [...REGION_SLUGS.filter((s) => s !== slug), "news"].slice(0, 5)
+    : [...MENU_TOPIC_SLUGS.filter((s) => s !== slug), ...REGION_SLUGS.slice(0, 2)].slice(0, 5);
+
+  return {
+    slug,
+    label: category.name,
+    kind: isRegion ? "region" : "topic",
+    eyebrow: isRegion ? "Region" : "Section",
+    lead: category.description ?? `Coverage and analysis from ${category.name}.`,
+    relatedSlugs,
+    linkHref: `/rss?category=${slug}`,
+    linkLabel: `${category.name} RSS`,
+  };
+}
+
 export function getSectionMeta(slug: string): SectionMeta | null {
   const resolved = LEGACY_SECTION_SLUG_MAP[slug] ?? slug;
   return SECTION_META[resolved] ?? null;
+}
+
+export function resolveSectionMeta(
+  slug: string,
+  category: { name: string; description?: string }
+): SectionMeta {
+  return getSectionMeta(slug) ?? buildFallbackSectionMeta(slug, category);
 }
 
 /** @deprecated Legacy French slugs â€” resolved for old bookmarks and RSS links. */
 const LEGACY_SECTION_SLUG_MAP: Record<string, string> = {
   actualites: "news",
   politique: "politics",
-  technologie: "technology",
   sante: "health",
   monde: "world",
   "reportages-speciaux": "special-reports",
+  opinion: "commentary",
 };
 
 export function getSectionLabel(slug: string): string {

@@ -1,11 +1,20 @@
 /** Editorial sections removed from homepage navigation and admin pickers. */
-export const RETIRED_CATEGORY_SLUGS = ["finance", "sports", "sport", "divertissement", "autres"] as const;
+export const RETIRED_CATEGORY_SLUGS = [
+  "finance",
+  "sports",
+  "sport",
+  "divertissement",
+  "autres",
+  "technology",
+  "technologie",
+] as const;
 
 export type RetiredCategorySlug = (typeof RETIRED_CATEGORY_SLUGS)[number];
 
 const retiredSet = new Set<string>(RETIRED_CATEGORY_SLUGS);
 
-const RETIRED_CATEGORY_NAME = /^(finance|sports?|divertissement|autres|entertainment)$/i;
+const RETIRED_CATEGORY_NAME =
+  /^(finance|sports?|divertissement|autres|entertainment|technology|technologie)$/i;
 
 export function isRetiredCategorySlug(slug: string | undefined | null): boolean {
   if (!slug) return false;

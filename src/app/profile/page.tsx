@@ -158,7 +158,7 @@ function ArticleRow({ article }: { article: ArticleItem }) {
           {article.title}
         </p>
         <p className="text-xs text-muted mt-1">
-          {article.publishedAt ? formatDate(article.publishedAt) : ""} · {article.readingTime} min
+          {article.publishedAt ? formatDate(article.publishedAt) : ""}
         </p>
       </div>
     </Link>

@@ -52,7 +52,7 @@ export function HomeMasthead({ dateParts, tagline, volume, cities, badge }: Home
             <span className="home-masthead-diamond" aria-hidden>
               ◆
             </span>
-            {tagline ?? "The voice of the Global South — independent & committed journalism"}
+            {tagline ?? "Decolonizing media"}
             <span className="home-masthead-diamond" aria-hidden>
               ◆
             </span>

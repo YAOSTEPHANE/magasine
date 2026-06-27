@@ -154,6 +154,8 @@ export function searchMockArticles(query: string) {
     (a) =>
       a.title.toLowerCase().includes(q) ||
       a.excerpt.toLowerCase().includes(q) ||
+      a.category.name.toLowerCase().includes(q) ||
+      a.authors.some((author) => author.name.toLowerCase().includes(q)) ||
       a.tags?.some((t) => t.toLowerCase().includes(q))
   );
 }
@@ -206,7 +208,7 @@ export function getMockHomePageData() {
       .sort((a, b) => b[1] - a[1])
       .slice(0, 12)
       .map(([name, count]) => ({ name, count })),
-    techNews: published.filter((a) => a.category.slug === "technology").slice(0, 4),
+
     healthNews: published.filter((a) => a.category.slug === "health").slice(0, 4),
     localNews: published.filter((a) => a.category.slug === "local").slice(0, 4),
     politicsNews: published.filter((a) => a.category.slug === "politics").slice(0, 4),

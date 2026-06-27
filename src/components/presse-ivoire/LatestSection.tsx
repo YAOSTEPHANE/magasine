@@ -16,7 +16,7 @@ export function LatestSection({ data }: LatestSectionProps) {
         <SectionHeader
           eyebrow="News"
           title="Latest Updates"
-          linkHref="/search"
+          linkHref="/news"
           linkLabel="View all"
         />
         <div className="latest-layout">
@@ -28,7 +28,7 @@ export function LatestSection({ data }: LatestSectionProps) {
               <span className="tag">{featured.cat}</span>
               <div className="ec-card-title latest-featured-title">{featured.title}</div>
               <div className="ec-card-meta">
-                <span>{featured.author}</span>
+                <span>{featured.author ?? "Editorial"}</span>
                 <span>·</span>
                 <span>{featured.meta}</span>
               </div>

@@ -2,7 +2,6 @@ const CATEGORY_COLORS: Record<string, string> = {
   économie: "var(--amber)",
   economie: "var(--amber)",
   politique: "var(--cms-red)",
-  technologie: "var(--blue)",
   sports: "var(--amber)",
   local: "var(--green)",
   investigations: "var(--purple)",

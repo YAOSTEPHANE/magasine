@@ -4,31 +4,57 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { HEADER_NAV, NAV_SECTIONS, REGION_NAV, ABOUT_NAV } from "@/data/presse-ivoire-home";
+import { HEADER_TOP_ACTIONS, MOBILE_NAV } from "@/data/presse-ivoire-home";
 
 interface MobileNavDrawerProps {
   open: boolean;
   onClose: () => void;
 }
 
-function Chevron({ open }: { open: boolean }) {
+function useNavActive() {
+  const pathname = usePathname();
+  return (href: string) => {
+    if (href === "/") return pathname === "/";
+    const base = href.split("#")[0] ?? href;
+    return pathname === base || pathname.startsWith(`${base}/`);
+  };
+}
+
+function MobileNavSection({
+  label,
+  links,
+  onClose,
+  linkClassName = "mobile-nav-link",
+}: {
+  label: string;
+  links: readonly { label: string; href: string }[];
+  onClose: () => void;
+  linkClassName?: string;
+}) {
+  const isActive = useNavActive();
+
   return (
-    <svg
-      className={`mobile-nav-chevron${open ? " is-open" : ""}`}
-      width="12"
-      height="12"
-      viewBox="0 0 12 12"
-      aria-hidden
-    >
-      <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" fill="none" />
-    </svg>
+    <>
+      <p className="mobile-nav-section-label">{label}</p>
+      <ul className="mobile-nav-list">
+        {links.map((item) => (
+          <li key={item.href + item.label}>
+            <Link
+              href={item.href}
+              className={`${linkClassName}${isActive(item.href) ? " is-active" : ""}`}
+              onClick={onClose}
+            >
+              {item.label}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </>
   );
 }
 
 export function MobileNavDrawer({ open, onClose }: MobileNavDrawerProps) {
   const pathname = usePathname();
-  const [regionsOpen, setRegionsOpen] = useState(false);
-  const [sectionsOpen, setSectionsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -37,8 +63,6 @@ export function MobileNavDrawer({ open, onClose }: MobileNavDrawerProps) {
 
   useEffect(() => {
     onClose();
-    setRegionsOpen(false);
-    setSectionsOpen(false);
   }, [pathname, onClose]);
 
   useEffect(() => {
@@ -57,32 +81,15 @@ export function MobileNavDrawer({ open, onClose }: MobileNavDrawerProps) {
     return () => document.removeEventListener("keydown", onKey);
   }, [open, onClose]);
 
-  useEffect(() => {
-    if (open) {
-      setRegionsOpen(true);
-      setSectionsOpen(true);
-    } else {
-      setRegionsOpen(false);
-      setSectionsOpen(false);
-    }
-  }, [open]);
-
-  const isActive = (href: string) => {
-    if (href === "/") return pathname === "/";
-    if (href === "/urgent" || href === "/#urgent") {
-      return pathname === "/urgent" || pathname === "/";
-    }
-    return pathname === href || pathname.startsWith(`${href}/`);
-  };
-
-  const mainLinks = HEADER_NAV.filter((item) => !item.mega);
-  const sectionLinks = NAV_SECTIONS.filter(
-    (item) => !REGION_NAV.some((region) => region.href === item.href)
-  );
-
   if (!mounted) {
     return null;
   }
+
+  const isActive = (href: string) => {
+    if (href === "/") return pathname === "/";
+    const base = href.split("#")[0] ?? href;
+    return pathname === base || pathname.startsWith(`${base}/`);
+  };
 
   return createPortal(
     <>
@@ -122,104 +129,35 @@ export function MobileNavDrawer({ open, onClose }: MobileNavDrawerProps) {
         </div>
 
         <nav className="mobile-nav-body" aria-label="Mobile navigation">
-          <ul className="mobile-nav-list">
-            {mainLinks.map((item) => (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  className={`mobile-nav-link${isActive(item.href) ? " is-active" : ""}`}
-                  onClick={onClose}
-                >
-                  {item.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <MobileNavSection
+            label="Sections"
+            links={MOBILE_NAV.sections}
+            onClose={onClose}
+          />
 
-          <div className="mobile-nav-accordion">
-            <button
-              type="button"
-              className={`mobile-nav-accordion-trigger${regionsOpen ? " is-open" : ""}`}
-              aria-expanded={regionsOpen}
-              onClick={() => setRegionsOpen((v) => !v)}
-            >
-              <span>
-                Regions
-                <small className="mobile-nav-accordion-count">{REGION_NAV.length}</small>
-              </span>
-              <Chevron open={regionsOpen} />
-            </button>
-            <div
-              className={`mobile-nav-accordion-panel${regionsOpen ? " is-open" : ""}`}
-              aria-hidden={!regionsOpen}
-            >
-              <div className="mobile-nav-accordion-panel-inner">
-                <ul className="mobile-nav-sublist">
-                {REGION_NAV.map((region) => (
-                  <li key={region.href}>
-                    <Link
-                      href={region.href}
-                      className={`mobile-nav-sublink${isActive(region.href) ? " is-active" : ""}`}
-                      style={{ "--region-accent": region.accent } as React.CSSProperties}
-                      onClick={onClose}
-                    >
-                      <span className="mobile-nav-region-dot" aria-hidden />
-                      <span>
-                        <strong>{region.label}</strong>
-                        <small>{region.description}</small>
-                      </span>
-                    </Link>
-                  </li>
-                ))}
-                </ul>
-              </div>
-            </div>
-          </div>
+          <MobileNavSection
+            label="Regions"
+            links={MOBILE_NAV.regions}
+            onClose={onClose}
+            linkClassName="mobile-nav-link mobile-nav-link--region"
+          />
 
-          <div className="mobile-nav-accordion">
-            <button
-              type="button"
-              className={`mobile-nav-accordion-trigger${sectionsOpen ? " is-open" : ""}`}
-              aria-expanded={sectionsOpen}
-              onClick={() => setSectionsOpen((v) => !v)}
-            >
-              <span>
-                Sections
-                <small className="mobile-nav-accordion-count">{sectionLinks.length}</small>
-              </span>
-              <Chevron open={sectionsOpen} />
-            </button>
-            <div
-              className={`mobile-nav-accordion-panel${sectionsOpen ? " is-open" : ""}`}
-              aria-hidden={!sectionsOpen}
-            >
-              <div className="mobile-nav-accordion-panel-inner">
-                <ul className="mobile-nav-sublist mobile-nav-sublist--grid">
-                {sectionLinks.map((item) => (
-                  <li key={item.href + item.label}>
-                    <Link
-                      href={item.href}
-                      className={`mobile-nav-sublink mobile-nav-sublink--compact${isActive(item.href) ? " is-active" : ""}`}
-                      onClick={onClose}
-                    >
-                      {item.label}
-                    </Link>
-                  </li>
-                ))}
-                </ul>
-              </div>
-            </div>
-          </div>
+          <MobileNavSection
+            label="Formats"
+            links={MOBILE_NAV.formats}
+            onClose={onClose}
+            linkClassName="mobile-nav-link mobile-nav-link--region"
+          />
         </nav>
 
-        <nav className="mobile-nav-about" aria-label="About Global South Watch">
-          <p className="mobile-nav-about-label">About us</p>
+        <div className="mobile-nav-about">
+          <p className="mobile-nav-about-label">About &amp; support</p>
           <ul className="mobile-nav-about-list">
-            {ABOUT_NAV.map((item) => (
-              <li key={item.href}>
+            {MOBILE_NAV.about.map((item) => (
+              <li key={item.href + item.label}>
                 <Link
                   href={item.href}
-                  className={`mobile-nav-about-link${isActive(item.href.split("#")[0] ?? item.href) ? " is-active" : ""}`}
+                  className={`mobile-nav-about-link${isActive(item.href) ? " is-active" : ""}`}
                   onClick={onClose}
                 >
                   {item.label}
@@ -227,16 +165,54 @@ export function MobileNavDrawer({ open, onClose }: MobileNavDrawerProps) {
               </li>
             ))}
           </ul>
-        </nav>
+        </div>
+
+        <div className="mobile-nav-about mobile-nav-about--legal">
+          <p className="mobile-nav-about-label">Legal</p>
+          <ul className="mobile-nav-about-list">
+            {MOBILE_NAV.legal.map((item) => (
+              <li key={item.href}>
+                <Link
+                  href={item.href}
+                  className={`mobile-nav-about-link${isActive(item.href) ? " is-active" : ""}`}
+                  onClick={onClose}
+                >
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+            <li>
+              <Link
+                href="/accessibility"
+                className={`mobile-nav-about-link${isActive("/accessibility") ? " is-active" : ""}`}
+                onClick={onClose}
+              >
+                Accessibility
+              </Link>
+            </li>
+          </ul>
+        </div>
 
         <div className="mobile-nav-footer">
-          <Link href="/newsletter" className="mobile-nav-cta mobile-nav-cta--primary" onClick={onClose}>
-            Newsletter
+          <Link
+            href={HEADER_TOP_ACTIONS[0].href}
+            className="mobile-nav-cta mobile-nav-cta--primary"
+            onClick={onClose}
+          >
+            {HEADER_TOP_ACTIONS[0].label}
           </Link>
-          <Link href="/donate" className="mobile-nav-cta mobile-nav-cta--secondary" onClick={onClose}>
-            Donate
+          <Link
+            href={HEADER_TOP_ACTIONS[1].href}
+            className="mobile-nav-cta mobile-nav-cta--secondary"
+            onClick={onClose}
+          >
+            {HEADER_TOP_ACTIONS[1].label}
           </Link>
-          <Link href="/search" className="mobile-nav-cta mobile-nav-cta--ghost" onClick={onClose}>
+          <Link
+            href="/search"
+            className="mobile-nav-cta mobile-nav-cta--ghost"
+            onClick={onClose}
+          >
             Search
           </Link>
         </div>

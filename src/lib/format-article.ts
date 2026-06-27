@@ -20,6 +20,42 @@ export function formatTimeAgo(iso?: string): string {
   return formatDistanceToNow(new Date(iso), { addSuffix: true, locale: enUS });
 }
 
+/** Calendar date for public article UI — e.g. "June 22, 2026". */
+export function formatArticleDisplayDate(iso?: string): string {
+  if (!iso) return "";
+  return format(new Date(iso), "MMMM d, yyyy", { locale: enUS });
+}
+
+/** Public article cards/lists — date only. */
+export function formatArticleListDate(iso?: string): string {
+  const formatted = formatArticleDisplayDate(iso);
+  return formatted || "Recently";
+}
+
+export function formatArticleAuthorName(
+  article: Pick<ArticleListItem, "authors">
+): string {
+  return article.authors[0]?.name ?? "Editorial";
+}
+
+export function formatAuthorAndDate(author: string | undefined, iso?: string): string {
+  return `${author?.trim() || "Editorial"} · ${formatArticleListDate(iso)}`;
+}
+
+/** Author + calendar date for article cards and list rows. */
+export function formatArticleCardMeta(
+  article: Pick<ArticleListItem, "publishedAt" | "authors">
+): string {
+  return formatAuthorAndDate(formatArticleAuthorName(article), article.publishedAt);
+}
+
+export function formatHomeCardMeta(card: { author?: string; meta?: string }): string {
+  const author = card.author?.trim() || "Editorial";
+  const date = card.meta?.trim();
+  if (date) return `${author} · ${date}`;
+  return author;
+}
+
 export function formatPublishedDate(iso?: string): string {
   if (!iso) return "";
   return format(new Date(iso), "MMMM d, yyyy, h:mm a", { locale: enUS });

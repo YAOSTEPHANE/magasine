@@ -1174,10 +1174,7 @@ body {
   border: 1px solid var(--rule);
 }
 
-/* Footer — hérite du thème clair globals */
-.footer {
-  border-top: 3px solid var(--brand-blue);
-}
+/* Footer — fond bleu (styles principaux dans globals.css) */
 
 /* Breaking badge */
 .breaking-badge {
@@ -1469,6 +1466,23 @@ body {
 .category-empty a {
   color: var(--red);
   font-weight: 700;
+  text-decoration: underline;
+}
+.all-news-page-inner {
+  padding-top: 32px;
+  padding-bottom: 48px;
+}
+.all-news-filters {
+  margin-bottom: 28px;
+}
+.all-news-active-filter {
+  margin: -8px 0 24px;
+  font-size: 14px;
+  color: var(--ink-muted);
+}
+.all-news-active-filter a {
+  color: var(--brand-blue);
+  font-weight: 600;
   text-decoration: underline;
 }
 .category-featured {

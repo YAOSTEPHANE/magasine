@@ -63,7 +63,7 @@
   }
 
   .footer-cols {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .stats-inner {
@@ -214,14 +214,14 @@
   }
 
   .header-inner {
-    height: 64px;
+    height: 76px;
     padding: 0 16px;
     gap: 10px;
   }
 
   .logo img {
-    max-height: 44px;
-    max-width: min(200px, 52vw);
+    max-height: 54px;
+    max-width: min(240px, 54vw);
   }
 
   .logo-tagline {
@@ -491,11 +491,11 @@
     display: block;
     padding: 3px 0;
     line-height: 1.45;
-    color: var(--mid-gray);
+    color: rgba(255, 255, 255, 0.82);
   }
 
   .footer-col ul li a:hover {
-    color: var(--brand-brown);
+    color: #fff;
   }
 
   .footer {
@@ -620,12 +620,12 @@
   }
 
   .header-inner {
-    height: 56px;
+    height: 64px;
   }
 
   .logo img {
-    max-height: 38px;
-    max-width: 48vw;
+    max-height: 48px;
+    max-width: 52vw;
   }
 
   .header-actions {
@@ -824,13 +824,13 @@
   }
 
   .header-inner {
-    height: 52px;
+    height: 58px;
     gap: 4px;
   }
 
   .logo img {
-    max-height: 34px;
-    max-width: 44vw;
+    max-height: 42px;
+    max-width: 48vw;
   }
 
   .home-quick-pill {
@@ -1594,8 +1594,8 @@
   }
 
   .logo img {
-    max-height: 44px;
-    max-width: min(168px, 46vw);
+    max-height: 54px;
+    max-width: min(210px, 48vw);
   }
 
   .header-actions {
@@ -1748,7 +1748,7 @@
   }
 
   .logo img {
-    max-width: min(140px, 40vw);
+    max-width: min(175px, 42vw);
   }
 
   .btn-mobile-menu {

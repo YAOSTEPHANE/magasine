@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { HomeLatest } from "@/types/home";
 import { SectionImage } from "@/components/presse-ivoire/SectionImage";
 import { HeroLatestNewsletter } from "@/components/presse-ivoire/HeroLatestNewsletter";
+import { formatHomeCardMeta } from "@/lib/format-article";
 
 interface LatestNewsColumnProps {
   data: HomeLatest;
@@ -16,7 +17,7 @@ export function LatestNewsColumn({ data, newsletterEnabled = true }: LatestNewsC
       <div className="hero-latest-panel">
         <div className="hero-latest-header">
           <h3 className="hero-latest-title">Latest News</h3>
-          <Link href="/search" className="hero-latest-link">
+          <Link href="/news" className="hero-latest-link">
             View all
           </Link>
         </div>
@@ -29,7 +30,7 @@ export function LatestNewsColumn({ data, newsletterEnabled = true }: LatestNewsC
             <div className="hero-latest-featured-body">
               <span className="hero-latest-cat">{featured.cat}</span>
               <p className="hero-latest-featured-title">{featured.title}</p>
-              <span className="hero-latest-meta">{featured.meta}</span>
+              <span className="hero-latest-meta">{formatHomeCardMeta(featured)}</span>
             </div>
           </Link>
         )}
@@ -44,7 +45,7 @@ export function LatestNewsColumn({ data, newsletterEnabled = true }: LatestNewsC
                 <div className="hero-latest-item-body">
                   <span className="hero-latest-item-cat">{item.cat}</span>
                   <span className="hero-latest-item-title">{item.title}</span>
-                  <span className="hero-latest-item-meta">{item.meta}</span>
+                  <span className="hero-latest-item-meta">{formatHomeCardMeta(item)}</span>
                 </div>
               </>
             );

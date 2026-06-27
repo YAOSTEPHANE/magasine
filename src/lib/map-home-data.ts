@@ -27,10 +27,10 @@ import { IMG } from "@/lib/images";
 import {
   articleBadge,
   authorInitials,
-  formatPublishedDate,
+  formatArticleCardMeta,
+  formatArticleDisplayDate,
+  formatArticleListDate,
   formatReadingTime,
-  formatTimeAgo,
-  formatViews,
   splitHeroTitle,
 } from "@/lib/format-article";
 import { filterArticlesByRetiredCategories } from "@/lib/retired-categories";
@@ -64,10 +64,10 @@ function toHomeCard(a: ArticleListItem): HomeCard {
     slug: articlePath(a.slug),
     title: a.title,
     cat: a.category.name,
-    meta: `${formatTimeAgo(a.publishedAt)} · ${a.readingTime} min`,
+    meta: formatArticleListDate(a.publishedAt),
     image: a.featuredImage,
-    author: author?.name,
-    time: `${a.readingTime} min`,
+    author: author?.name ?? "Editorial",
+    time: formatArticleListDate(a.publishedAt),
     excerpt: a.excerpt,
     badge: articleBadge(a),
   };
@@ -88,8 +88,8 @@ function toHeroSlide(a: ArticleListItem): HeroSlide {
     authorRole: author?.bio?.split("—")[0]?.trim() ?? "Global South Watch",
     authorInitials: author ? authorInitials(author.name) : "GS",
     readingTime: formatReadingTime(a.readingTime),
-    timeAgo: formatTimeAgo(a.publishedAt),
-    date: formatPublishedDate(a.publishedAt),
+    timeAgo: formatArticleListDate(a.publishedAt),
+    date: formatArticleDisplayDate(a.publishedAt),
     isPremium: !!a.isPremium,
     contentType: a.contentType,
     videoUrl: a.videoUrl,
@@ -148,6 +148,7 @@ function buildMiniCards(source: HomeDataSource, heroSlugs: Set<string>): HomeCar
     cat: c.cat,
     meta: c.meta,
     image: c.image,
+    author: "author" in c ? c.author : "Editorial",
   }));
 }
 
@@ -159,7 +160,7 @@ function buildTopStories(source: HomeDataSource): HomeTopStory[] {
       slug: articlePath(a.slug),
       cat: a.category.name,
       title: a.title,
-      meta: `${a.readingTime} min · ${formatTimeAgo(a.publishedAt)}`,
+      meta: formatArticleCardMeta(a),
       image: a.featuredImage,
     }));
   }
@@ -228,7 +229,7 @@ function buildLatest(source: HomeDataSource): HomeLatest {
     return {
       featured: {
         ...toHomeCard(featured),
-        badge: formatTimeAgo(featured.publishedAt).toUpperCase(),
+        badge: formatArticleDisplayDate(featured.publishedAt).toUpperCase(),
       },
       items: items.slice(0, 5).map(toHomeCard),
     };
@@ -266,7 +267,7 @@ function buildVideos(source: HomeDataSource): HomeVideo[] {
       cat: a.category.name,
       title: a.title,
       duration: estimateDuration(a.readingTime),
-      views: `${formatViews(a.views)} · ${formatTimeAgo(a.publishedAt)}`,
+      views: formatArticleCardMeta(a),
       image: a.featuredImage,
     }));
   }
@@ -370,7 +371,7 @@ function buildUrgent(source: HomeDataSource): HomeUrgent {
         slug: articlePath(a.slug),
         cat: a.category.name,
         title: a.title,
-        meta: `${a.readingTime} min · ${formatTimeAgo(a.publishedAt)}`,
+        meta: formatArticleCardMeta(a),
         image: a.featuredImage,
       })),
     };

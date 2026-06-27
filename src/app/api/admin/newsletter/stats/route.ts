@@ -8,7 +8,6 @@ const LIST_COLORS: Record<string, string> = {
   actualites: "var(--cms-red)",
   sport: "var(--blue)",
   finance: "var(--green)",
-  technologie: "var(--purple)",
 };
 
 export async function GET() {

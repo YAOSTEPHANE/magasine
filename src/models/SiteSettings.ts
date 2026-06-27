@@ -71,7 +71,7 @@ const SiteSettingsSchema = new Schema<ISiteSettings>(
     siteName: { type: String, default: "Global South Watch" },
     tagline: {
       type: String,
-      default: "The voice of the Global South — independent & committed journalism",
+      default: "Decolonizing media",
     },
     contactEmail: { type: String, default: "contact@globalsouthwatch.com" },
     siteLogo: { type: String, default: "/images/logo-global-south-watch.png" },

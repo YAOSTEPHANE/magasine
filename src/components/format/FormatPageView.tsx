@@ -4,7 +4,7 @@ import type { ArticleListItem } from "@/types";
 import { PageBackdrop } from "@/components/presse-ivoire/PageBackdrop";
 import { SectionImage } from "@/components/presse-ivoire/SectionImage";
 import { SectionRelatedNav } from "@/components/category/SectionRelatedNav";
-import { formatRelativeDate } from "@/lib/utils";
+import { formatArticleCardMeta } from "@/lib/format-article";
 
 export interface FormatPageConfig {
   slug: string;
@@ -21,12 +21,6 @@ export interface FormatPageConfig {
 interface FormatPageViewProps {
   config: FormatPageConfig;
   articles: ArticleListItem[];
-}
-
-function formatMeta(article: ArticleListItem) {
-  const author = article.authors[0]?.name ?? "Editorial";
-  const date = article.publishedAt ? formatRelativeDate(article.publishedAt) : "";
-  return `${author} · ${date} · ${article.readingTime} min`;
 }
 
 export function FormatPageView({ config, articles }: FormatPageViewProps) {
@@ -114,7 +108,7 @@ export function FormatPageView({ config, articles }: FormatPageViewProps) {
                   <h2 className="ec-card-title large">{featured.title}</h2>
                   <p className="ec-card-excerpt">{featured.excerpt}</p>
                   <p className="ec-card-meta">
-                    <span>{formatMeta(featured)}</span>
+                    <span>{formatArticleCardMeta(featured)}</span>
                   </p>
                 </div>
               </Link>
@@ -147,7 +141,7 @@ export function FormatPageView({ config, articles }: FormatPageViewProps) {
                         <div className="ec-card-title ec-card-title-sm">{article.title}</div>
                         <p className="ec-card-excerpt ec-card-excerpt-sm">{article.excerpt}</p>
                         <div className="ec-card-meta">
-                          <span>{formatMeta(article)}</span>
+                          <span>{formatArticleCardMeta(article)}</span>
                         </div>
                       </div>
                     </Link>

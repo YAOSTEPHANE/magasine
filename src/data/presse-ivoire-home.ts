@@ -4,7 +4,6 @@ export const TICKER_ITEMS = [
   "Presidential election: first-round results expected tonight",
   "Politics: parliament debates new data protection framework",
   "Culture: Abidjan biennial opens with record international attendance",
-  "Tech: Wave raises $350M for continental expansion",
   "Health: new anti-malaria protocol adopted across 12 West African countries",
 ];
 
@@ -15,35 +14,55 @@ export const REGION_NAV = [
   { label: "West Asia", href: "/category/west-asia", description: "Gulf, Levant & beyond", accent: "#9B2226" },
 ] as const;
 
-export const HEADER_NAV = [
-  { label: "Home", href: "/", active: true },
-  { label: "Regions", href: "/category/africa", mega: true },
-  { label: "Politics", href: "/category/politics" },
+export const ALL_NEWS_LINK = { label: "All news", href: "/news" } as const;
+
+export const PRIMARY_NAV = [
+  { label: "News", href: "/category/news" },
+  { label: "Commentary", href: "/category/commentary" },
+  { label: "Explainer", href: "/category/explainer" },
   { label: "Culture", href: "/category/culture" },
-  { label: "Technology", href: "/category/technology" },
-  { label: "About us", href: "/about" },
-];
+] as const;
+
+export const SECONDARY_NAV: { label: string; href: string }[] = [];
+
+export const HEADER_TOP_ACTIONS = [
+  { label: "Subscribe", href: "/newsletter" },
+  { label: "Donate", href: "/donate" },
+] as const;
+
+export const SITE_TAGLINE = "Decolonizing media";
+
+/** Multimedia & long-form formats — footer, sitemap */
+export const FOOTER_FORMAT_LINKS = [
+  { label: "Videos", href: "/videos" },
+  { label: "Podcasts", href: "/podcasts" },
+  { label: "Infographics", href: "/infographics" },
+  { label: "Photo galleries", href: "/photo-galleries" },
+  { label: "Investigations", href: "/category/investigations" },
+  { label: "Special reports", href: "/category/special-reports" },
+] as const;
+
+/** Reader & partner links — footer only */
+export const FOOTER_SUPPORT_LINKS = [
+  { label: "Newsletter", href: "/newsletter" },
+  { label: "Donate", href: "/donate" },
+  { label: "Contact", href: "/contact" },
+  { label: "Write for us", href: "/write-for-us" },
+  { label: "Search", href: "/search" },
+] as const;
+
+/** @deprecated Use PRIMARY_NAV + SECONDARY_NAV + REGION_NAV */
+export const HEADER_NAV = [...PRIMARY_NAV, ...SECONDARY_NAV];
+
+/** @deprecated Second menu removed */
+export const NAV_SECTIONS: { label: string; href: string }[] = [];
 
 /** About & mission — footer, mobile menu, sitemap */
 export const ABOUT_NAV = [
   { label: "About us", href: "/about" },
   { label: "Our mission", href: "/about#mission" },
   { label: "Our team", href: "/team" },
-  { label: "Editorial charter", href: "/editorial-charter" },
 ] as const;
-
-export const NAV_SECTIONS = [
-  { label: "Africa", href: "/category/africa" },
-  { label: "Latin America", href: "/category/latin-america" },
-  { label: "South Asia", href: "/category/south-asia" },
-  { label: "West Asia", href: "/category/west-asia" },
-  { label: "News", href: "/category/news" },
-  { label: "Opinion", href: "/category/opinion" },
-  { label: "Culture", href: "/category/culture" },
-  { label: "Investigations", href: "/category/investigations" },
-  { label: "Multimedia", href: "/category/multimedia" },
-  { label: "Special Reports", href: "/category/special-reports" },
-];
 
 export const HERO_MAIN = {
   slug: "la-grande-reforme-fiscale-ouest-africaine-qui-gagne-qui-perd-dans-luemoa",
@@ -58,8 +77,8 @@ export const HERO_MAIN = {
   authorRole: "Economics Correspondent",
   authorInitials: "AK",
   readingTime: "7 min read",
-  timeAgo: "2 hours ago",
-  date: "June 22, 2026, 9:15 AM",
+  timeAgo: "June 22, 2026",
+  date: "June 22, 2026",
   isPremium: true,
 };
 
@@ -67,54 +86,44 @@ export const HERO_MINI_CARDS = [
   {
     cat: "Politics",
     title: "Parliament passes personal data protection law",
-    meta: "3h ago · 5 min",
+    author: "Sékou Koné",
+    meta: "June 22, 2026",
     image: IMG.politics,
     slug: "/article/le-parlement-vote-la-loi-sur-la-protection-des-donnees-personnelles",
   },
   {
-    cat: "Technology",
-    title: "Abidjan Tech Valley: 40 startups selected for 2026 continental accelerator",
-    meta: "5h ago · 4 min",
-    image: IMG.tech,
-    slug: "/article/abidjan-tech-valley-40-startups-selectionnees-pour-laccelerateur-continental-2026",
-  },
-  {
     cat: "World",
     title: "AU Summit: continent adopts roadmap for food self-sufficiency",
-    meta: "6h ago · 6 min",
+    author: "Ama Kouassi",
+    meta: "June 22, 2026",
     image: IMG.africa,
     slug: "/article/sommet-de-l-ua-le-continent-adopte-une-feuille-de-route-pour-l-autonomie-alimentaire",
   },
   {
     cat: "Health",
     title: "RTS,S malaria vaccine: nationwide mass vaccination campaign launched",
-    meta: "8h ago · 3 min",
+    author: "Dr. Fatou Bamba",
+    meta: "June 21, 2026",
     image: IMG.health,
     slug: "/article/vaccin-antipaludisme-rtss-la-cote-divoire-lance-sa-campagne-nationale-de-vaccination-de-masse",
   },
   {
-    cat: "Technology",
-    title: "Google unveils its first sub-Saharan Africa data center in Accra",
-    meta: "5h ago · 4 min",
-    image: IMG.datacenter,
-    slug: "/article/google-devoile-son-premier-data-center-dafrique-subsaharienne-installe-a-accra",
-  },
-  {
     cat: "Local",
     title: "Grand-Bassam UNESCO extension: colonial heritage site officially expanded",
-    meta: "7h ago · 3 min",
+    author: "Marie-Jo Bamba",
+    meta: "June 21, 2026",
     image: IMG.heritage,
     slug: "/article/grand-bassam-classee-au-patrimoine-mondial-lunesco-officialise-lextension-du-site-colonial",
   },
 ];
 
 export const TOP_STORIES = [
-  { num: "01", cat: "Technology", title: "Wave and Orange Money announce merger: birth of Africa's first super-wallet", meta: "12 min read · 1h ago", image: IMG.fintech, slug: "/article/wave-et-orange-money-annoncent-leur-fusion-naissance-du-premier-super-portefeuille-africain" },
-  { num: "02", cat: "Investigation", title: "Embezzlement probe: three ministers charged in public construction contracts case", meta: "8 min · 2h ago", image: IMG.investigation, slug: "/article/detournement-de-fonds-publics-trois-ministres-mis-en-examen-dans-laffaire-des-marches-de-construction" },
-  { num: "03", cat: "Health", title: "RTS,S malaria vaccine: Côte d'Ivoire launches nationwide mass vaccination campaign", meta: "5 min · 4h ago", image: IMG.health, slug: "/article/vaccin-antipaludisme-rtss-la-cote-divoire-lance-sa-campagne-nationale-de-vaccination-de-masse" },
-  { num: "04", cat: "Technology", title: "Google unveils its first sub-Saharan Africa data center in Accra", meta: "4 min · 5h ago", image: IMG.datacenter, slug: "/article/google-devoile-son-premier-data-center-dafrique-subsaharienne-installe-a-accra" },
-  { num: "05", cat: "Local", title: "Grand-Bassam UNESCO extension: colonial heritage site officially expanded", meta: "3 min · 7h ago", image: IMG.heritage, slug: "/article/grand-bassam-classee-au-patrimoine-mondial-lunesco-officialise-lextension-du-site-colonial" },
-  { num: "06", cat: "World", title: "UN adopts historic resolution on developing countries' sovereign debt", meta: "6 min · 9h ago", image: IMG.un, slug: "/article/lonu-adopte-une-resolution-historique-sur-la-dette-souveraine-des-pays-en-developpement" },
+  { num: "01", cat: "World", title: "UN adopts historic resolution on developing countries' sovereign debt", meta: "Nadia Mensah · June 21, 2026", image: IMG.un, slug: "/article/lonu-adopte-une-resolution-historique-sur-la-dette-souveraine-des-pays-en-developpement" },
+  { num: "02", cat: "Investigation", title: "Embezzlement probe: three ministers charged in public construction contracts case", meta: "Investigations Desk · June 22, 2026", image: IMG.investigation, slug: "/article/detournement-de-fonds-publics-trois-ministres-mis-en-examen-dans-laffaire-des-marches-de-construction" },
+  { num: "03", cat: "Health", title: "RTS,S malaria vaccine: Côte d'Ivoire launches nationwide mass vaccination campaign", meta: "Dr. Fatou Bamba · June 22, 2026", image: IMG.health, slug: "/article/vaccin-antipaludisme-rtss-la-cote-divoire-lance-sa-campagne-nationale-de-vaccination-de-masse" },
+  { num: "04", cat: "Culture", title: "Grand-Bassam UNESCO extension: colonial heritage site officially expanded", meta: "Marie-Jo Bamba · June 21, 2026", image: IMG.heritage, slug: "/article/grand-bassam-classee-au-patrimoine-mondial-lunesco-officialise-lextension-du-site-colonial" },
+  { num: "05", cat: "Local", title: "Grand-Bassam UNESCO extension: colonial heritage site officially expanded", meta: "Marie-Jo Bamba · June 21, 2026", image: IMG.heritage, slug: "/article/grand-bassam-classee-au-patrimoine-mondial-lunesco-officialise-lextension-du-site-colonial" },
+  { num: "06", cat: "World", title: "UN adopts historic resolution on developing countries' sovereign debt", meta: "Nadia Mensah · June 21, 2026", image: IMG.un, slug: "/article/lonu-adopte-une-resolution-historique-sur-la-dette-souveraine-des-pays-en-developpement" },
 ];
 
 export const POPULAR_TAGS = [
@@ -128,21 +137,20 @@ export const EDITORS_CHOICE = {
     title: "Ivorian farmers turning cocoa into premium chocolate — and challenging global brands",
     excerpt: "They grow, process, and export. A new generation of cocoa growers is reshaping the world chocolate market from plantations in Bélier.",
     author: "Brice Ahi",
-    meta: "12 min read · June 21, 2026",
+    meta: "June 21, 2026",
     image: IMG.cacao,
     slug: "/article/ces-agriculteurs-ivoiriens-qui-transforment-le-cacao-en-chocolat-haut-de-gamme",
   },
   rows: [
-    { cat: "Technology", title: "AI for agriculture: Agrotech CI rolls out voice assistant in Dioula and Baoulé", author: "Kadi Traoré", time: "6 min", image: IMG.agriculture, slug: "/article/lia-au-service-de-lagriculture-agrotech-ci-deploie-son-assistant-vocal-en-dioula-et-baoule" },
-    { cat: "Opinion", title: "Should Francophone Africa rethink public debt? An economist's view", author: "Prof. Adjoua Mensah", time: "9 min", image: IMG.economy, slug: "/article/faut-il-repenser-le-modele-de-la-dette-publique-en-afrique-francophone" },
-    { cat: "Environment", title: "Sassandra deforestation: investigation reveals true scale of forest loss since 2020", author: "Investigations Desk", time: "11 min", image: IMG.forest, slug: "/article/deforestation-du-sassandra-lenquete-qui-revele-lampleur-reelle-des-pertes-forestieres" },
+    { cat: "Opinion", title: "Should Francophone Africa rethink public debt? An economist's view", author: "Prof. Adjoua Mensah", time: "June 20, 2026", image: IMG.economy, slug: "/article/faut-il-repenser-le-modele-de-la-dette-publique-en-afrique-francophone" },
+    { cat: "Environment", title: "Sassandra deforestation: investigation reveals true scale of forest loss since 2020", author: "Investigations Desk", time: "June 22, 2026", image: IMG.forest, slug: "/article/deforestation-du-sassandra-lenquete-qui-revele-lampleur-reelle-des-pertes-forestieres" },
   ],
   side: {
     cat: "Diaspora",
     title: "Ivoirians in France: how the second generation is reinventing ties with home",
     excerpt: "Portraits of eight young Franco-Ivorian entrepreneurs who chose to return and build in Côte d'Ivoire.",
     author: "Marie-Jo Bamba",
-    time: "8 min",
+    time: "June 21, 2026",
     image: IMG.diaspora,
     slug: "/article/ivoiriens-de-france-comment-la-deuxieme-generation-reinvente-le-lien-avec-le-pays",
   },
@@ -151,27 +159,26 @@ export const EDITORS_CHOICE = {
 export const LATEST = {
   featured: {
     cat: "Politics",
-    badge: "12 MIN AGO",
+    badge: "JUNE 22, 2026",
     title: "Parliament passes personal data protection law — a first for Francophone West Africa",
     author: "Sékou Koné",
-    time: "4 min read",
+    time: "June 22, 2026",
     image: IMG.politics,
     slug: "/article/le-parlement-vote-la-loi-sur-la-protection-des-donnees-personnelles",
   },
   items: [
-    { cat: "Politics", title: "AfDB announces $800M financing for Ivorian agri-food SMEs", time: "25 min ago · 3 min", image: IMG.cacao, slug: "/article/la-bad-annonce-un-financement-de-800m-pour-les-pme-ivoiriennes-dans-le-secteur-agroalimentaire" },
-    { cat: "Culture", title: "Grand-Bassam UNESCO extension: colonial heritage site officially expanded", time: "1h ago · 2 min", image: IMG.heritage, slug: "/article/grand-bassam-classee-au-patrimoine-mondial-lunesco-officialise-lextension-du-site-colonial" },
-    { cat: "World", title: "United Nations: Security Council holds emergency session on Sahel crisis", time: "2h ago · 5 min", image: IMG.un, slug: "/article/nations-unies-le-conseil-de-securite-se-reunit-en-urgence-sur-la-situation-au-sahel" },
-    { cat: "Technology", title: "Meta launches WhatsApp Pay in Côte d'Ivoire with native CinetPay integration", time: "3h ago · 4 min", image: IMG.datacenter, slug: "/article/meta-deploie-son-service-whatsapp-pay-en-cote-divoire-avec-integration-cinetpay-native" },
-    { cat: "Health", title: "New meningitis cases in Bouaké: Health Ministry activates regional emergency protocol", time: "4h ago · 3 min", image: IMG.health, slug: "/article/nouveaux-cas-de-meningite-a-bouake-le-ministere-de-la-sante-active-le-protocole-durgence-regional" },
+    { cat: "Politics", title: "AfDB announces $800M financing for Ivorian agri-food SMEs", time: "June 22, 2026", image: IMG.cacao, slug: "/article/la-bad-annonce-un-financement-de-800m-pour-les-pme-ivoiriennes-dans-le-secteur-agroalimentaire" },
+    { cat: "Culture", title: "Grand-Bassam UNESCO extension: colonial heritage site officially expanded", time: "June 21, 2026", image: IMG.heritage, slug: "/article/grand-bassam-classee-au-patrimoine-mondial-lunesco-officialise-lextension-du-site-colonial" },
+    { cat: "World", title: "United Nations: Security Council holds emergency session on Sahel crisis", time: "June 22, 2026", image: IMG.un, slug: "/article/nations-unies-le-conseil-de-securite-se-reunit-en-urgence-sur-la-situation-au-sahel" },
+    { cat: "Health", title: "New meningitis cases in Bouaké: Health Ministry activates regional emergency protocol", time: "June 21, 2026", image: IMG.health, slug: "/article/nouveaux-cas-de-meningite-a-bouake-le-ministere-de-la-sante-active-le-protocole-durgence-regional" },
   ],
 };
 
 export const VIDEOS = [
-  { cat: "World", title: "Port of Abidjan: how it became West Africa's leading logistics hub", duration: "12:34", views: "2.4k views · 3h ago", image: IMG.port, slug: "/article/le-port-dabidjan-comment-il-est-devenu-le-premier-hub-logistique-dafrique-de-louest" },
-  { cat: "Politics", title: "Exclusive interview: Prime Minister responds to criticism of education reform", duration: "08:12", views: "5.1k views · 5h ago", image: IMG.politics, slug: "/article/interview-exclusive-le-premier-ministre-repond-aux-critiques-sur-la-reforme-de-leducation" },
-  { cat: "Culture", title: "Ivorian cinema week: three films selected for Cannes Critics' Week", duration: "05:47", views: "8.9k views · 8h ago", image: IMG.heritage, slug: "/article/grand-bassam-classee-au-patrimoine-mondial-lunesco-officialise-lextension-du-site-colonial" },
-  { cat: "Investigation", title: "Illegal gold mining in the north: documentary on clandestine supply chains", duration: "21:05", views: "14k views · 1d ago", image: IMG.forest, slug: "/article/orpaillage-illegal-dans-le-nord-le-grand-documentaire-sur-les-filieres-clandestines" },
+  { cat: "World", title: "Port of Abidjan: how it became West Africa's leading logistics hub", duration: "12:34", views: "Kofi Mensah · June 22, 2026", image: IMG.port, slug: "/article/le-port-dabidjan-comment-il-est-devenu-le-premier-hub-logistique-dafrique-de-louest" },
+  { cat: "Politics", title: "Exclusive interview: Prime Minister responds to criticism of education reform", duration: "08:12", views: "Ama Kouassi · June 22, 2026", image: IMG.politics, slug: "/article/interview-exclusive-le-premier-ministre-repond-aux-critiques-sur-la-reforme-de-leducation" },
+  { cat: "Culture", title: "Ivorian cinema week: three films selected for Cannes Critics' Week", duration: "05:47", views: "Marie-Jo Bamba · June 21, 2026", image: IMG.heritage, slug: "/article/grand-bassam-classee-au-patrimoine-mondial-lunesco-officialise-lextension-du-site-colonial" },
+  { cat: "Investigation", title: "Illegal gold mining in the north: documentary on clandestine supply chains", duration: "21:05", views: "Investigations Desk · June 20, 2026", image: IMG.forest, slug: "/article/orpaillage-illegal-dans-le-nord-le-grand-documentaire-sur-les-filieres-clandestines" },
 ];
 
 export const OPINIONS = [
@@ -182,13 +189,13 @@ export const OPINIONS = [
 
 export const THEMATIC = [
   {
-    title: "Technology",
-    href: "/category/technology",
-    main: { cat: "Technology", title: "5G arrives in Abidjan: Orange CI and MTN simultaneously deploy pilot networks", image: IMG.datacenter },
+    title: "World",
+    href: "/category/world",
+    main: { cat: "World", title: "UN adopts historic resolution on developing countries' sovereign debt", image: IMG.un },
     subs: [
-      { num: "01", cat: "Startups", title: "InnovaCI wins the 2026 Francophonie Innovation Grand Prize" },
-      { num: "02", cat: "Cybersecurity", title: "340% surge in cyberattacks against West African banks in 2025" },
-      { num: "03", cat: "Mobile", title: "GSMA report: Africa to reach 1.5 billion mobile connections by 2030" },
+      { num: "01", cat: "Diplomacy", title: "Security Council holds emergency session on Sahel crisis" },
+      { num: "02", cat: "Africa", title: "AU Summit adopts roadmap for continental food self-sufficiency" },
+      { num: "03", cat: "Trade", title: "AfDB announces $800M financing for Ivorian agri-food SMEs" },
     ],
   },
   {
@@ -210,48 +217,35 @@ export const STATS = [
   { num: "48", suffix: "h", label: "Continuous Coverage" },
 ];
 
+export const FOOTER_LEGAL_LINKS = [
+  { label: "Legal notice", href: "/legal" },
+  { label: "Privacy policy", href: "/privacy" },
+  { label: "Terms of use", href: "/terms" },
+] as const;
+
+export const FOOTER_BOTTOM_LINKS = [
+  { label: "Sitemap", href: "/sitemap" },
+  { label: "RSS", href: "/rss" },
+  { label: "Feed XML", href: "/feed.xml", external: true },
+  { label: "Accessibility", href: "/accessibility" },
+] as const;
+
 export const FOOTER_COLS = {
-  regions: [
-    { label: "Africa", href: "/category/africa" },
-    { label: "Latin America", href: "/category/latin-america" },
-    { label: "South Asia", href: "/category/south-asia" },
-    { label: "West Asia", href: "/category/west-asia" },
-    { label: "World", href: "/category/world" },
-  ],
-  sections: [
-    { label: "News", href: "/category/news" },
-    { label: "Politics", href: "/category/politics" },
-    { label: "Technology", href: "/category/technology" },
-    { label: "Culture", href: "/category/culture" },
-    { label: "Health", href: "/category/health" },
-    { label: "World", href: "/category/world" },
-  ],
+  regions: REGION_NAV.map(({ label, href }) => ({ label, href })),
+  sections: [ALL_NEWS_LINK, ...PRIMARY_NAV.map(({ label, href }) => ({ label, href }))],
+  formats: FOOTER_FORMAT_LINKS.map(({ label, href }) => ({ label, href })),
   about: [
-    { label: "About us", href: "/about" },
-    { label: "Our mission", href: "/about#mission" },
-    { label: "Our team", href: "/team" },
-    { label: "Press room", href: "/press" },
-    { label: "Advertising", href: "/advertising" },
-    { label: "Editorial charter", href: "/editorial-charter" },
-    { label: "Careers", href: "/careers" },
-    { label: "Donate", href: "/donate" },
-    { label: "Newsletter", href: "/newsletter" },
-    { label: "Contact", href: "/contact" },
+    ...ABOUT_NAV.map(({ label, href }) => ({ label, href })),
+    ...FOOTER_SUPPORT_LINKS.map(({ label, href }) => ({ label, href })),
   ],
-  formats: [
-    { label: "Investigations", href: "/category/investigations" },
-    { label: "Features", href: "/category/special-reports" },
-    { label: "Opinion", href: "/category/opinion" },
-    { label: "Videos", href: "/videos" },
-    { label: "Podcasts", href: "/podcasts" },
-    { label: "Infographics", href: "/infographics" },
-    { label: "Photo galleries", href: "/photo-galleries" },
-  ],
-  legal: [
-    { label: "Legal notice", href: "/legal" },
-    { label: "Privacy policy", href: "/privacy" },
-    { label: "Terms of use", href: "/terms" },
-    { label: "Cookies", href: "/cookies" },
-    { label: "Right to erasure", href: "/right-to-erasure" },
-  ],
+  legal: FOOTER_LEGAL_LINKS.map(({ label, href }) => ({ label, href })),
 };
+
+/** Mobile drawer — mirrors footer structure */
+export const MOBILE_NAV = {
+  sections: FOOTER_COLS.sections,
+  regions: FOOTER_COLS.regions,
+  formats: FOOTER_COLS.formats,
+  about: FOOTER_COLS.about,
+  legal: FOOTER_COLS.legal,
+} as const;

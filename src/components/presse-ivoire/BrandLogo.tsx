@@ -23,8 +23,8 @@ export function BrandLogo({
   onNavigate,
 }: BrandLogoProps) {
   const { siteLogo, siteName } = useSiteBranding();
-  const height = variant === "header" ? 52 : 44;
-  const width = variant === "header" ? 220 : 190;
+  const height = variant === "header" ? 68 : 44;
+  const width = variant === "header" ? 300 : 190;
   const displayTagline = showTagline ?? variant === "header";
 
   const logoClassName = className ?? (variant === "auth" ? "logo logo-auth" : "logo");
