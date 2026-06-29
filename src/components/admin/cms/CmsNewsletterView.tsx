@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { CmsPage } from "@/components/admin/cms/CmsPage";
+import { CmsActionIcons } from "@/components/admin/cms/CmsIcons";
+import { toast } from "@/lib/toast";
 
 interface CampaignRow {
   _id: string;
@@ -41,7 +43,6 @@ export function CmsNewsletterView({ initialTotalActive }: CmsNewsletterViewProps
     "Bonjour,\n\nVoici la sélection éditoriale du jour.\n\n— L'équipe PressIvoire"
   );
   const [saving, setSaving] = useState(false);
-  const [message, setMessage] = useState("");
 
   const load = useCallback(() => {
     Promise.all([
@@ -68,7 +69,7 @@ export function CmsNewsletterView({ initialTotalActive }: CmsNewsletterViewProps
 
   const scheduleCampaign = async () => {
     setSaving(true);
-    setMessage("");
+    const toastId = toast.loading("Enregistrement de la campagne…");
     try {
       const res = await fetch("/api/admin/newsletter/campaigns", {
         method: "POST",
@@ -82,10 +83,12 @@ export function CmsNewsletterView({ initialTotalActive }: CmsNewsletterViewProps
         }),
       });
       if (!res.ok) {
-        setMessage("Échec de la planification.");
+        toast.dismiss(toastId);
+        toast.error("Échec de la planification.");
         return;
       }
-      setMessage("Campagne enregistrée avec succès.");
+      toast.dismiss(toastId);
+      toast.success("Campagne enregistrée avec succès.");
       load();
     } finally {
       setSaving(false);
@@ -94,6 +97,20 @@ export function CmsNewsletterView({ initialTotalActive }: CmsNewsletterViewProps
 
   const exportSubscribers = () => {
     window.open("/api/admin/newsletter/export", "_blank");
+  };
+
+  const deleteCampaign = async (campaign: CampaignRow) => {
+    if (!confirm(`Supprimer la campagne « ${campaign.title} » ?`)) return;
+    const res = await fetch(`/api/admin/newsletter/campaigns/${campaign._id}`, {
+      method: "DELETE",
+    });
+    if (!res.ok) {
+      const data = (await res.json()) as { error?: string };
+      toast.error(data.error ?? "Suppression impossible.");
+      return;
+    }
+    toast.success("Campagne supprimée");
+    load();
   };
 
   const formatRate = (opens: number, clicks: number, sent: number) => {
@@ -125,8 +142,6 @@ export function CmsNewsletterView({ initialTotalActive }: CmsNewsletterViewProps
           </button>
         </div>
       </div>
-
-      {message && <p className="cms-toast">{message}</p>}
 
       <div className="kgrid mb20">
         <div className="kpi k-green">
@@ -165,6 +180,7 @@ export function CmsNewsletterView({ initialTotalActive }: CmsNewsletterViewProps
                     <th>Ouverts</th>
                     <th>Clics</th>
                     <th>Statut</th>
+                    <th />
                   </tr>
                 </thead>
                 <tbody>
@@ -189,6 +205,16 @@ export function CmsNewsletterView({ initialTotalActive }: CmsNewsletterViewProps
                           <span className={`badge b-${row.status === "sent" ? "pub" : "plan"}`}>
                             {row.status === "sent" ? "Envoyée" : "Planifiée"}
                           </span>
+                        </td>
+                        <td className="tbl-actions">
+                          <button
+                            type="button"
+                            className="btn btn-ghost btn-xs btn-icon"
+                            title="Supprimer"
+                            onClick={() => void deleteCampaign(row)}
+                          >
+                            <CmsActionIcons.delete size={14} className="cms-icon cms-icon--error" aria-hidden />
+                          </button>
                         </td>
                       </tr>
                     );

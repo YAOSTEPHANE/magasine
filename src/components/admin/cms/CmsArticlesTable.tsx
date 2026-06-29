@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useState } from "react";
 import type { ArticleListRow } from "@/components/admin/cms/CmsArticlesView";
 import { CmsStatusBadge, formatArticleDate, formatRelativeFr, authorAvatarGradient, authorInitials, categoryAccent } from "@/components/admin/cms/cms-ui";
+import { CmsActionIcons } from "@/components/admin/cms/CmsIcons";
+import { toast } from "@/lib/toast";
 
 interface CmsArticlesTableProps {
   articles: ArticleListRow[];
@@ -52,6 +54,10 @@ export function CmsArticlesTable({
     try {
       await bulkAction(action, Array.from(selected));
       setSelected(new Set());
+      if (action === "delete") toast.success("Articles supprimés");
+      else if (action === "publish") toast.success("Articles publiés");
+      else if (action === "archive") toast.success("Articles archivés");
+      else toast.success("Articles restaurés");
       router.refresh();
     } finally {
       setBusy(false);
@@ -63,9 +69,12 @@ export function CmsArticlesTable({
     setBusy(true);
     try {
       if (action === "delete") {
-        await fetch(`/api/admin/articles/${id}`, { method: "DELETE" });
+        const res = await fetch(`/api/admin/articles/${id}`, { method: "DELETE" });
+        if (res.ok) toast.success("Article supprimé");
+        else toast.error("Suppression impossible");
       } else {
         await bulkAction(action, [id]);
+        toast.success(action === "publish" ? "Article publié" : action === "archive" ? "Article archivé" : "Article restauré");
       }
       router.refresh();
     } finally {
@@ -83,11 +92,11 @@ export function CmsArticlesTable({
       const text = await file.text();
       const lines = text.split(/\r?\n/).filter(Boolean);
       if (lines.length < 2) {
-        window.alert("CSV vide ou invalide.");
+        toast.error("CSV vide ou invalide.");
         return;
       }
-      window.alert(
-        `Import CSV : ${lines.length - 1} ligne(s) détectée(s). Créez les articles via l'éditeur pour l'instant — import automatique en cours de finalisation.`
+      toast.info(
+        `Import CSV : ${lines.length - 1} ligne(s) détectée(s). Créez les articles via l'éditeur pour l'instant.`
       );
     };
     input.click();
@@ -209,11 +218,11 @@ export function CmsArticlesTable({
                           </button>
                         )}
                         <Link href={`/admin/articles/${article._id}`} className="btn btn-ghost btn-xs btn-icon" title="Modifier">
-                          ✏️
+                          <CmsActionIcons.edit size={14} className="cms-icon" aria-hidden />
                         </Link>
                         {article.status !== "draft" && article.slug && (
                           <Link href={`/article/${article.slug}`} className="btn btn-ghost btn-xs btn-icon" title="Voir" target="_blank">
-                            👁
+                            <CmsActionIcons.view size={14} className="cms-icon" aria-hidden />
                           </Link>
                         )}
                         {article.status === "archived" ? (
@@ -222,7 +231,7 @@ export function CmsArticlesTable({
                           </button>
                         ) : article.status === "draft" ? (
                           <button type="button" className="btn btn-ghost btn-xs btn-icon" title="Supprimer" disabled={busy} onClick={() => void rowAction(article._id, "delete")}>
-                            🗑
+                            <CmsActionIcons.delete size={14} className="cms-icon cms-icon--error" aria-hidden />
                           </button>
                         ) : null}
                       </div>

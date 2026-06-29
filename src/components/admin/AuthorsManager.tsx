@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ExternalLink, Pencil, Plus, Trash2 } from "lucide-react";
 import { AdminSectionShell } from "@/components/admin/AdminSectionShell";
 import { authorInitials } from "@/lib/format-article";
+import { toast } from "@/lib/toast";
 
 interface AuthorRow {
   _id: string;
@@ -33,7 +34,6 @@ export function AuthorsManager({ initial }: { initial: AuthorRow[] }) {
   const [editing, setEditing] = useState<AuthorRow | null>(null);
   const [form, setForm] = useState(emptyForm);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
 
   const reload = useCallback(() => {
     fetch("/api/admin/authors")
@@ -48,7 +48,6 @@ export function AuthorsManager({ initial }: { initial: AuthorRow[] }) {
   const openCreate = () => {
     setEditing(null);
     setForm(emptyForm);
-    setError("");
     setModalOpen(true);
   };
 
@@ -62,13 +61,11 @@ export function AuthorsManager({ initial }: { initial: AuthorRow[] }) {
       twitter: author.twitter,
       linkedin: author.linkedin,
     });
-    setError("");
     setModalOpen(true);
   };
 
   const save = async () => {
     setLoading(true);
-    setError("");
     try {
       const url = editing ? `/api/admin/authors/${editing._id}` : "/api/admin/authors";
       const method = editing ? "PATCH" : "POST";
@@ -79,9 +76,10 @@ export function AuthorsManager({ initial }: { initial: AuthorRow[] }) {
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error ?? "Save failed");
+        toast.error(data.error ?? "Échec de l'enregistrement");
         return;
       }
+      toast.success(editing ? "Auteur mis à jour" : "Auteur créé");
       setModalOpen(false);
       reload();
     } finally {
@@ -94,9 +92,10 @@ export function AuthorsManager({ initial }: { initial: AuthorRow[] }) {
     const res = await fetch(`/api/admin/authors/${id}`, { method: "DELETE" });
     if (!res.ok) {
       const data = await res.json();
-      alert(data.error ?? "Delete failed");
+      toast.error(data.error ?? "Suppression impossible");
       return;
     }
+    toast.success("Auteur supprimé");
     reload();
   };
 
@@ -169,7 +168,6 @@ export function AuthorsManager({ initial }: { initial: AuthorRow[] }) {
               <h2>{editing ? "Edit author" : "New author"}</h2>
             </div>
             <div className="admin-modal-body admin-form-grid">
-              {error && <p className="text-sm text-red-600">{error}</p>}
               <div className="admin-field">
                 <label>Name</label>
                 <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />

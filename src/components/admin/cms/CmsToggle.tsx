@@ -1,11 +1,12 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 interface CmsToggleProps {
   on: boolean;
   onChange: (value: boolean) => void;
-  label: string;
+  label: ReactNode;
 }
 
 export function CmsToggle({ on, onChange, label }: CmsToggleProps) {

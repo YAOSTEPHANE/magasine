@@ -18,12 +18,11 @@ import {
 import type { ReviewQueueItem } from "@/lib/admin-review";
 import { resolveFeaturedImage } from "@/lib/images";
 import { formatDate, formatRelativeDate } from "@/lib/utils";
+import { toast } from "@/lib/toast";
 
 interface ReviewQueueManagerProps {
   initialItems: ReviewQueueItem[];
 }
-
-type ToastType = "success" | "error" | "saving";
 
 function stripHtml(html: string, maxLength = 320): string {
   const text = html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
@@ -161,17 +160,13 @@ export function ReviewQueueManager({ initialItems }: ReviewQueueManagerProps) {
   const router = useRouter();
   const [items, setItems] = useState(initialItems);
   const [busyId, setBusyId] = useState<string | null>(null);
-  const [toast, setToast] = useState<{ type: ToastType; text: string } | null>(null);
-
-  const showToast = useCallback((type: ToastType, text: string) => {
-    setToast({ type, text });
-    window.setTimeout(() => setToast(null), 4000);
-  }, []);
 
   const handleStatusChange = useCallback(
     async (id: string, status: "published" | "draft") => {
       setBusyId(id);
-      showToast("saving", status === "published" ? "Publishing article…" : "Returning to draft…");
+      const toastId = toast.loading(
+        status === "published" ? "Publication de l'article…" : "Retour en brouillon…"
+      );
 
       try {
         const res = await fetch(`/api/admin/articles/${id}`, {
@@ -186,21 +181,21 @@ export function ReviewQueueManager({ initialItems }: ReviewQueueManagerProps) {
         }
 
         setItems((prev) => prev.filter((item) => item._id !== id));
-        showToast(
-          "success",
-          status === "published" ? "Article published successfully." : "Article returned to draft."
+        toast.dismiss(toastId);
+        toast.success(
+          status === "published" ? "Article publié avec succès" : "Article repassé en brouillon"
         );
         router.refresh();
       } catch (error) {
-        showToast(
-          "error",
-          error instanceof Error ? error.message : "Unable to update article status."
+        toast.dismiss(toastId);
+        toast.error(
+          error instanceof Error ? error.message : "Impossible de mettre à jour l'article."
         );
       } finally {
         setBusyId(null);
       }
     },
-    [router, showToast]
+    [router]
   );
 
   return (
@@ -237,12 +232,6 @@ export function ReviewQueueManager({ initialItems }: ReviewQueueManagerProps) {
           </div>
         </div>
       </header>
-
-      {toast && (
-        <div className={`rvq-toast rvq-toast--${toast.type}`} role="status">
-          {toast.text}
-        </div>
-      )}
 
       {items.length === 0 ? (
         <div className="rvq-empty">

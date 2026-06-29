@@ -90,3 +90,51 @@ export async function PATCH(request: NextRequest) {
     isPremium: user.isPremium,
   });
 }
+
+export async function DELETE(request: NextRequest) {
+  const guard = await requireAdminApi("users");
+  if (guard.error) return guard.error;
+
+  const body = await request.json();
+  const parsed = z.object({ userId: z.string() }).safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json({ error: "Données invalides." }, { status: 400 });
+  }
+
+  const { userId } = parsed.data;
+
+  if (userId === guard.session!.user.id) {
+    return NextResponse.json({ error: "Vous ne pouvez pas supprimer votre propre compte." }, { status: 400 });
+  }
+
+  await connectDB();
+  const user = await User.findById(userId);
+  if (!user) {
+    return NextResponse.json({ error: "Utilisateur introuvable." }, { status: 404 });
+  }
+
+  if (user.role === "super_admin") {
+    return NextResponse.json(
+      { error: "Impossible de supprimer un super administrateur." },
+      { status: 403 }
+    );
+  }
+
+  if (user.role === "admin" && guard.session!.user.role !== "super_admin") {
+    return NextResponse.json(
+      { error: "Seul un super administrateur peut supprimer un administrateur." },
+      { status: 403 }
+    );
+  }
+
+  const articleCount = await Article.countDocuments({ authors: user._id });
+  if (articleCount > 0) {
+    return NextResponse.json(
+      { error: `Cet utilisateur a ${articleCount} article(s). Réassignez-les avant suppression.` },
+      { status: 409 }
+    );
+  }
+
+  await User.findByIdAndDelete(userId);
+  return NextResponse.json({ success: true });
+}

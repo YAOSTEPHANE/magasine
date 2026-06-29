@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { toast } from "@/lib/toast";
 
 interface SettingsData {
   siteName: string;
@@ -17,7 +18,6 @@ export function SettingsForm() {
   const [form, setForm] = useState<SettingsData | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [message, setMessage] = useState("");
 
   useEffect(() => {
     fetch("/api/admin/settings")
@@ -29,7 +29,6 @@ export function SettingsForm() {
   const save = async () => {
     if (!form) return;
     setSaving(true);
-    setMessage("");
     try {
       const res = await fetch("/api/admin/settings", {
         method: "PATCH",
@@ -39,9 +38,9 @@ export function SettingsForm() {
       if (res.ok) {
         const data = await res.json();
         setForm(data);
-        setMessage("Settings saved.");
+        toast.success("Paramètres enregistrés");
       } else {
-        setMessage("Save failed.");
+        toast.error("Échec de l'enregistrement");
       }
     } finally {
       setSaving(false);
@@ -54,7 +53,6 @@ export function SettingsForm() {
 
   return (
     <div className="admin-card admin-card-padded admin-form-grid max-w-2xl">
-      {message && <p className="admin-message admin-message--success">{message}</p>}
       <div className="admin-field">
         <label>Site name</label>
         <input value={form.siteName} onChange={(e) => setForm({ ...form, siteName: e.target.value })} />

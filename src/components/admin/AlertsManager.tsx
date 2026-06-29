@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Plus, Radio, Trash2 } from "lucide-react";
 import { AdminSectionShell } from "@/components/admin/AdminSectionShell";
+import { toast } from "@/lib/toast";
 
 interface AlertRow {
   _id: string;
@@ -41,7 +42,10 @@ export function AlertsManager({ initial }: { initial: AlertRow[] }) {
       if (res.ok) {
         setModalOpen(false);
         setForm(emptyForm);
+        toast.success("Alerte créée");
         reload();
+      } else {
+        toast.error("Échec de la création");
       }
     } finally {
       setLoading(false);
@@ -54,12 +58,14 @@ export function AlertsManager({ initial }: { initial: AlertRow[] }) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ isActive: !alert.isActive }),
     });
+    toast.success(alert.isActive ? "Alerte désactivée" : "Alerte activée");
     reload();
   };
 
   const remove = async (id: string) => {
     if (!globalThis.confirm("Delete this alert?")) return;
     await fetch(`/api/admin/alerts/${id}`, { method: "DELETE" });
+    toast.success("Alerte supprimée");
     reload();
   };
 

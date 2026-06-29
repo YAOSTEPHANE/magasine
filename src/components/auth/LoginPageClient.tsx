@@ -15,6 +15,7 @@ import {
 import { BrandLogo } from "@/components/presse-ivoire/BrandLogo";
 import { GoogleIcon } from "@/components/auth/auth-shared";
 import { AuthPasswordField, AuthTextField } from "@/components/auth/AuthFields";
+import { toast } from "@/lib/toast";
 
 const STATS = [
   { value: "Free", label: "Reader account" },
@@ -51,13 +52,11 @@ export function LoginPageClient() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError("");
 
     const result = await signIn("credentials", {
       email: email.trim().toLowerCase(),
@@ -66,7 +65,7 @@ export function LoginPageClient() {
     });
 
     if (result?.error) {
-      setError("Incorrect email or password. Check your details or create an account.");
+      toast.error("E-mail ou mot de passe incorrect.");
       setLoading(false);
       return;
     }
@@ -140,12 +139,6 @@ export function LoginPageClient() {
               autoComplete="current-password"
               placeholder="Your password"
             />
-
-            {error && (
-              <p className="auth-error" role="alert">
-                {error}
-              </p>
-            )}
 
             <button type="submit" className="auth-submit" disabled={loading}>
               {loading ? "Signing in…" : "Sign in"}

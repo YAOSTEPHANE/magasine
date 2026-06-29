@@ -2,7 +2,9 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { CmsPage } from "@/components/admin/cms/CmsPage";
+import { CmsActionIcons, Check, Star } from "@/components/admin/cms/CmsIcons";
 import { CMS_ROLE_MATRIX } from "@/lib/cms-mock-data";
+import { toast } from "@/lib/toast";
 import { authorAvatarGradient, authorInitials } from "@/components/admin/cms/cms-ui";
 import { CMS_ROLE_LABELS } from "@/components/admin/cms/cms-nav";
 import type { UserRole } from "@/types";
@@ -28,7 +30,13 @@ const ROLE_COLORS: Partial<Record<UserRole, string>> = {
 };
 
 function matrixCell(value: boolean | "own" | string) {
-  if (value === true) return <span className="cms-matrix-yes">✓</span>;
+  if (value === true) {
+    return (
+      <span className="cms-matrix-yes">
+        <Check size={14} aria-hidden />
+      </span>
+    );
+  }
   if (value === "own") return <span className="cms-matrix-own">Propres articles</span>;
   return <span className="cms-matrix-no">—</span>;
 }
@@ -74,12 +82,13 @@ export function CmsUsersView() {
     });
     const data = await res.json();
     if (!res.ok) {
-      window.alert(data.error ?? "Invitation échouée");
+      toast.error(data.error ?? "Invitation échouée");
       return;
     }
-    window.alert(
-      `Membre créé.\nE-mail : ${data.email}\nMot de passe temporaire : ${data.tempPassword}\nCommuniquez-le au collaborateur.`
-    );
+    toast.success("Membre créé", {
+      description: `E-mail : ${data.email} · Mot de passe temporaire : ${data.tempPassword}`,
+      duration: 8000,
+    });
     load();
   };
 
@@ -94,12 +103,36 @@ export function CmsUsersView() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId: user._id, role }),
     });
-    if (res.ok) load();
-    else {
+    if (res.ok) {
+      toast.success("Rôle mis à jour");
+      load();
+    } else {
       const data = await res.json();
-      window.alert(data.error ?? "Échec");
+      toast.error(data.error ?? "Échec de la mise à jour");
     }
   };
+
+  const removeMember = async (user: UserRow) => {
+    if (user.role === "super_admin") {
+      toast.error("Impossible de supprimer un super administrateur.");
+      return;
+    }
+    if (!confirm(`Retirer ${user.name} de l'équipe ?`)) return;
+    const res = await fetch("/api/admin/users", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId: user._id }),
+    });
+    if (res.ok) {
+      toast.success("Membre retiré de l'équipe");
+      load();
+    } else {
+      const data = await res.json();
+      toast.error(data.error ?? "Suppression impossible.");
+    }
+  };
+
+  const canRemoveMember = (user: UserRow) => user.role !== "super_admin";
 
   const editorial = users.filter((u) =>
     ["super_admin", "admin", "editor", "author", "contributor"].includes(u.role)
@@ -127,33 +160,50 @@ export function CmsUsersView() {
       ) : (
         <div className="ugrid">
           {editorial.slice(0, 6).map((user, index) => (
-            <button
-              key={user._id}
-              type="button"
-              className="ucard"
-              onClick={() => void changeRole(user)}
-              title="Cliquer pour modifier le rôle"
-            >
-              <div className="uav" style={{ background: authorAvatarGradient(user.name) }}>
-                {index < 3 && <div className="uonline" />}
-                {authorInitials(user.name)}
-              </div>
-              <div className="uname">{user.name}</div>
-              <div className="urole" style={{ color: ROLE_COLORS[user.role] ?? "var(--t3)" }}>
-                {CMS_ROLE_LABELS[user.role]}
-                {user.isBanned ? " · Banni" : ""}
-              </div>
-              <div className="ustats">
-                <div>
-                  <div className="usv">{user.articleCount}</div>
-                  <div className="usl">Articles</div>
+            <div key={user._id} className="ucard-wrap">
+              <button
+                type="button"
+                className="ucard"
+                onClick={() => void changeRole(user)}
+                title="Cliquer pour modifier le rôle"
+              >
+                <div className="uav" style={{ background: authorAvatarGradient(user.name) }}>
+                  {index < 3 && <div className="uonline" />}
+                  {authorInitials(user.name)}
                 </div>
-                <div>
-                  <div className="usv">{user.isPremium ? "★" : "—"}</div>
-                  <div className="usl">{user.isPremium ? "Premium" : "Standard"}</div>
+                <div className="uname">{user.name}</div>
+                <div className="urole" style={{ color: ROLE_COLORS[user.role] ?? "var(--t3)" }}>
+                  {CMS_ROLE_LABELS[user.role]}
+                  {user.isBanned ? " · Banni" : ""}
                 </div>
-              </div>
-            </button>
+                <div className="ustats">
+                  <div>
+                    <div className="usv">{user.articleCount}</div>
+                    <div className="usl">Articles</div>
+                  </div>
+                  <div>
+                    <div className="usv">
+                      {user.isPremium ? (
+                        <Star size={14} className="cms-icon cms-icon--premium" aria-hidden />
+                      ) : (
+                        "—"
+                      )}
+                    </div>
+                    <div className="usl">{user.isPremium ? "Premium" : "Standard"}</div>
+                  </div>
+                </div>
+              </button>
+              {canRemoveMember(user) && (
+                <button
+                  type="button"
+                  className="ucard-del btn btn-ghost btn-xs btn-icon"
+                  title="Retirer du membre"
+                  onClick={() => void removeMember(user)}
+                >
+                  <CmsActionIcons.delete size={14} className="cms-icon cms-icon--error" aria-hidden />
+                </button>
+              )}
+            </div>
           ))}
           <button type="button" className="ucard ucard--invite" onClick={() => void inviteMember()}>
             <div className="ucard-invite-icon">+</div>

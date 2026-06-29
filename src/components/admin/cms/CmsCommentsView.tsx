@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { CmsPage } from "@/components/admin/cms/CmsPage";
 import { authorAvatarGradient, authorInitials, formatRelativeFr } from "@/components/admin/cms/cms-ui";
+import { toast } from "@/lib/toast";
 
 interface CommentRow {
   _id: string;
@@ -54,11 +55,24 @@ export function CmsCommentsView() {
   ) => {
     setBusy(true);
     try {
-      await fetch("/api/admin/comments", {
+      const res = await fetch("/api/admin/comments", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ commentId, action, replyContent }),
       });
+      if (!res.ok) {
+        toast.error("Action impossible sur ce commentaire");
+        return;
+      }
+      const labels: Record<string, string> = {
+        approve: "Commentaire approuvé",
+        reject: "Commentaire rejeté",
+        delete: "Commentaire supprimé",
+        ignore_report: "Signalement ignoré",
+        ban_user: "Utilisateur banni",
+        reply: "Réponse publiée",
+      };
+      toast.success(labels[action] ?? "Action effectuée");
       load();
     } finally {
       setBusy(false);

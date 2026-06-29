@@ -8,6 +8,8 @@ import {
   downloadWeeklyReport,
   exportCategoryTrafficCsv,
 } from "@/lib/cms-dashboard-export";
+import { CmsDashboardIcons } from "@/components/admin/cms/CmsIcons";
+import { toast } from "@/lib/toast";
 
 interface CmsDashboardViewProps {
   data: AdminDashboardData;
@@ -154,10 +156,8 @@ function ActivityRow({ item }: { item: DashboardActivityItem }) {
 function PublishButton({ articleId }: { articleId: string }) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
-  const [error, setError] = useState<string | null>(null);
 
   const handlePublish = () => {
-    setError(null);
     startTransition(async () => {
       try {
         const res = await fetch(`/api/admin/articles/${articleId}`, {
@@ -166,12 +166,13 @@ function PublishButton({ articleId }: { articleId: string }) {
           body: JSON.stringify({ status: "published" }),
         });
         if (!res.ok) {
-          setError("Échec");
+          toast.error("Échec de la publication");
           return;
         }
+        toast.success("Article publié");
         router.refresh();
       } catch {
-        setError("Échec");
+        toast.error("Échec de la publication");
       }
     });
   };
@@ -182,7 +183,6 @@ function PublishButton({ articleId }: { articleId: string }) {
       className="btn btn-red btn-sm"
       onClick={handlePublish}
       disabled={pending}
-      title={error ?? undefined}
     >
       {pending ? "…" : "Publier"}
     </button>
@@ -245,19 +245,27 @@ export function CmsDashboardView({ data }: CmsDashboardViewProps) {
       <div className="cms-page-inner">
         <div className="qarow">
           <Link href="/admin/articles/new" className="qa">
-            <div className="qaico qaico--red">✏️</div>
+            <div className="qaico qaico--red">
+              <CmsDashboardIcons.edit size={14} aria-hidden />
+            </div>
             Rédiger un article
           </Link>
           <Link href="/admin/medias" className="qa">
-            <div className="qaico qaico--blue">📸</div>
+            <div className="qaico qaico--blue">
+              <CmsDashboardIcons.media size={14} aria-hidden />
+            </div>
             Ajouter un média
           </Link>
           <Link href="/admin/newsletter" className="qa">
-            <div className="qaico qaico--green">📨</div>
+            <div className="qaico qaico--green">
+              <CmsDashboardIcons.newsletter size={14} aria-hidden />
+            </div>
             Envoyer newsletter
           </Link>
           <Link href="/admin/comments" className="qa">
-            <div className="qaico qaico--amber">💬</div>
+            <div className="qaico qaico--amber">
+              <CmsDashboardIcons.comments size={14} aria-hidden />
+            </div>
             {data.pendingComments} commentaire{data.pendingComments > 1 ? "s" : ""} à modérer
           </Link>
           <button
@@ -265,7 +273,9 @@ export function CmsDashboardView({ data }: CmsDashboardViewProps) {
             className="qa qa--btn"
             onClick={() => downloadWeeklyReport(data.weeklyReport)}
           >
-            <div className="qaico qaico--purple">📊</div>
+            <div className="qaico qaico--purple">
+              <CmsDashboardIcons.report size={14} aria-hidden />
+            </div>
             Rapport hebdomadaire
           </button>
         </div>

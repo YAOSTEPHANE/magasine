@@ -6,6 +6,7 @@ import {
   NEWSLETTER_TOPICS,
   type NewsletterTopicId,
 } from "@/lib/newsletter-topics";
+import { toast } from "@/lib/toast";
 
 type FormVariant = "banner" | "page" | "inline" | "sidebar";
 
@@ -51,16 +52,17 @@ export function NewsletterSignupForm({
       const data = (await res.json()) as { error?: string; message?: string };
 
       if (!res.ok) {
-        setMessage(data.error ?? "Something went wrong. Please try again.");
+        toast.error(data.error ?? "Une erreur est survenue. Réessayez.");
         setStatus("error");
         return;
       }
 
       setStatus("success");
-      setMessage(data.message ?? "Successfully subscribed. Thank you!");
+      setMessage(data.message ?? "Inscription réussie. Merci !");
+      toast.success(data.message ?? "Inscription réussie. Merci !");
       onSuccess?.();
     } catch {
-      setMessage("Network error. Please try again.");
+      toast.error("Erreur réseau. Réessayez.");
       setStatus("error");
     }
   };
@@ -159,9 +161,6 @@ export function NewsletterSignupForm({
         )}
       </button>
 
-      {status === "error" && message && (
-        <p className="nl-note nl-note-error" role="alert">{message}</p>
-      )}
       {status === "idle" && variant !== "inline" && variant !== "sidebar" && (
         <p className="nl-note">Free · No spam · Unsubscribe in one click</p>
       )}

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { Bookmark } from "lucide-react";
+import { toast } from "@/lib/toast";
 
 interface SaveArticleButtonProps {
   articleId: string;
@@ -40,6 +41,9 @@ export function SaveArticleButton({ articleId, variant = "default" }: SaveArticl
       if (res.ok) {
         const data = await res.json();
         setSaved(data.saved);
+        toast.success(data.saved ? "Article enregistré" : "Article retiré des favoris");
+      } else {
+        toast.error("Action impossible");
       }
     } finally {
       setLoading(false);

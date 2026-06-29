@@ -2,7 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import { CmsPage } from "@/components/admin/cms/CmsPage";
+import { CmsStatusIcon, ImageIcon } from "@/components/admin/cms/CmsIcons";
 import { computeSeoScore } from "@/lib/cms-seo-score";
+import { toast } from "@/lib/toast";
 
 interface SeoSettingsForm {
   siteName: string;
@@ -21,7 +23,6 @@ interface SeoSettingsForm {
 export function CmsSeoSettingsView() {
   const [form, setForm] = useState<SeoSettingsForm | null>(null);
   const [saving, setSaving] = useState(false);
-  const [message, setMessage] = useState("");
   const fileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -57,14 +58,14 @@ export function CmsSeoSettingsView() {
   const save = async () => {
     if (!form) return;
     setSaving(true);
-    setMessage("");
     try {
       const res = await fetch("/api/admin/settings", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
-      setMessage(res.ok ? "Paramètres SEO enregistrés." : "Échec de l'enregistrement.");
+      if (res.ok) toast.success("Paramètres SEO enregistrés.");
+      else toast.error("Échec de l'enregistrement.");
     } finally {
       setSaving(false);
     }
@@ -101,8 +102,6 @@ export function CmsSeoSettingsView() {
           </button>
         </div>
       </div>
-
-      {message && <p className="cms-toast">{message}</p>}
 
       <div className="g21 ga">
         <div className="card">
@@ -163,7 +162,10 @@ export function CmsSeoSettingsView() {
                   key={check.id}
                   className={`seoc seo-${check.level === "ok" ? "ok" : check.level === "warn" ? "w" : "e"}`}
                 >
-                  {check.level === "ok" ? "✓" : check.level === "warn" ? "⚠" : "✗"} {check.text}
+                  <CmsStatusIcon
+                    level={check.level === "ok" ? "ok" : check.level === "warn" ? "warn" : "error"}
+                  />{" "}
+                  {check.text}
                 </span>
               ))}
             </div>
@@ -231,7 +233,9 @@ export function CmsSeoSettingsView() {
                     <img src={form.ogImage} alt="" className="cms-cover-preview" />
                   ) : (
                     <>
-                      <div className="cms-cover-icon">🖼</div>
+                      <div className="cms-cover-icon">
+                        <ImageIcon size={32} aria-hidden />
+                      </div>
                       <div>1200 × 630 px recommandé — cliquer pour téléverser</div>
                     </>
                   )}

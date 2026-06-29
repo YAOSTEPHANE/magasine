@@ -2,7 +2,9 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { CmsPage } from "@/components/admin/cms/CmsPage";
+import { CmsActionIcons } from "@/components/admin/cms/CmsIcons";
 import { cn } from "@/lib/utils";
+import { toast } from "@/lib/toast";
 
 interface AdZoneRow {
   _id: string;
@@ -106,6 +108,20 @@ export function CmsPublicitesView() {
     load();
   };
 
+  const deleteZone = async (zone: AdZoneRow) => {
+    if (!confirm(`Supprimer la zone « ${zone.name} » ?`)) return;
+    const res = await fetch(`/api/admin/publicites/${encodeURIComponent(zone._id)}`, {
+      method: "DELETE",
+    });
+    if (!res.ok) {
+      const data = (await res.json()) as { error?: string };
+      toast.error(data.error ?? "Suppression impossible.");
+      return;
+    }
+    toast.success("Zone publicitaire supprimée");
+    load();
+  };
+
   const exportReport = () => {
     if (!summary) return;
     const lines = [
@@ -175,12 +191,22 @@ export function CmsPublicitesView() {
               <span className={cn("badge", zone.active ? "b-pub" : "b-draft")}>
                 {zone.active ? "Active" : "En pause"}
               </span>
-              <button
-                type="button"
-                className={cn("tog", zone.active && "on")}
-                onClick={() => void toggleZone(zone)}
-                aria-label={`Activer ${zone.name}`}
-              />
+              <div className="azhead-actions">
+                <button
+                  type="button"
+                  className="btn btn-ghost btn-xs btn-icon az-del-btn"
+                  title="Supprimer la zone"
+                  onClick={() => void deleteZone(zone)}
+                >
+                  <CmsActionIcons.delete size={14} className="cms-icon cms-icon--error" aria-hidden />
+                </button>
+                <button
+                  type="button"
+                  className={cn("tog", zone.active && "on")}
+                  onClick={() => void toggleZone(zone)}
+                  aria-label={`Activer ${zone.name}`}
+                />
+              </div>
             </div>
             <div className="azprev">{zone.size}</div>
             <div className="azname">{zone.name}</div>

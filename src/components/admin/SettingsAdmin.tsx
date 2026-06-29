@@ -5,6 +5,7 @@ import Link from "next/link";
 import { AdminSectionShell } from "@/components/admin/AdminSectionShell";
 import { BrandingUploadField } from "@/components/admin/BrandingUploadField";
 import { DEFAULT_FAVICON, DEFAULT_SITE_LOGO } from "@/lib/branding";
+import { toast } from "@/lib/toast";
 
 interface SettingsData {
   siteName: string;
@@ -29,7 +30,6 @@ export function SettingsAdmin({ siteUrl, feedUrl, isSuperAdmin }: SettingsAdminP
   const [form, setForm] = useState<SettingsData | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [message, setMessage] = useState("");
 
   useEffect(() => {
     fetch("/api/admin/settings")
@@ -42,7 +42,6 @@ export function SettingsAdmin({ siteUrl, feedUrl, isSuperAdmin }: SettingsAdminP
     if (!form) return;
     const payload = { ...form, ...patch };
     setSaving(true);
-    setMessage("");
     try {
       const res = await fetch("/api/admin/settings", {
         method: "PATCH",
@@ -52,9 +51,9 @@ export function SettingsAdmin({ siteUrl, feedUrl, isSuperAdmin }: SettingsAdminP
       if (res.ok) {
         const data = await res.json();
         setForm(data);
-        setMessage("Settings saved successfully.");
+        toast.success("Paramètres enregistrés");
       } else {
-        setMessage("Save failed. Please try again.");
+        toast.error("Échec de l'enregistrement");
       }
     } finally {
       setSaving(false);
@@ -91,8 +90,6 @@ export function SettingsAdmin({ siteUrl, feedUrl, isSuperAdmin }: SettingsAdminP
           : undefined
       }
     >
-      {message && <p className="adm-toast adm-toast--success">{message}</p>}
-
       {loading || !form ? (
         <p className="adm-loading">Loading settings…</p>
       ) : (

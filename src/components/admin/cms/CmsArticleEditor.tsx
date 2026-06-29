@@ -7,7 +7,9 @@ import slugify from "slugify";
 import { CmsPage } from "@/components/admin/cms/CmsPage";
 import { CmsRichTextEditor } from "@/components/admin/cms/CmsRichTextEditor";
 import { CmsToggle } from "@/components/admin/cms/CmsToggle";
+import { CmsHintIcon, CmsStatusIcon, ImageIcon, Star, Trash2 } from "@/components/admin/cms/CmsIcons";
 import { computeSeoScore } from "@/lib/cms-seo-score";
+import { toast } from "@/lib/toast";
 import { estimateReadingTime } from "@/lib/utils";
 
 interface Category {
@@ -253,11 +255,12 @@ export function CmsArticleEditor({ mode, articleId }: CmsArticleEditorProps) {
   const saveArticle = useCallback(
     async (options?: { redirectAfter?: boolean; publishMode?: PublishMode }) => {
       if (!form.title.trim() || !form.categoryId || !form.authorId) {
-        window.alert("Titre, rubrique et auteur sont requis.");
+        toast.error("Titre, rubrique et auteur sont requis.");
         return false;
       }
 
       setLoading(true);
+      const toastId = toast.loading("Enregistrement de l'article…");
       try {
         const payload = buildPayload(options?.publishMode);
         const url =
@@ -270,7 +273,8 @@ export function CmsArticleEditor({ mode, articleId }: CmsArticleEditorProps) {
         });
         if (!res.ok) {
           const err = await res.json().catch(() => ({}));
-          window.alert(err.error ?? "Échec de l'enregistrement");
+          toast.dismiss(toastId);
+          toast.error((err as { error?: string }).error ?? "Échec de l'enregistrement");
           return false;
         }
         const data = await res.json();
@@ -278,6 +282,12 @@ export function CmsArticleEditor({ mode, articleId }: CmsArticleEditorProps) {
           patchForm({ publishMode: options.publishMode });
         }
         setLastSavedAt(Date.now());
+        toast.dismiss(toastId);
+        if (options?.publishMode === "publish") {
+          toast.success("Article publié");
+        } else {
+          toast.success("Article enregistré");
+        }
         if (mode === "create" && data._id) {
           router.replace(`/admin/articles/${data._id}`);
           return true;
@@ -337,7 +347,12 @@ export function CmsArticleEditor({ mode, articleId }: CmsArticleEditorProps) {
     setDeleting(true);
     try {
       const res = await fetch(`/api/admin/articles/${articleId}`, { method: "DELETE" });
-      if (res.ok) router.push("/admin/articles");
+      if (res.ok) {
+        toast.success("Article supprimé");
+        router.push("/admin/articles");
+      } else {
+        toast.error("Suppression impossible");
+      }
     } finally {
       setDeleting(false);
     }
@@ -458,7 +473,7 @@ export function CmsArticleEditor({ mode, articleId }: CmsArticleEditorProps) {
                 <div className="cms-field-hint">
                   <span>50–60 caractères recommandés</span>
                   <span className={seoTitleLen > 60 ? "cms-warn" : "cms-ok"}>
-                    {seoTitleLen} / 60 {seoTitleLen > 60 ? "⚠" : "✓"}
+                    {seoTitleLen} / 60 <CmsHintIcon ok={seoTitleLen <= 60} />
                   </span>
                 </div>
               </div>
@@ -474,7 +489,7 @@ export function CmsArticleEditor({ mode, articleId }: CmsArticleEditorProps) {
                 <div className="cms-field-hint">
                   <span>Max 155 caractères</span>
                   <span className={seoDescLen > 155 ? "cms-warn" : "cms-ok"}>
-                    {seoDescLen} {seoDescLen <= 155 ? "✓" : "⚠"}
+                    {seoDescLen} <CmsHintIcon ok={seoDescLen <= 155} />
                   </span>
                 </div>
               </div>
@@ -500,7 +515,10 @@ export function CmsArticleEditor({ mode, articleId }: CmsArticleEditorProps) {
                     key={check.id}
                     className={`seoc seo-${check.level === "ok" ? "ok" : check.level === "warn" ? "w" : "e"}`}
                   >
-                    {check.level === "ok" ? "✓" : check.level === "warn" ? "⚠" : "✗"} {check.text}
+                    <CmsStatusIcon
+                      level={check.level === "ok" ? "ok" : check.level === "warn" ? "warn" : "error"}
+                    />{" "}
+                    {check.text}
                   </span>
                 ))}
               </div>
@@ -568,7 +586,8 @@ export function CmsArticleEditor({ mode, articleId }: CmsArticleEditorProps) {
                     disabled={deleting}
                     onClick={() => void handleDelete()}
                   >
-                    🗑 Supprimer l&apos;article
+                    <Trash2 size={14} className="cms-icon cms-icon--error" aria-hidden />
+                    Supprimer l&apos;article
                   </button>
                 )}
               </div>
@@ -658,7 +677,9 @@ export function CmsArticleEditor({ mode, articleId }: CmsArticleEditorProps) {
                   <img src={form.featuredImage} alt="" className="cms-cover-preview" />
                 ) : (
                   <>
-                    <div className="cms-cover-icon">🖼</div>
+                    <div className="cms-cover-icon">
+                      <ImageIcon size={32} aria-hidden />
+                    </div>
                     <div>{uploadingCover ? "Téléversement…" : "Cliquer pour téléverser"}</div>
                     <div className="cms-cover-hint">JPG · PNG · WebP — max 15 Mo</div>
                   </>
@@ -715,7 +736,11 @@ export function CmsArticleEditor({ mode, articleId }: CmsArticleEditorProps) {
               <CmsToggle
                 on={form.isPremium}
                 onChange={(isPremium) => patchForm({ isPremium })}
-                label="Article Premium ★"
+                label={
+                  <>
+                    Article Premium <Star size={13} className="cms-icon cms-icon--premium" aria-hidden />
+                  </>
+                }
               />
               <CmsToggle
                 on={form.isFeatured}

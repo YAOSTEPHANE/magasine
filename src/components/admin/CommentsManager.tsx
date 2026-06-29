@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { AdminSectionShell } from "@/components/admin/AdminSectionShell";
 import { formatRelativeDate } from "@/lib/utils";
+import { toast } from "@/lib/toast";
 
 interface CommentRow {
   _id: string;
@@ -46,11 +47,18 @@ export function CommentsManager() {
   }, []);
 
   const moderate = async (commentId: string, action: "approve" | "reject" | "delete") => {
-    await fetch("/api/admin/comments", {
+    const res = await fetch("/api/admin/comments", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ commentId, action }),
     });
+    if (!res.ok) {
+      toast.error("Action impossible");
+      return;
+    }
+    toast.success(
+      action === "approve" ? "Commentaire approuvé" : action === "reject" ? "Commentaire rejeté" : "Commentaire supprimé"
+    );
     load();
   };
 

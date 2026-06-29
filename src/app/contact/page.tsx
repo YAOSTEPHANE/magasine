@@ -6,17 +6,16 @@ import { Mail, MapPin, Phone, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { SocialLinks } from "@/components/ui/SocialIcons";
 import { UtilityPageLayout } from "@/components/layout/UtilityPageLayout";
+import { toast } from "@/lib/toast";
 
 export default function ContactPage() {
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError("");
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
@@ -27,11 +26,12 @@ export default function ContactPage() {
       if (res.ok) {
         setSuccess(true);
         setForm({ name: "", email: "", subject: "", message: "" });
+        toast.success("Message envoyé — nous vous répondrons sous 48 h.");
       } else {
-        setError(data.error ?? "Error sending message");
+        toast.error(data.error ?? "Erreur lors de l'envoi");
       }
     } catch {
-      setError("Network error");
+      toast.error("Erreur réseau");
     } finally {
       setLoading(false);
     }
@@ -131,7 +131,6 @@ export default function ContactPage() {
                   required
                 />
               </div>
-              {error && <p className="utility-form-error" role="alert">{error}</p>}
               <Button type="submit" variant="gold" disabled={loading}>
                 {loading ? "Sending…" : "Send message"}
               </Button>

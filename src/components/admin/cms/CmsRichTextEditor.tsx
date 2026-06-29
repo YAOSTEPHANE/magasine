@@ -8,6 +8,18 @@ import TextAlign from "@tiptap/extension-text-align";
 import Placeholder from "@tiptap/extension-placeholder";
 import { useEffect } from "react";
 import { cn } from "@/lib/utils";
+import {
+  AlignCenter,
+  AlignLeft,
+  AlignRight,
+  ImageIcon,
+  Link2,
+  List,
+  ListOrdered,
+  Minus,
+  Quote,
+  Video,
+} from "@/components/admin/cms/CmsIcons";
 
 interface CmsRichTextEditorProps {
   value: string;
@@ -95,12 +107,24 @@ export function CmsRichTextEditor({
         {toolBtn(<i>I</i>, () => editor.chain().focus().toggleItalic().run(), editor.isActive("italic"))}
         {toolBtn(<s>S</s>, () => editor.chain().focus().toggleStrike().run(), editor.isActive("strike"))}
         <div className="etsep" />
-        {toolBtn("≡", () => editor.chain().focus().toggleBulletList().run(), editor.isActive("bulletList"))}
-        {toolBtn("1.", () => editor.chain().focus().toggleOrderedList().run(), editor.isActive("orderedList"))}
-        {toolBtn("❝", () => editor.chain().focus().toggleBlockquote().run(), editor.isActive("blockquote"))}
+        {toolBtn(
+          <List size={14} className="cms-icon" aria-hidden />,
+          () => editor.chain().focus().toggleBulletList().run(),
+          editor.isActive("bulletList")
+        )}
+        {toolBtn(
+          <ListOrdered size={14} className="cms-icon" aria-hidden />,
+          () => editor.chain().focus().toggleOrderedList().run(),
+          editor.isActive("orderedList")
+        )}
+        {toolBtn(
+          <Quote size={14} className="cms-icon" aria-hidden />,
+          () => editor.chain().focus().toggleBlockquote().run(),
+          editor.isActive("blockquote")
+        )}
         <div className="etsep" />
         {toolBtn(
-          "🔗",
+          <Link2 size={14} className="cms-icon" aria-hidden />,
           () => {
             const url = window.prompt("URL du lien");
             if (!url) return;
@@ -109,7 +133,7 @@ export function CmsRichTextEditor({
           editor.isActive("link")
         )}
         {toolBtn(
-          "🖼",
+          <ImageIcon size={14} className="cms-icon" aria-hidden />,
           () => {
             const url = window.prompt("URL de l'image");
             if (!url) return;
@@ -117,31 +141,37 @@ export function CmsRichTextEditor({
           },
           editor.isActive("image")
         )}
-        {toolBtn("▶", () => {
-          const url = window.prompt("URL de la vidéo (YouTube, Vimeo…)");
-          if (!url) return;
-          editor
-            .chain()
-            .focus()
-            .insertContent(
-              `<p><a href="${url}" target="_blank" rel="noopener noreferrer">▶ Voir la vidéo</a></p>`
-            )
-            .run();
-        })}
-        {toolBtn("⊟", () => editor.chain().focus().setHorizontalRule().run())}
+        {toolBtn(
+          <Video size={14} className="cms-icon" aria-hidden />,
+          () => {
+            const url = window.prompt("URL de la vidéo (YouTube, Vimeo…)");
+            if (!url) return;
+            editor
+              .chain()
+              .focus()
+              .insertContent(
+                `<p><a href="${url}" target="_blank" rel="noopener noreferrer">Voir la vidéo</a></p>`
+              )
+              .run();
+          }
+        )}
+        {toolBtn(
+          <Minus size={14} className="cms-icon" aria-hidden />,
+          () => editor.chain().focus().setHorizontalRule().run()
+        )}
         <div className="etsep" />
         {toolBtn(
-          "⬅",
+          <AlignLeft size={14} className="cms-icon" aria-hidden />,
           () => editor.chain().focus().setTextAlign("left").run(),
           editor.isActive({ textAlign: "left" })
         )}
         {toolBtn(
-          "⬛",
+          <AlignCenter size={14} className="cms-icon" aria-hidden />,
           () => editor.chain().focus().setTextAlign("center").run(),
           editor.isActive({ textAlign: "center" })
         )}
         {toolBtn(
-          "➡",
+          <AlignRight size={14} className="cms-icon" aria-hidden />,
           () => editor.chain().focus().setTextAlign("right").run(),
           editor.isActive({ textAlign: "right" })
         )}

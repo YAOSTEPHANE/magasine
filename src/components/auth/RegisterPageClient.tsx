@@ -16,6 +16,7 @@ import {
 import { BrandLogo } from "@/components/presse-ivoire/BrandLogo";
 import { GoogleIcon } from "@/components/auth/auth-shared";
 import { AuthPasswordField, AuthTextField } from "@/components/auth/AuthFields";
+import { toast } from "@/lib/toast";
 import { PUBLISHER_NAME } from "@/lib/site";
 
 const STATS = [
@@ -61,18 +62,16 @@ export function RegisterPageClient() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [acceptTerms, setAcceptTerms] = useState(false);
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!acceptTerms) {
-      setError("Please accept the terms of use and privacy policy to continue.");
+      toast.error("Acceptez les conditions d'utilisation pour continuer.");
       return;
     }
 
     setLoading(true);
-    setError("");
 
     const res = await fetch("/api/register", {
       method: "POST",
@@ -82,10 +81,10 @@ export function RegisterPageClient() {
 
     if (!res.ok) {
       const data = (await res.json()) as { error?: string };
-      setError(
+      toast.error(
         data.error === "Email already in use"
-          ? "This email is already registered. Sign in or use another address."
-          : (data.error ?? "Registration failed. Please try again.")
+          ? "Cet e-mail est déjà enregistré."
+          : (data.error ?? "Inscription échouée. Réessayez.")
       );
       setLoading(false);
       return;
@@ -98,10 +97,12 @@ export function RegisterPageClient() {
     });
 
     if (result?.error) {
-      setError("Account created but sign-in failed. Please sign in manually.");
+      toast.warning("Compte créé — connectez-vous manuellement.");
       setLoading(false);
       return;
     }
+
+    toast.success("Bienvenue !");
 
     window.location.href = callbackUrl;
   };
@@ -204,12 +205,6 @@ export function RegisterPageClient() {
                 .
               </span>
             </label>
-
-            {error && (
-              <p className="auth-error" role="alert">
-                {error}
-              </p>
-            )}
 
             <button type="submit" className="auth-submit auth-submit--register" disabled={loading}>
               {loading ? "Creating account…" : "Create my account"}

@@ -1,4 +1,4 @@
-import { mkdir, writeFile } from "fs/promises";
+import { mkdir, unlink, writeFile } from "fs/promises";
 import path from "path";
 import { randomBytes } from "crypto";
 
@@ -58,4 +58,19 @@ export async function saveMediaFileToDisk(file: File): Promise<string> {
   await writeFile(path.join(dir, filename), buffer);
 
   return `/uploads/media/${filename}`;
+}
+
+export async function deleteMediaFileFromDisk(url: string): Promise<void> {
+  if (!url.startsWith("/uploads/media/")) return;
+
+  const filename = path.basename(url);
+  if (!filename || filename.includes("..")) return;
+
+  const filePath = path.join(process.cwd(), MEDIA_UPLOAD_DIR, filename);
+  try {
+    await unlink(filePath);
+  } catch (error) {
+    const code = (error as NodeJS.ErrnoException).code;
+    if (code !== "ENOENT") throw error;
+  }
 }

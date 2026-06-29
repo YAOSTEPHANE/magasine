@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useRef, useState } from "react";
 import type { BrandingAssetType } from "@/lib/branding";
+import { toast } from "@/lib/toast";
 
 interface BrandingUploadFieldProps {
   type: BrandingAssetType;
@@ -23,11 +24,9 @@ export function BrandingUploadField({
 }: BrandingUploadFieldProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
-  const [error, setError] = useState("");
 
   const upload = async (file: File) => {
     setUploading(true);
-    setError("");
     try {
       const body = new FormData();
       body.append("file", file);
@@ -40,13 +39,14 @@ export function BrandingUploadField({
       const data = (await res.json()) as { error?: string; url?: string };
 
       if (!res.ok || !data.url) {
-        setError(data.error ?? "Upload failed.");
+        toast.error(data.error ?? "Échec du téléversement");
         return;
       }
 
       onUploaded(data.url);
+      toast.success("Image téléversée");
     } catch {
-      setError("Network error during upload.");
+      toast.error("Erreur réseau lors du téléversement");
     } finally {
       setUploading(false);
       if (inputRef.current) inputRef.current.value = "";
@@ -103,12 +103,6 @@ export function BrandingUploadField({
           </button>
         )}
       </div>
-
-      {error && (
-        <p className="adm-toast adm-toast--error" role="alert">
-          {error}
-        </p>
-      )}
     </div>
   );
 }

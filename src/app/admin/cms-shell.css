@@ -1,38 +1,40 @@
-/* PressIvoire CMS shell — scoped back-office theme */
+/* PressIvoire CMS shell — scoped back-office theme (light) */
 html:has(.cms-shell),
 body:has(.cms-shell) {
-  background: #08090f;
+  background: #f3f5f9;
   scroll-behavior: auto;
 }
 
 .cms-shell {
-  --bg0: #08090f;
-  --bg1: #0e1018;
-  --bg2: #141829;
-  --bg3: #1c2038;
-  --bg4: #252a44;
-  --line: #272b45;
-  --line2: #323762;
+  --bg0: #f3f5f9;
+  --bg1: #ffffff;
+  --bg2: #ffffff;
+  --bg3: #eef1f7;
+  --bg4: #dde3ef;
+  --line: #e4e8f0;
+  --line2: #cdd5e4;
   --cms-red: #1a3896;
   --red: var(--cms-red);
   --red-d: #142a70;
-  --red-a: rgba(26, 56, 150, 0.14);
-  --red-b: rgba(26, 56, 150, 0.28);
-  --gold: #c9a227;
-  --gold-a: rgba(201, 162, 39, 0.14);
-  --ivory: #e8e4dc;
-  --green: #22c55e;
-  --green-a: rgba(34, 197, 94, 0.1);
-  --amber: #f59e0b;
-  --amber-a: rgba(245, 158, 11, 0.1);
-  --blue: #60a5fa;
-  --blue-a: rgba(96, 165, 250, 0.1);
-  --purple: #a78bfa;
-  --purple-a: rgba(167, 139, 250, 0.1);
-  --t1: #eef0f8;
-  --t2: #9198bb;
-  --t3: #555d82;
-  --t4: #353c5c;
+  --red-a: rgba(26, 56, 150, 0.1);
+  --red-b: rgba(26, 56, 150, 0.2);
+  --gold: #b8860b;
+  --gold-a: rgba(184, 134, 11, 0.12);
+  --ivory: #1a1f36;
+  --green: #16a34a;
+  --green-a: rgba(22, 163, 74, 0.12);
+  --amber: #d97706;
+  --amber-a: rgba(217, 119, 6, 0.12);
+  --blue: #2563eb;
+  --blue-a: rgba(37, 99, 235, 0.12);
+  --purple: #7c3aed;
+  --purple-a: rgba(124, 58, 237, 0.12);
+  --slate: #64748b;
+  --slate-a: rgba(100, 116, 139, 0.12);
+  --t1: #111827;
+  --t2: #4b5563;
+  --t3: #6b7280;
+  --t4: #9ca3af;
   --mono: var(--font-jetbrains-mono, "JetBrains Mono"), monospace;
   --sans: var(--font-inter, "Inter"), system-ui, sans-serif;
   --display: var(--font-playfair, "Playfair Display"), Georgia, serif;
@@ -94,6 +96,7 @@ body:has(.cms-shell) {
   min-width: var(--sw);
   background: var(--bg1);
   border-right: 1px solid var(--line);
+  box-shadow: 4px 0 24px rgba(15, 23, 42, 0.04);
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
@@ -213,10 +216,80 @@ body:has(.cms-shell) {
   font-weight: 600;
 }
 
+.cms-shell .sb-ico-box {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.15s, color 0.15s;
+}
+
+.cms-shell .sb-ico-box--red {
+  background: var(--red-a);
+  color: var(--cms-red);
+}
+
+.cms-shell .sb-ico-box--blue {
+  background: var(--blue-a);
+  color: var(--blue);
+}
+
+.cms-shell .sb-ico-box--green {
+  background: var(--green-a);
+  color: var(--green);
+}
+
+.cms-shell .sb-ico-box--amber {
+  background: var(--amber-a);
+  color: var(--amber);
+}
+
+.cms-shell .sb-ico-box--purple {
+  background: var(--purple-a);
+  color: var(--purple);
+}
+
+.cms-shell .sb-ico-box--slate {
+  background: var(--slate-a);
+  color: var(--slate);
+}
+
+.cms-shell .sb-link.on .sb-ico-box--red {
+  background: var(--cms-red);
+  color: #fff;
+}
+
+.cms-shell .sb-link.on .sb-ico-box--blue {
+  background: var(--blue);
+  color: #fff;
+}
+
+.cms-shell .sb-link.on .sb-ico-box--green {
+  background: var(--green);
+  color: #fff;
+}
+
+.cms-shell .sb-link.on .sb-ico-box--amber {
+  background: var(--amber);
+  color: #fff;
+}
+
+.cms-shell .sb-link.on .sb-ico-box--purple {
+  background: var(--purple);
+  color: #fff;
+}
+
+.cms-shell .sb-link.on .sb-ico-box--slate {
+  background: var(--slate);
+  color: #fff;
+}
+
 .cms-shell .sb-ico {
-  width: 16px;
-  height: 16px;
-  opacity: 0.7;
+  width: 15px;
+  height: 15px;
   flex-shrink: 0;
 }
 
@@ -242,7 +315,7 @@ body:has(.cms-shell) {
 
 .cms-shell .sb-pill.am {
   background: var(--amber);
-  color: var(--bg0);
+  color: #fff;
 }
 
 .cms-shell .sb-pill.dim {
@@ -843,7 +916,7 @@ body:has(.cms-shell) {
   padding: 10px 16px;
   border-bottom: 1px solid var(--line);
   text-align: left;
-  background: rgba(0, 0, 0, 0.18);
+  background: var(--bg3);
 }
 
 .cms-shell .tbl td {
@@ -859,7 +932,12 @@ body:has(.cms-shell) {
 }
 
 .cms-shell .tbl tr:hover td {
-  background: rgba(255, 255, 255, 0.017);
+  background: rgba(26, 56, 150, 0.04);
+}
+
+.cms-shell .tbl-actions {
+  width: 44px;
+  text-align: right;
 }
 
 .cms-shell .tc-main {
@@ -1089,7 +1167,7 @@ body:has(.cms-shell) {
 }
 
 .cms-shell .aitem--link:hover {
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--bg3);
 }
 
 .cms-shell .cms-today-strip {
@@ -1241,8 +1319,11 @@ body:has(.cms-shell) {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
   flex-shrink: 0;
+}
+
+.cms-shell .qaico svg {
+  display: block;
 }
 
 .cms-shell .qaico--red {
@@ -1381,7 +1462,7 @@ body:has(.cms-shell) {
     align-self: auto;
     transform: translateX(-100%);
     transition: transform 0.25s ease;
-    box-shadow: 8px 0 32px rgba(0, 0, 0, 0.4);
+    box-shadow: 8px 0 32px rgba(15, 23, 42, 0.12);
   }
 
   .cms-shell .sidebar--open {
@@ -1545,6 +1626,57 @@ body:has(.cms-shell) {
   background: var(--red-a);
   border-color: var(--red-b);
   color: var(--cms-red);
+}
+
+.cms-shell .cms-icon {
+  flex-shrink: 0;
+}
+
+.cms-shell .cms-icon--ok {
+  color: var(--green);
+}
+
+.cms-shell .cms-icon--warn {
+  color: var(--amber);
+}
+
+.cms-shell .cms-icon--error {
+  color: var(--cms-red);
+}
+
+.cms-shell .cms-icon--video {
+  color: var(--purple);
+}
+
+.cms-shell .cms-icon--podcast {
+  color: var(--amber);
+}
+
+.cms-shell .cms-icon--document {
+  color: var(--green);
+}
+
+.cms-shell .cms-icon--image {
+  color: var(--blue);
+}
+
+.cms-shell .cms-icon--premium {
+  color: var(--amber);
+}
+
+.cms-shell .cms-field-hint .cms-ok,
+.cms-shell .cms-field-hint .cms-warn {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.cms-shell .btn-icon svg {
+  display: block;
+}
+
+.cms-shell .cms-delete-btn {
+  gap: 6px;
 }
 
 .cms-shell .ebody {
@@ -1732,6 +1864,12 @@ body:has(.cms-shell) {
   width: 100%;
 }
 
+.cms-shell .cms-toggle-row span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
 .cms-shell .tog {
   width: 36px;
   height: 20px;
@@ -1819,7 +1957,14 @@ body:has(.cms-shell) {
 }
 
 .cms-shell .cms-cover-icon {
-  font-size: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--blue);
+}
+
+.cms-shell .cms-cover-icon svg {
+  display: block;
 }
 
 .cms-shell .cms-cover-hint {
@@ -1848,6 +1993,14 @@ body:has(.cms-shell) {
   margin-bottom: 16px;
 }
 
+.cms-shell .mcell-wrap {
+  position: relative;
+}
+
+.cms-shell .mcell-wrap:hover .mcell-del {
+  opacity: 1;
+}
+
 .cms-shell .mcell {
   aspect-ratio: 1;
   border-radius: var(--r3);
@@ -1866,25 +2019,35 @@ body:has(.cms-shell) {
 }
 
 .cms-shell .mcell.sel::after {
-  content: "✓";
+  content: "";
   position: absolute;
   top: 3px;
   right: 3px;
   width: 15px;
   height: 15px;
   border-radius: 50%;
-  background: var(--cms-red);
-  color: #fff;
-  font-size: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background-color: var(--cms-red);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 9px;
 }
 
 .cms-shell .mcell-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.cms-shell .mcell-del {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  z-index: 2;
+  opacity: 0;
+  background: rgba(255, 255, 255, 0.92) !important;
+  border: 1px solid var(--line) !important;
+  transition: opacity 0.15s;
 }
 
 .cms-shell .mph {
@@ -2098,6 +2261,25 @@ body:has(.cms-shell) {
   margin-bottom: 20px;
 }
 
+.cms-shell .ucard-wrap {
+  position: relative;
+}
+
+.cms-shell .ucard-wrap:hover .ucard-del {
+  opacity: 1;
+}
+
+.cms-shell .ucard-del {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+  opacity: 0;
+  background: var(--bg1) !important;
+  border: 1px solid var(--line) !important;
+  transition: opacity 0.15s;
+}
+
 .cms-shell .ucard {
   background: var(--bg2);
   border: 1px solid var(--line);
@@ -2198,8 +2380,13 @@ body:has(.cms-shell) {
 }
 
 .cms-shell .cms-matrix-yes {
+  display: inline-flex;
+  align-items: center;
   color: var(--green);
-  font-weight: 700;
+}
+
+.cms-shell .cms-matrix-yes svg {
+  display: block;
 }
 
 .cms-shell .cms-matrix-no {
@@ -2238,6 +2425,16 @@ body:has(.cms-shell) {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 10px;
+}
+
+.cms-shell .azhead-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cms-shell .az-del-btn {
+  padding: 4px !important;
 }
 
 .cms-shell .azprev {
@@ -2489,7 +2686,6 @@ body:has(.cms-shell) {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
   flex-shrink: 0;
 }
 

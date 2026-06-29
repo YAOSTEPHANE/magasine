@@ -2,6 +2,7 @@
 
 import { SessionProvider } from "next-auth/react";
 import { SiteBrandingProvider, type SiteBrandingValue } from "@/components/SiteBranding";
+import { ToastProvider } from "@/components/ui/toast/ToastProvider";
 
 interface ProvidersProps {
   children: React.ReactNode;
@@ -9,7 +10,12 @@ interface ProvidersProps {
 }
 
 export function Providers({ children, branding }: ProvidersProps) {
-  const content = <SessionProvider>{children}</SessionProvider>;
+  const content = (
+    <SessionProvider>
+      {children}
+      <ToastProvider />
+    </SessionProvider>
+  );
 
   if (!branding) return content;
 

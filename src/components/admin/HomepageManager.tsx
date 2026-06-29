@@ -23,6 +23,7 @@ import {
 import type { HomepageSectionStatus } from "@/lib/homepage-admin";
 import type { PublicSiteSettings, TrustPartner } from "@/lib/site-settings";
 import type { HomeSectionId } from "@/lib/homepage-sections";
+import { toast } from "@/lib/toast";
 
 interface HomepageManagerProps {
   initialSettings: PublicSiteSettings;
@@ -93,8 +94,6 @@ export function HomepageManager({
   const [settings, setSettings] = useState(initialSettings);
   const [sections, setSections] = useState(initialSections);
   const [saving, setSaving] = useState(false);
-  const [message, setMessage] = useState("");
-  const [messageType, setMessageType] = useState<"success" | "error" | "saving">("success");
   const [activeTab, setActiveTab] = useState<HpgTab>("sections");
 
   const liveCount = useMemo(
@@ -109,8 +108,7 @@ export function HomepageManager({
 
   const save = async (patch: Partial<PublicSiteSettings>) => {
     setSaving(true);
-    setMessage("Saving changes…");
-    setMessageType("saving");
+    const toastId = toast.loading("Enregistrement des modifications…");
     try {
       const res = await fetch("/api/admin/homepage", {
         method: "PATCH",
@@ -119,8 +117,8 @@ export function HomepageManager({
       });
       const data = await res.json();
       if (!res.ok) {
-        setMessage(data.error ?? "Save failed");
-        setMessageType("error");
+        toast.dismiss(toastId);
+        toast.error(data.error ?? "Échec de l'enregistrement");
         return;
       }
       setSettings(data);
@@ -132,11 +130,11 @@ export function HomepageManager({
           }))
         );
       }
-      setMessage("Homepage updated successfully.");
-      setMessageType("success");
+      toast.dismiss(toastId);
+      toast.success("Page d'accueil mise à jour");
     } catch {
-      setMessage("Network error — please try again.");
-      setMessageType("error");
+      toast.dismiss(toastId);
+      toast.error("Erreur réseau — réessayez.");
     } finally {
       setSaving(false);
     }
@@ -228,20 +226,6 @@ export function HomepageManager({
           </div>
         </div>
       </div>
-
-      {/* Toast */}
-      {message && (
-        <div
-          className={`hpg-toast hpg-toast--${messageType}`}
-          role="status"
-          aria-live="polite"
-        >
-          {messageType === "saving" && <Loader2 className="w-4 h-4 animate-spin shrink-0" />}
-          {messageType === "success" && <CheckCircle2 className="w-4 h-4 shrink-0" />}
-          {messageType === "error" && <AlertCircle className="w-4 h-4 shrink-0" />}
-          {message}
-        </div>
-      )}
 
       {/* Layout: nav + panel */}
       <div className="hpg-layout">

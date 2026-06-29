@@ -42,6 +42,19 @@ const NAV_ICONS: Record<string, ComponentType<{ className?: string }>> = {
   seo: Settings,
 };
 
+const NAV_ICON_TONES: Record<string, "red" | "blue" | "green" | "amber" | "purple" | "slate"> = {
+  dashboard: "blue",
+  articles: "red",
+  editor: "green",
+  medias: "purple",
+  comments: "amber",
+  users: "blue",
+  ads: "amber",
+  newsletter: "green",
+  analytics: "purple",
+  seo: "slate",
+};
+
 interface CmsSidebarProps {
   user: { name: string; email: string; role: UserRole };
   stats: AdminNavStats;
@@ -82,12 +95,15 @@ function NavLink({
   onNavigate: () => void;
 }) {
   const Icon = NAV_ICONS[item.id] ?? FileText;
+  const iconTone = NAV_ICON_TONES[item.id] ?? "slate";
   const badgeCount = item.badge ? stats[item.badge] : 0;
   const className = cn("sb-link", active && "on", item.disabled && "sb-link--disabled");
 
   const content = (
     <>
-      <Icon className="sb-ico" aria-hidden />
+      <span className={cn("sb-ico-box", `sb-ico-box--${iconTone}`)}>
+        <Icon className="sb-ico" aria-hidden />
+      </span>
       {item.label}
       {item.badge !== undefined && (
         <span

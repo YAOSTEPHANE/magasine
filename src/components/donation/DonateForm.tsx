@@ -8,6 +8,7 @@ import {
   formatDonationAmount,
   getDonationImpact,
 } from "@/lib/donation";
+import { toast } from "@/lib/toast";
 
 interface DonateFormProps {
   amount?: number;
@@ -35,7 +36,6 @@ export function DonateForm({
   const [coverFees, setCoverFees] = useState(false);
   const [anonymous, setAnonymous] = useState(false);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
-  const [errorMsg, setErrorMsg] = useState("");
 
   const resolvedAmount = custom.trim() ? Number.parseFloat(custom) : amount;
   const feeBase = Number.isFinite(resolvedAmount) ? resolvedAmount : amount;
@@ -62,13 +62,12 @@ export function DonateForm({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus("loading");
-    setErrorMsg("");
 
     const baseAmount = custom.trim() ? Number.parseFloat(custom) : amount;
     const finalAmount = coverFees ? baseAmount + baseAmount * 0.03 : baseAmount;
 
     if (!Number.isFinite(baseAmount) || baseAmount < DONATION_MIN_AMOUNT) {
-      setErrorMsg(`Please enter a valid amount (minimum ${formatDonationAmount(DONATION_MIN_AMOUNT)}).`);
+      toast.error(`Montant minimum : ${formatDonationAmount(DONATION_MIN_AMOUNT)}`);
       setStatus("error");
       return;
     }
@@ -89,13 +88,14 @@ export function DonateForm({
       });
       const data = (await res.json()) as { error?: string; message?: string };
       if (!res.ok) {
-        setErrorMsg(data.error ?? "Something went wrong.");
+        toast.error(data.error ?? "Une erreur est survenue.");
         setStatus("error");
         return;
       }
       setStatus("success");
+      toast.success("Merci pour votre générosité !");
     } catch {
-      setErrorMsg("Network error. Please try again.");
+      toast.error("Erreur réseau. Réessayez.");
       setStatus("error");
     }
   };
@@ -232,12 +232,6 @@ export function DonateForm({
           onChange={(e) => setMessage(e.target.value)}
         />
       </label>
-
-      {errorMsg && (
-        <p className="donate-error" role="alert">
-          {errorMsg}
-        </p>
-      )}
 
       <button type="submit" className="donate-submit" disabled={status === "loading"}>
         {status === "loading"

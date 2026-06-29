@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState, type CSSProperties } from "react";
 import Link from "next/link";
 import { ExternalLink, Pencil, Plus, Trash2 } from "lucide-react";
 import { AdminSectionShell } from "@/components/admin/AdminSectionShell";
+import { toast } from "@/lib/toast";
 
 interface CategoryRow {
   _id: string;
@@ -29,7 +30,6 @@ export function CategoriesManager({ initial }: { initial: CategoryRow[] }) {
   const [editing, setEditing] = useState<CategoryRow | null>(null);
   const [form, setForm] = useState(emptyForm);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
 
   const reload = useCallback(() => {
     fetch("/api/admin/categories")
@@ -44,7 +44,6 @@ export function CategoriesManager({ initial }: { initial: CategoryRow[] }) {
   const openCreate = () => {
     setEditing(null);
     setForm(emptyForm);
-    setError("");
     setModalOpen(true);
   };
 
@@ -57,13 +56,11 @@ export function CategoriesManager({ initial }: { initial: CategoryRow[] }) {
       order: cat.order,
       isActive: cat.isActive,
     });
-    setError("");
     setModalOpen(true);
   };
 
   const save = async () => {
     setLoading(true);
-    setError("");
     try {
       const url = editing ? `/api/admin/categories/${editing._id}` : "/api/admin/categories";
       const method = editing ? "PATCH" : "POST";
@@ -74,9 +71,10 @@ export function CategoriesManager({ initial }: { initial: CategoryRow[] }) {
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error ?? "Save failed");
+        toast.error(data.error ?? "Échec de l'enregistrement");
         return;
       }
+      toast.success(editing ? "Rubrique mise à jour" : "Rubrique créée");
       setModalOpen(false);
       reload();
     } finally {
@@ -89,9 +87,10 @@ export function CategoriesManager({ initial }: { initial: CategoryRow[] }) {
     const res = await fetch(`/api/admin/categories/${id}`, { method: "DELETE" });
     const data = await res.json();
     if (!res.ok) {
-      alert(data.error ?? "Delete failed");
+      toast.error(data.error ?? "Suppression impossible");
       return;
     }
+    toast.success("Rubrique supprimée");
     reload();
   };
 
@@ -166,7 +165,6 @@ export function CategoriesManager({ initial }: { initial: CategoryRow[] }) {
               <h2>{editing ? "Edit category" : "New category"}</h2>
             </div>
             <div className="admin-modal-body admin-form-grid">
-              {error && <p className="text-sm text-red-600">{error}</p>}
               <div className="admin-field">
                 <label>Name</label>
                 <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />

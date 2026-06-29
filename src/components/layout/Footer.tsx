@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { toast } from "@/lib/toast";
 import { Mail } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 
@@ -51,11 +52,14 @@ export function Footer() {
       if (res.ok) {
         setStatus("success");
         setEmail("");
+        toast.success("Inscription à la newsletter réussie !");
       } else {
         setStatus("error");
+        toast.error("Inscription impossible. Réessayez.");
       }
     } catch {
       setStatus("error");
+      toast.error("Erreur réseau");
     }
   };
 
@@ -155,9 +159,6 @@ export function Footer() {
               </Button>
               {status === "success" && (
                 <p className="text-xs text-gold">Successfully subscribed!</p>
-              )}
-              {status === "error" && (
-                <p className="text-xs text-accent">Something went wrong.</p>
               )}
             </form>
           </div>

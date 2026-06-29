@@ -2,7 +2,9 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { CmsPage } from "@/components/admin/cms/CmsPage";
+import { CmsActionIcons, CmsMediaKindIcon } from "@/components/admin/cms/CmsIcons";
 import { CMS_MEDIA_GRADIENTS } from "@/lib/cms-mock-data";
+import { toast } from "@/lib/toast";
 import { cn } from "@/lib/utils";
 
 interface MediaItem {
@@ -113,11 +115,23 @@ export function CmsMediasView() {
     }
   };
 
+  const deleteMedia = async (item: MediaItem) => {
+    if (!confirm(`Supprimer « ${item.title} » ?`)) return;
+    const res = await fetch(`/api/admin/medias/${item._id}`, { method: "DELETE" });
+    if (!res.ok) {
+      const data = (await res.json()) as { error?: string };
+      toast.error(data.error ?? "Suppression impossible.");
+      return;
+    }
+    toast.success("Média supprimé");
+    setSelected(0);
+    load();
+  };
+
   const deleteSelected = async () => {
     const item = items[selected];
-    if (!item || !confirm(`Supprimer « ${item.title} » ?`)) return;
-    await fetch(`/api/admin/medias/${item._id}`, { method: "DELETE" });
-    load();
+    if (!item) return;
+    await deleteMedia(item);
   };
 
   const usedPct = stats ? Math.min(100, Math.round((stats.usedBytes / stats.quotaBytes) * 100)) : 0;
@@ -204,27 +218,36 @@ export function CmsMediasView() {
           )}
           <div className="mgrid">
             {items.map((cell, index) => (
-              <button
-                key={cell._id}
-                type="button"
-                className={cn("mcell", selected === index && "sel")}
-                onClick={() => setSelected(index)}
-                title={cell.title}
-              >
-                {cell.url && cell.kind === "image" ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={cell.url} alt="" className="mcell-img" />
-                ) : (
-                  <div
-                    className="mph"
-                    style={{
-                      background: CMS_MEDIA_GRADIENTS[index % CMS_MEDIA_GRADIENTS.length]!.bg,
-                    }}
-                  >
-                    {cell.kind === "video" ? "🎬" : cell.kind === "podcast" ? "🎧" : cell.kind === "document" ? "📄" : "📰"}
-                  </div>
-                )}
-              </button>
+              <div key={cell._id} className="mcell-wrap">
+                <button
+                  type="button"
+                  className={cn("mcell", selected === index && "sel")}
+                  onClick={() => setSelected(index)}
+                  title={cell.title}
+                >
+                  {cell.url && cell.kind === "image" ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={cell.url} alt="" className="mcell-img" />
+                  ) : (
+                    <div
+                      className="mph"
+                      style={{
+                        background: CMS_MEDIA_GRADIENTS[index % CMS_MEDIA_GRADIENTS.length]!.bg,
+                      }}
+                    >
+                      <CmsMediaKindIcon kind={cell.kind} />
+                    </div>
+                  )}
+                </button>
+                <button
+                  type="button"
+                  className="mcell-del btn btn-ghost btn-xs btn-icon"
+                  title="Supprimer"
+                  onClick={() => void deleteMedia(cell)}
+                >
+                  <CmsActionIcons.delete size={12} className="cms-icon cms-icon--error" aria-hidden />
+                </button>
+              </div>
             ))}
           </div>
         </div>

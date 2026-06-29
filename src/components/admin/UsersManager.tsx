@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { AdminSectionShell } from "@/components/admin/AdminSectionShell";
 import { formatDate } from "@/lib/utils";
+import { toast } from "@/lib/toast";
 import type { UserRole } from "@/types";
 
 interface UserRow {
@@ -67,9 +68,10 @@ export function UsersManager() {
     });
     if (!res.ok) {
       const data = await res.json();
-      alert(data.error ?? "Update failed");
+      toast.error(data.error ?? "Mise à jour impossible");
       return;
     }
+    toast.success("Utilisateur mis à jour");
     load();
   };
 

@@ -5,6 +5,7 @@ import { getLayoutNavData } from "@/lib/data";
 import { getPublicSiteSettings } from "@/lib/site-settings";
 import { Providers } from "@/components/Providers";
 import { MaintenanceGate } from "@/components/MaintenanceGate";
+import { getSiteUrl } from "@/lib/site";
 import "./globals.css";
 import "./responsive.css";
 import "./revolution.css";
@@ -30,8 +31,12 @@ const adobeFontsKitId = process.env.NEXT_PUBLIC_ADOBE_FONTS_KIT_ID;
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getPublicSiteSettings();
+  const siteUrl = settings.canonicalUrl?.startsWith("http")
+    ? settings.canonicalUrl.replace(/\/$/, "")
+    : getSiteUrl();
 
   return {
+    metadataBase: new URL(`${siteUrl}/`),
     title: {
       default: `${settings.siteName} — Online Magazine & News Portal`,
       template: `%s | ${settings.siteName}`,
