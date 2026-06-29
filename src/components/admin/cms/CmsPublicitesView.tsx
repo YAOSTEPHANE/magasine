@@ -57,8 +57,32 @@ export function CmsPublicitesView() {
   }, []);
 
   useEffect(() => {
-    load();
-  }, [load]);
+    let cancelled = false;
+    void (async () => {
+      try {
+        const response = await fetch("/api/admin/publicites");
+        if (!response.ok) {
+          console.error("Publicités:", response.status, await response.text());
+          return;
+        }
+        const data = (await response.json()) as {
+          zones?: AdZoneRow[];
+          summary?: AdSummary | null;
+        };
+        if (!cancelled) {
+          setZones(data.zones ?? []);
+          setSummary(data.summary ?? null);
+        }
+      } catch (error) {
+        console.error("Publicités:", error);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const toggleZone = async (zone: AdZoneRow) => {
     await fetch("/api/admin/publicites", {

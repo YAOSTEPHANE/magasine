@@ -38,13 +38,15 @@ export function GswNavMegaMenu({
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const panelId = useId();
+  const [pathKey, setPathKey] = useState(pathname);
+
+  if (pathKey !== pathname) {
+    setPathKey(pathname);
+    setOpen(false);
+  }
 
   const anyActive = items.some((item) => isItemActive(pathname, item.href));
   const close = useCallback(() => setOpen(false), []);
-
-  useEffect(() => {
-    close();
-  }, [pathname, close]);
 
   useEffect(() => {
     if (!open) return;

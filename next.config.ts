@@ -5,6 +5,8 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },
       { protocol: "https", hostname: "api.dicebear.com" },
+      { protocol: "https", hostname: "globalsouthwatch.org" },
+      { protocol: "https", hostname: "www.globalsouthwatch.org" },
     ],
   },
   async redirects() {

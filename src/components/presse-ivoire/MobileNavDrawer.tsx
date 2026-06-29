@@ -2,10 +2,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { HeartHandshake } from "lucide-react";
 import { HEADER_TOP_ACTIONS, MOBILE_NAV, NAV_SUBSCRIBE_LINK } from "@/data/presse-ivoire-home";
+import { useIsClient } from "@/lib/use-is-client";
 
 interface MobileNavDrawerProps {
   open: boolean;
@@ -63,16 +64,7 @@ function MobileNavSection({
 }
 
 export function MobileNavDrawer({ open, onClose }: MobileNavDrawerProps) {
-  const pathname = usePathname();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    onClose();
-  }, [pathname, onClose]);
+  const mounted = useIsClient();
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";

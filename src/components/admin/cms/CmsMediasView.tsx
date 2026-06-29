@@ -73,8 +73,28 @@ export function CmsMediasView() {
   }, [query, kind, sort]);
 
   useEffect(() => {
-    load();
-  }, [load]);
+    let cancelled = false;
+    const params = new URLSearchParams();
+    if (query.trim()) params.set("q", query.trim());
+    if (kind) params.set("kind", kind);
+    if (sort) params.set("sort", sort);
+
+    void fetch(`/api/admin/medias?${params}`)
+      .then((r) => r.json())
+      .then((data) => {
+        if (!cancelled) {
+          setItems(data.items ?? []);
+          setStats(data.stats ?? null);
+        }
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [query, kind, sort]);
 
   const uploadFiles = async (files: FileList | null) => {
     if (!files?.length) return;

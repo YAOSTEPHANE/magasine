@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Heart, CheckCircle2 } from "lucide-react";
 import {
   DONATION_MIN_AMOUNT,
@@ -24,8 +24,10 @@ export function DonateForm({
   onFrequencyChange,
   onTierClear,
 }: DonateFormProps = {}) {
-  const [frequency, setFrequency] = useState<"one-time" | "monthly">(controlledFrequency ?? "one-time");
-  const [amount, setAmount] = useState<number>(controlledAmount ?? 35);
+  const [internalFrequency, setInternalFrequency] = useState<"one-time" | "monthly">("one-time");
+  const [internalAmount, setInternalAmount] = useState(35);
+  const frequency = controlledFrequency ?? internalFrequency;
+  const amount = controlledAmount ?? internalAmount;
   const [custom, setCustom] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -35,19 +37,6 @@ export function DonateForm({
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState("");
 
-  useEffect(() => {
-    if (controlledAmount !== undefined) {
-      setAmount(controlledAmount);
-      setCustom("");
-    }
-  }, [controlledAmount]);
-
-  useEffect(() => {
-    if (controlledFrequency !== undefined) {
-      setFrequency(controlledFrequency);
-    }
-  }, [controlledFrequency]);
-
   const resolvedAmount = custom.trim() ? Number.parseFloat(custom) : amount;
   const feeBase = Number.isFinite(resolvedAmount) ? resolvedAmount : amount;
   const feeBuffer = coverFees ? feeBase * 0.03 : 0;
@@ -55,13 +44,17 @@ export function DonateForm({
   const impactLine = Number.isFinite(resolvedAmount) ? getDonationImpact(resolvedAmount) : undefined;
 
   const updateAmount = (next: number) => {
-    setAmount(next);
+    if (controlledAmount === undefined) {
+      setInternalAmount(next);
+    }
     onAmountChange?.(next);
     onTierClear?.();
   };
 
   const updateFrequency = (next: "one-time" | "monthly") => {
-    setFrequency(next);
+    if (controlledFrequency === undefined) {
+      setInternalFrequency(next);
+    }
     onFrequencyChange?.(next);
     onTierClear?.();
   };

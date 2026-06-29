@@ -12,6 +12,10 @@
 
 # testing
 /coverage
+/test-results/
+/playwright-report/
+/public/uploads/media/*
+!/public/uploads/media/.gitkeep
 
 # next.js
 /.next/

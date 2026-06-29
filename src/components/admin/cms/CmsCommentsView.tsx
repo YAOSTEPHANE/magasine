@@ -33,8 +33,19 @@ export function CmsCommentsView() {
   }, []);
 
   useEffect(() => {
-    load();
-  }, [load]);
+    let cancelled = false;
+    void fetch("/api/admin/comments")
+      .then((r) => r.json())
+      .then((data) => {
+        if (!cancelled) setComments(data.comments ?? []);
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const moderate = async (
     commentId: string,

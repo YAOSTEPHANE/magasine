@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { SITE_TAGLINE } from "@/data/presse-ivoire-home";
 import { BrandLogo } from "@/components/presse-ivoire/BrandLogo";
 import { HeaderAuth } from "@/components/presse-ivoire/HeaderAuth";
@@ -13,12 +13,14 @@ import { MobileMenuButton, MobileNavDrawer } from "@/components/presse-ivoire/Mo
 export function SiteHeader() {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [pathKey, setPathKey] = useState(pathname);
+
+  if (pathKey !== pathname) {
+    setPathKey(pathname);
+    setMobileMenuOpen(false);
+  }
 
   const closeMobileMenu = useCallback(() => setMobileMenuOpen(false), []);
-
-  useEffect(() => {
-    closeMobileMenu();
-  }, [pathname, closeMobileMenu]);
 
   return (
     <header className="header header--gsw" translate="no">

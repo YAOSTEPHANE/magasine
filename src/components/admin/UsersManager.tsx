@@ -45,7 +45,18 @@ export function UsersManager() {
   };
 
   useEffect(() => {
-    load();
+    let cancelled = false;
+    void fetch("/api/admin/users")
+      .then((r) => r.json())
+      .then((data) => {
+        if (!cancelled) setUsers(data.users ?? []);
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const updateUser = async (userId: string, patch: { role?: UserRole; isPremium?: boolean }) => {

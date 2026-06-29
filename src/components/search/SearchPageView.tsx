@@ -65,6 +65,15 @@ export function SearchPageView() {
   const [input, setInput] = useState(urlQuery);
   const [category, setCategory] = useState(urlCategory);
   const [contentType, setContentType] = useState(urlType);
+  const [urlKey, setUrlKey] = useState(`${urlQuery}\0${urlCategory}\0${urlType}`);
+  const currentUrlKey = `${urlQuery}\0${urlCategory}\0${urlType}`;
+  if (urlKey !== currentUrlKey) {
+    setUrlKey(currentUrlKey);
+    setInput(urlQuery);
+    setCategory(urlCategory);
+    setContentType(urlType);
+  }
+
   const [results, setResults] = useState<ArticleListItem[]>([]);
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [recent, setRecent] = useState<string[]>([]);
@@ -74,14 +83,8 @@ export function SearchPageView() {
   const [panelOpen, setPanelOpen] = useState(false);
 
   useEffect(() => {
-    setInput(urlQuery);
-    setCategory(urlCategory);
-    setContentType(urlType);
-  }, [urlQuery, urlCategory, urlType]);
-
-  useEffect(() => {
-    setRecent(readRecent());
     inputRef.current?.focus();
+    void Promise.resolve().then(() => setRecent(readRecent()));
   }, []);
 
   const pushSearch = useCallback(
@@ -98,22 +101,33 @@ export function SearchPageView() {
   );
 
   useEffect(() => {
+    let cancelled = false;
+
     if (!urlQuery.trim()) {
-      setResults([]);
-      setSearched(false);
-      setLoading(false);
-      return;
+      void Promise.resolve().then(() => {
+        if (!cancelled) {
+          setResults([]);
+          setSearched(false);
+          setLoading(false);
+        }
+      });
+      return () => {
+        cancelled = true;
+      };
     }
 
-    let cancelled = false;
-    setLoading(true);
-    setSearched(true);
+    void Promise.resolve().then(() => {
+      if (!cancelled) {
+        setLoading(true);
+        setSearched(true);
+      }
+    });
 
     const params = new URLSearchParams({ q: urlQuery.trim() });
     if (urlCategory) params.set("category", urlCategory);
     if (urlType) params.set("type", urlType);
 
-    fetch(`/api/search?${params.toString()}`)
+    void fetch(`/api/search?${params.toString()}`)
       .then((res) => res.json())
       .then((data: { results?: ArticleListItem[] }) => {
         if (!cancelled) setResults(data.results ?? []);
@@ -131,15 +145,25 @@ export function SearchPageView() {
   }, [urlQuery, urlCategory, urlType]);
 
   useEffect(() => {
+    let cancelled = false;
     const term = input.trim();
+
     if (term.length < 2) {
-      setSuggestions([]);
-      setSuggestLoading(false);
-      return;
+      void Promise.resolve().then(() => {
+        if (!cancelled) {
+          setSuggestions([]);
+          setSuggestLoading(false);
+        }
+      });
+      return () => {
+        cancelled = true;
+      };
     }
 
-    let cancelled = false;
-    setSuggestLoading(true);
+    void Promise.resolve().then(() => {
+      if (!cancelled) setSuggestLoading(true);
+    });
+
     const timer = window.setTimeout(() => {
       fetch(`/api/search?q=${encodeURIComponent(term)}&suggest=true`)
         .then((res) => res.json())

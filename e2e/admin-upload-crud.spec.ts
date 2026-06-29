@@ -1,0 +1,110 @@
+import { expect, test } from "@playwright/test";
+import { loginAsAdmin } from "./helpers/admin-auth";
+import { e2ePngUpload, MINIMAL_PNG } from "./helpers/test-fixtures";
+
+test.describe.configure({ mode: "serial", timeout: 180_000 });
+
+async function fetchMetaIds(page: import("@playwright/test").Page) {
+  const res = await page.request.get("/api/admin/meta");
+  expect(res.ok()).toBeTruthy();
+  const json = (await res.json()) as {
+    categories: { _id: string }[];
+    authors: { _id: string }[];
+  };
+  expect(json.categories.length).toBeGreaterThan(0);
+  expect(json.authors.length).toBeGreaterThan(0);
+  return {
+    categoryId: json.categories[0]!._id,
+    authorId: json.authors[0]!._id,
+  };
+}
+
+test.describe("Admin — médiathèque (API)", () => {
+  test.beforeEach(async ({ page }) => {
+    await loginAsAdmin(page);
+  });
+
+  test("upload local, téléchargement HTTP et suppression", async ({ page }) => {
+    const fileName = `e2e-media-${Date.now()}.png`;
+    const title = `E2E media ${Date.now()}`;
+
+    const uploadRes = await page.request.post("/api/admin/medias", {
+      multipart: {
+        file: e2ePngUpload(fileName),
+        title,
+      },
+    });
+    expect(uploadRes.ok(), await uploadRes.text()).toBeTruthy();
+    const uploaded = (await uploadRes.json()) as {
+      _id: string;
+      url: string;
+      title: string;
+    };
+    expect(uploaded._id).toBeTruthy();
+    expect(uploaded.url).toMatch(/^\/uploads\/media\//);
+
+    const downloadRes = await page.request.get(uploaded.url);
+    expect(downloadRes.ok()).toBeTruthy();
+    expect(downloadRes.headers()["content-type"]).toMatch(/image\/png/i);
+    expect((await downloadRes.body()).equals(MINIMAL_PNG)).toBe(true);
+
+    const listRes = await page.request.get(`/api/admin/medias?q=${encodeURIComponent(title)}`);
+    expect(listRes.ok()).toBeTruthy();
+    const list = (await listRes.json()) as { items?: { _id: string }[] };
+    expect(list.items?.some((m) => m._id === uploaded._id)).toBe(true);
+
+    const deleteRes = await page.request.delete(`/api/admin/medias/${uploaded._id}`);
+    expect(deleteRes.ok()).toBeTruthy();
+
+    const afterDelete = await page.request.get(`/api/admin/medias?q=${encodeURIComponent(title)}`);
+    const afterJson = (await afterDelete.json()) as { items?: { _id: string }[] };
+    expect(afterJson.items?.some((m) => m._id === uploaded._id)).toBe(false);
+  });
+});
+
+test.describe("Admin — articles (API)", () => {
+  test.beforeEach(async ({ page }) => {
+    await loginAsAdmin(page);
+  });
+
+  test("enregistrement, modification et suppression", async ({ page }) => {
+    const stamp = Date.now();
+    const { categoryId, authorId } = await fetchMetaIds(page);
+    const title = `E2E article ${stamp}`;
+    const updatedTitle = `E2E article modifié ${stamp}`;
+    const slug = `e2e-article-${stamp}`;
+
+    const createRes = await page.request.post("/api/admin/articles", {
+      data: {
+        title,
+        excerpt: "Résumé E2E",
+        content: "<p>Contenu initial E2E.</p>",
+        featuredImage:
+          "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&h=630&fit=crop",
+        categoryId,
+        authorId,
+        status: "draft",
+        slug,
+      },
+    });
+    expect(createRes.status(), await createRes.text()).toBe(201);
+    const created = (await createRes.json()) as { _id: string; slug: string };
+
+    const getRes = await page.request.get(`/api/admin/articles/${created._id}`);
+    expect((await getRes.json()) as { title: string }).toMatchObject({ title });
+
+    const patchRes = await page.request.patch(`/api/admin/articles/${created._id}`, {
+      data: { title: updatedTitle },
+    });
+    expect(patchRes.ok()).toBeTruthy();
+
+    const getUpdated = await page.request.get(`/api/admin/articles/${created._id}`);
+    expect((await getUpdated.json()) as { title: string }).toMatchObject({
+      title: updatedTitle,
+    });
+
+    const deleteRes = await page.request.delete(`/api/admin/articles/${created._id}`);
+    expect(deleteRes.ok()).toBeTruthy();
+    expect((await page.request.get(`/api/admin/articles/${created._id}`)).status()).toBe(404);
+  });
+});

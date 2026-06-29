@@ -46,8 +46,19 @@ export function CmsUsersView() {
   }, []);
 
   useEffect(() => {
-    load();
-  }, [load]);
+    let cancelled = false;
+    void fetch("/api/admin/users")
+      .then((r) => r.json())
+      .then((data) => {
+        if (!cancelled) setUsers(data.users ?? []);
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const inviteMember = async () => {
     const name = window.prompt("Nom du membre");

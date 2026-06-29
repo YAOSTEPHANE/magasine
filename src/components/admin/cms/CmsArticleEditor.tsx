@@ -123,7 +123,7 @@ export function CmsArticleEditor({ mode, articleId }: CmsArticleEditorProps) {
   const [slugTouched, setSlugTouched] = useState(false);
   const [previewSlug, setPreviewSlug] = useState<string | null>(null);
   const [lastSavedAt, setLastSavedAt] = useState<number | null>(null);
-  const [autoSaveTick, setAutoSaveTick] = useState(0);
+  const [autoSaveAgeSec, setAutoSaveAgeSec] = useState(0);
   const [pushNotify, setPushNotify] = useState(false);
   const [uploadingCover, setUploadingCover] = useState(false);
   const coverFileRef = useRef<HTMLInputElement>(null);
@@ -135,9 +135,17 @@ export function CmsArticleEditor({ mode, articleId }: CmsArticleEditorProps) {
   }, []);
 
   useEffect(() => {
-    const interval = window.setInterval(() => setAutoSaveTick((t) => t + 1), 5000);
-    return () => window.clearInterval(interval);
-  }, []);
+    if (lastSavedAt === null) return;
+    const updateAge = () => {
+      setAutoSaveAgeSec(Math.max(0, Math.floor((Date.now() - lastSavedAt) / 1000)));
+    };
+    const boot = window.setTimeout(updateAge, 0);
+    const interval = window.setInterval(updateAge, 5000);
+    return () => {
+      window.clearTimeout(boot);
+      window.clearInterval(interval);
+    };
+  }, [lastSavedAt]);
 
   useEffect(() => {
     fetch("/api/admin/meta")
@@ -185,11 +193,6 @@ export function CmsArticleEditor({ mode, articleId }: CmsArticleEditorProps) {
       });
   }, [mode, articleId]);
 
-  useEffect(() => {
-    if (slugTouched || !form.title.trim()) return;
-    patchForm({ slug: slugify(form.title, { lower: true, strict: true }) });
-  }, [form.title, slugTouched, patchForm]);
-
   const categorySlug =
     categories.find((c) => c._id === form.categoryId)?.slug ?? "actualites";
 
@@ -214,9 +217,7 @@ export function CmsArticleEditor({ mode, articleId }: CmsArticleEditorProps) {
   const autoSaveLabel =
     lastSavedAt === null
       ? "Non enregistré"
-      : `Sauvegarde auto ${formatAutoSave(Math.floor((Date.now() - lastSavedAt) / 1000))}`;
-
-  void autoSaveTick;
+      : `Sauvegarde auto ${formatAutoSave(autoSaveAgeSec)}`;
 
   const buildPayload = useCallback(
     (publishModeOverride?: PublishMode) => {
@@ -393,7 +394,15 @@ export function CmsArticleEditor({ mode, articleId }: CmsArticleEditorProps) {
               className="input lg"
               type="text"
               value={form.title}
-              onChange={(e) => patchForm({ title: e.target.value })}
+              onChange={(e) => {
+                const title = e.target.value;
+                patchForm({
+                  title,
+                  ...(slugTouched
+                    ? {}
+                    : { slug: slugify(title, { lower: true, strict: true }) }),
+                });
+              }}
               placeholder="Titre accrocheur…"
               required
             />
