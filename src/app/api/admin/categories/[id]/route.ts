@@ -1,18 +1,43 @@
 import { NextRequest, NextResponse } from "next/server";
-import slugify from "slugify";
 import { z } from "zod";
 import { requireAdminApi } from "@/lib/admin-api";
+import { normalizeCategorySlug } from "@/lib/category-admin";
 import { connectDB } from "@/lib/mongodb";
 import { Category } from "@/models/Category";
 import { Article } from "@/models/Article";
 
+const slugSchema = z
+  .string()
+  .min(1)
+  .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Invalid slug");
+
 const updateSchema = z.object({
-  name: z.string().min(1).optional(),
+  name: z.string().trim().min(1).optional(),
+  slug: slugSchema.optional(),
   description: z.string().optional(),
   color: z.string().optional(),
   order: z.number().optional(),
   isActive: z.boolean().optional(),
 });
+
+function preprocessUpdateBody(raw: unknown) {
+  if (!raw || typeof raw !== "object") return raw;
+  const body = { ...(raw as Record<string, unknown>) };
+  if (typeof body.name === "string") body.name = body.name.trim();
+  if (typeof body.slug === "string") {
+    const normalized = normalizeCategorySlug(body.slug);
+    body.slug = normalized || undefined;
+  }
+  return body;
+}
+
+async function ensureUniqueSlug(slug: string, excludeId: string) {
+  const existing = await Category.findOne({ slug, _id: { $ne: excludeId } });
+  if (existing) {
+    return NextResponse.json({ error: "Category slug already exists" }, { status: 409 });
+  }
+  return null;
+}
 
 interface RouteContext {
   params: Promise<{ id: string }>;
@@ -23,10 +48,10 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
   if (guard.error) return guard.error;
 
   const { id } = await context.params;
-  const body = await request.json();
+  const body = preprocessUpdateBody(await request.json());
   const parsed = updateSchema.safeParse(body);
   if (!parsed.success) {
-    return NextResponse.json({ error: "Invalid data" }, { status: 400 });
+    return NextResponse.json({ error: "Données invalides" }, { status: 400 });
   }
 
   await connectDB();
@@ -36,9 +61,17 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
   }
 
   const data = parsed.data;
-  if (data.name) {
-    category.name = data.name;
-    category.slug = slugify(data.name, { lower: true, strict: true });
+  if (data.name) category.name = data.name;
+  if (data.slug) {
+    const slug = normalizeCategorySlug(data.slug);
+    if (!slug) {
+      return NextResponse.json({ error: "Slug invalide" }, { status: 400 });
+    }
+    if (slug !== category.slug) {
+      const conflict = await ensureUniqueSlug(slug, id);
+      if (conflict) return conflict;
+      category.slug = slug;
+    }
   }
   if (data.description !== undefined) category.description = data.description;
   if (data.color) category.color = data.color;

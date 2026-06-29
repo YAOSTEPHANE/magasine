@@ -37,6 +37,12 @@ export const CMS_NAV_GROUPS: CmsNavGroup[] = [
         badge: "pendingComments",
         badgeTone: "amber",
       },
+      {
+        id: "categories",
+        label: "Catégories",
+        href: "/admin/categories",
+        roles: ["super_admin", "admin", "editor"],
+      },
     ],
   },
   {

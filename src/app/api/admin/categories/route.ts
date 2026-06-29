@@ -1,18 +1,34 @@
 import { NextRequest, NextResponse } from "next/server";
-import slugify from "slugify";
 import { z } from "zod";
 import { requireAdminApi } from "@/lib/admin-api";
+import { categorySlugFromName, normalizeCategorySlug } from "@/lib/category-admin";
 import { connectDB } from "@/lib/mongodb";
 import { Category } from "@/models/Category";
-import { filterRetiredCategories } from "@/lib/retired-categories";
+
+const slugSchema = z
+  .string()
+  .min(1)
+  .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Invalid slug");
 
 const createSchema = z.object({
-  name: z.string().min(1),
+  name: z.string().trim().min(1),
+  slug: slugSchema.optional(),
   description: z.string().optional(),
   color: z.string().optional(),
   order: z.number().optional(),
   isActive: z.boolean().optional(),
 });
+
+function preprocessCreateBody(raw: unknown) {
+  if (!raw || typeof raw !== "object") return raw;
+  const body = { ...(raw as Record<string, unknown>) };
+  if (typeof body.name === "string") body.name = body.name.trim();
+  if (typeof body.slug === "string") {
+    const normalized = normalizeCategorySlug(body.slug);
+    body.slug = normalized || undefined;
+  }
+  return body;
+}
 
 export async function GET() {
   const guard = await requireAdminApi("editorial");
@@ -21,17 +37,15 @@ export async function GET() {
   await connectDB();
   const categories = await Category.find().sort({ order: 1, name: 1 }).lean();
   return NextResponse.json({
-    categories: filterRetiredCategories(
-      categories.map((c) => ({
-        _id: String(c._id),
-        name: c.name,
-        slug: c.slug,
-        description: c.description ?? "",
-        color: c.color,
-        order: c.order,
-        isActive: c.isActive,
-      }))
-    ),
+    categories: categories.map((c) => ({
+      _id: String(c._id),
+      name: c.name,
+      slug: c.slug,
+      description: c.description ?? "",
+      color: c.color,
+      order: c.order,
+      isActive: c.isActive,
+    })),
   });
 }
 
@@ -39,14 +53,20 @@ export async function POST(request: NextRequest) {
   const guard = await requireAdminApi("editorial");
   if (guard.error) return guard.error;
 
-  const body = await request.json();
+  const body = preprocessCreateBody(await request.json());
   const parsed = createSchema.safeParse(body);
   if (!parsed.success) {
-    return NextResponse.json({ error: "Invalid data" }, { status: 400 });
+    return NextResponse.json({ error: "Données invalides" }, { status: 400 });
   }
 
   await connectDB();
-  const slug = slugify(parsed.data.name, { lower: true, strict: true });
+  const slug = categorySlugFromName(parsed.data.name, parsed.data.slug);
+  if (!slug) {
+    return NextResponse.json(
+      { error: "Impossible de générer un slug valide pour cette catégorie" },
+      { status: 400 }
+    );
+  }
   const existing = await Category.findOne({ slug });
   if (existing) {
     return NextResponse.json({ error: "Category slug already exists" }, { status: 409 });

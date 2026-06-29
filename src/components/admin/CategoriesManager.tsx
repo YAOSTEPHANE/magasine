@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ExternalLink, Pencil, Plus, Trash2 } from "lucide-react";
 import { AdminSectionShell } from "@/components/admin/AdminSectionShell";
 import { toast } from "@/lib/toast";
+import { isRetiredCategorySlug } from "@/lib/retired-categories";
 
 interface CategoryRow {
   _id: string;
@@ -18,6 +19,7 @@ interface CategoryRow {
 
 const emptyForm = {
   name: "",
+  slug: "",
   description: "",
   color: "#1A3896",
   order: 0,
@@ -51,6 +53,7 @@ export function CategoriesManager({ initial }: { initial: CategoryRow[] }) {
     setEditing(cat);
     setForm({
       name: cat.name,
+      slug: cat.slug,
       description: cat.description,
       color: cat.color,
       order: cat.order,
@@ -64,10 +67,14 @@ export function CategoriesManager({ initial }: { initial: CategoryRow[] }) {
     try {
       const url = editing ? `/api/admin/categories/${editing._id}` : "/api/admin/categories";
       const method = editing ? "PATCH" : "POST";
+      const payload = {
+        ...form,
+        slug: form.slug.trim() || undefined,
+      };
       const res = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify(payload),
       });
       const data = await res.json();
       if (!res.ok) {
@@ -135,9 +142,14 @@ export function CategoriesManager({ initial }: { initial: CategoryRow[] }) {
                     <p className="adm-entity-meta">/{cat.slug} · Order {cat.order}</p>
                   </div>
                 </div>
-                <span className={`adm-status ${cat.isActive ? "adm-status--active" : "adm-status--inactive"}`}>
-                  {cat.isActive ? "Active" : "Inactive"}
-                </span>
+                <div className="flex flex-wrap items-center gap-1.5 justify-end">
+                  <span className={`adm-status ${cat.isActive ? "adm-status--active" : "adm-status--inactive"}`}>
+                    {cat.isActive ? "Active" : "Inactive"}
+                  </span>
+                  {isRetiredCategorySlug(cat.slug) && (
+                    <span className="adm-status adm-status--inactive">Hidden on site</span>
+                  )}
+                </div>
               </div>
               {cat.description && <p className="adm-entity-desc line-clamp-2">{cat.description}</p>}
               <div className="adm-entity-actions">
@@ -168,6 +180,14 @@ export function CategoriesManager({ initial }: { initial: CategoryRow[] }) {
               <div className="admin-field">
                 <label>Name</label>
                 <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
+              </div>
+              <div className="admin-field">
+                <label>URL slug</label>
+                <input
+                  value={form.slug}
+                  onChange={(e) => setForm({ ...form, slug: e.target.value })}
+                  placeholder={editing ? undefined : "Auto-generated from name if empty"}
+                />
               </div>
               <div className="admin-field">
                 <label>Description</label>

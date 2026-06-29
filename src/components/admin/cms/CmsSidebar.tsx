@@ -15,6 +15,7 @@ import {
   ImageIcon,
   Megaphone,
   TrendingUp,
+  Tags,
   X,
   LogOut,
 } from "lucide-react";
@@ -35,6 +36,7 @@ const NAV_ICONS: Record<string, ComponentType<{ className?: string }>> = {
   editor: PenLine,
   medias: ImageIcon,
   comments: MessageSquare,
+  categories: Tags,
   newsletter: Mail,
   users: Users,
   ads: Megaphone,
@@ -48,6 +50,7 @@ const NAV_ICON_TONES: Record<string, "red" | "blue" | "green" | "amber" | "purpl
   editor: "green",
   medias: "purple",
   comments: "amber",
+  categories: "blue",
   users: "blue",
   ads: "amber",
   newsletter: "green",

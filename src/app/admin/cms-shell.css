@@ -2796,3 +2796,47 @@ body:has(.cms-shell) {
 .cms-shell .cms-branding-drop {
   margin-top: 8px;
 }
+
+.cms-category-modal {
+  z-index: 200;
+}
+
+.cms-shell .cms-empty-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 28px;
+  border: 1px dashed var(--line);
+  border-radius: var(--r8);
+  background: var(--bg2);
+  color: var(--t2);
+  font-size: 14px;
+}
+
+.cms-shell .cms-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  background: var(--bg3);
+  color: var(--t3);
+}
+
+.cms-shell .cms-pill--green {
+  background: color-mix(in srgb, var(--green) 18%, transparent);
+  color: var(--green);
+}
+
+.cms-shell .cms-pill--amber {
+  background: color-mix(in srgb, var(--amber) 18%, transparent);
+  color: var(--amber);
+}
+
+.cms-shell .cms-btn-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
