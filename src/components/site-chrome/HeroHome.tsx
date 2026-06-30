@@ -35,7 +35,7 @@ export function HeroHome({ data, opinions, latest, newsletterEnabled = true }: H
             <HeroOpinionSection opinions={opinions} />
           </div>
 
-          <LatestNewsColumn data={latest} />
+          <LatestNewsColumn data={latest} newsletterEnabled={newsletterEnabled} />
         </div>
       </div>
     </section>

@@ -13,7 +13,7 @@ export function HeroLatestNewsletter({ enabled = true }: HeroLatestNewsletterPro
   return (
     <div className="hero-latest-newsletter">
       <div className="hero-latest-newsletter-head">
-        <h4 className="hero-latest-newsletter-title">Newsletters</h4>
+        <h4 className="hero-latest-newsletter-title">Newsletter</h4>
         <Link href="/newsletter" className="hero-latest-newsletter-link">
           Learn more
         </Link>
