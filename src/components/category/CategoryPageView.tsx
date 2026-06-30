@@ -8,6 +8,7 @@ import { SectionPageHero } from "@/components/category/SectionPageHero";
 import { SectionRelatedNav } from "@/components/category/SectionRelatedNav";
 import { formatArticleCardMeta } from "@/lib/format-article";
 import { isNewsHubCategory } from "@/lib/news-hub";
+import { resolveCategoryHeroImage } from "@/lib/category-hero";
 
 interface CategoryPageViewProps {
   category: {
@@ -32,6 +33,7 @@ interface CategoryPageViewProps {
 export function CategoryPageView({ category, sectionMeta, articles }: CategoryPageViewProps) {
   const [featured, ...rest] = articles;
   const isRegion = sectionMeta.kind === "region";
+  const coverImage = resolveCategoryHeroImage(category.slug, featured?.featuredImage);
 
   return (
     <div
@@ -53,6 +55,7 @@ export function CategoryPageView({ category, sectionMeta, articles }: CategoryPa
         lead={sectionMeta.lead}
         description={category.description}
         accent={category.color}
+        coverImage={coverImage}
         linkHref={sectionMeta.linkHref}
         linkLabel={sectionMeta.linkLabel}
         formatLinks={sectionMeta.formatLinks}

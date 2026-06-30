@@ -1816,6 +1816,143 @@ body {
 .section-page-hero--investigation {
   --section-accent: #d62828;
 }
+.section-page-hero--with-cover {
+  padding: 0;
+  border-bottom: none;
+  background: transparent;
+}
+
+.section-page-hero--combined {
+  margin-bottom: clamp(12px, 2vw, 20px);
+}
+
+.section-page-hero-cover {
+  margin: 0;
+  width: 100%;
+}
+
+.section-page-hero-cover-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 21 / 5;
+  min-height: clamp(110px, 14vw, 160px);
+  max-height: clamp(125px, 18vw, 190px);
+  overflow: hidden;
+  background: var(--ink);
+}
+
+.section-page-hero-cover-frame img {
+  object-fit: cover;
+}
+
+.section-page-hero-cover-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(8, 12, 20, 0.35) 0%,
+    rgba(8, 12, 20, 0.12) 32%,
+    rgba(8, 12, 20, 0.55) 68%,
+    rgba(8, 12, 20, 0.88) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.section-page-hero-panel {
+  position: relative;
+  z-index: 1;
+}
+
+.section-page-hero-panel--overlay {
+  position: absolute;
+  inset: auto 0 0;
+  width: 100%;
+  margin: 0;
+  padding: clamp(8px, 1.5vw, 14px) 0 clamp(10px, 1.5vw, 14px);
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.section-page-hero--combined .section-page-breadcrumb {
+  color: rgba(255, 255, 255, 0.72);
+  margin-bottom: 6px;
+  font-size: 9px;
+}
+
+.section-page-hero--combined .section-page-breadcrumb a {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.section-page-hero--combined .section-page-breadcrumb a:hover {
+  color: #fff;
+}
+
+.section-page-hero--combined .section-page-breadcrumb span:last-child {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.section-page-hero--combined .section-page-hero-eyebrow {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.28);
+  color: #fff;
+  margin-bottom: 6px;
+  padding: 4px 10px;
+  font-size: 9px;
+}
+
+.section-page-hero--combined .section-page-hero-title {
+  color: #fff;
+  text-shadow: 0 2px 28px rgba(0, 0, 0, 0.4);
+  font-size: clamp(1.25rem, 2.8vw, 1.85rem);
+  margin-bottom: 0;
+  line-height: 1.1;
+  -webkit-line-clamp: 2;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.section-page-hero--combined .section-page-hero-lead {
+  display: none;
+}
+
+.section-page-hero--combined .section-page-hero-actions {
+  display: none;
+}
+
+.section-page-hero--combined .section-page-hero-link {
+  padding: 6px 12px;
+  font-size: 11px;
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.28);
+  color: #fff;
+}
+
+.section-page-hero--combined .section-page-hero-link:hover {
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+}
+
+.section-page-hero--combined .section-page-hero-link--muted {
+  background: transparent;
+  color: rgba(255, 255, 255, 0.75);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.section-page-hero--combined .section-page-hero-link--muted:hover {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.section-page-hero--with-cover .section-page-hero-inner {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 0;
+}
+
 .section-page-hero-ornament {
   position: absolute;
   inset: 0;
@@ -2020,6 +2157,25 @@ body {
 }
 
 @media (max-width: 600px) {
+  .section-page-hero-cover-frame {
+    aspect-ratio: 16 / 6;
+    min-height: 120px;
+    max-height: 150px;
+  }
+
+  .section-page-hero-panel--overlay {
+    padding: 8px 0 10px;
+  }
+
+  .section-page-hero--combined .section-page-breadcrumb {
+    display: none;
+  }
+
+  .section-page-hero--combined .section-page-hero-title {
+    font-size: clamp(1.15rem, 4.8vw, 1.4rem);
+    -webkit-line-clamp: 3;
+  }
+
   .section-page-hero-main {
     flex-direction: column;
     gap: 12px;

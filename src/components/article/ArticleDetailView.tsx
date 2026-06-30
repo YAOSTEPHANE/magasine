@@ -51,101 +51,104 @@ export function ArticleDetailView({
     <article className="article-page article-page--premium" style={style}>
       <PageBackdrop />
 
-      <div className="art-hero-band">
-        <div className="container art-hero-inner">
-          <nav className="art-breadcrumb art-reveal" aria-label="Breadcrumb">
-            <Link href="/">Home</Link>
-            <span className="art-breadcrumb-sep" aria-hidden>
-              /
-            </span>
-            <Link href={`/category/${article.category.slug}`}>{article.category.name}</Link>
-            <span className="art-breadcrumb-sep" aria-hidden>
-              /
-            </span>
-            <span className="art-breadcrumb-current">{article.title}</span>
-          </nav>
+      <header className="art-article-header art-article-header--combined art-reveal">
+        <figure className="art-article-header-cover">
+          <div className="art-article-header-frame">
+            <Image
+              src={heroImage}
+              alt={article.featuredImageAlt ?? article.title}
+              fill
+              priority
+              className="object-cover"
+              sizes="100vw"
+            />
+            <div className="art-article-header-scrim" aria-hidden />
 
-          <header className="art-reveal art-reveal--d1">
-            <div className="art-kicker-row">
-              <Link href={`/category/${article.category.slug}`} className="art-category-pill">
-                <span className="art-category-pill-dot" aria-hidden />
-                {article.category.name}
-              </Link>
-              {article.isUrgent && <span className="art-badge art-badge--urgent">Urgent</span>}
-              {article.isPremium && <span className="art-badge art-badge--premium">Premium</span>}
-              {article.contentType === "video" && (
-                <span className="art-badge art-badge--gold">Video</span>
-              )}
-              {article.contentType === "podcast" && (
-                <span className="art-badge art-badge--gold">Podcast</span>
-              )}
-              {badge !== "News" && badge !== article.category.name && !article.isUrgent && (
-                <span className="art-badge">{badge}</span>
-              )}
-            </div>
-
-            <h1 className="art-title">{article.title}</h1>
-
-            {article.subtitle && <p className="art-subtitle">{article.subtitle}</p>}
-
-            <div className="art-byline">
-              {author ? (
-                <Link href={`/author/${author.slug}`} className="art-author-card">
-                  {author.avatar ? (
-                    <Image
-                      src={author.avatar}
-                      alt={author.name}
-                      width={52}
-                      height={52}
-                      className="art-author-avatar"
-                    />
-                  ) : (
-                    <span className="art-author-avatar art-author-avatar--fallback" aria-hidden>
-                      {authorInitials(author.name)}
-                    </span>
-                  )}
-                  <span>
-                    <span className="art-author-name">{author.name}</span>
-                    {author.bio && (
-                      <span className="art-author-role">{author.bio.split("—")[0]?.trim()}</span>
-                    )}
+            <div className="art-article-header-panel art-article-header-panel--overlay">
+              <div className="container art-article-header-inner">
+                <nav className="art-breadcrumb" aria-label="Breadcrumb">
+                  <Link href="/">Home</Link>
+                  <span className="art-breadcrumb-sep" aria-hidden>
+                    /
                   </span>
-                </Link>
-              ) : (
-                <span />
-              )}
+                  <Link href={`/category/${article.category.slug}`}>{article.category.name}</Link>
+                  <span className="art-breadcrumb-sep" aria-hidden>
+                    /
+                  </span>
+                  <span className="art-breadcrumb-current">{article.title}</span>
+                </nav>
 
-              <div className="art-meta-strip">
-                {article.publishedAt && (
-                  <time
-                    className="art-meta-item"
-                    dateTime={article.publishedAt}
-                    title={formatPublishedDate(article.publishedAt)}
-                  >
-                    {formatArticleDisplayDate(article.publishedAt)}
-                  </time>
-                )}
+                <div className="art-kicker-row">
+                  <Link href={`/category/${article.category.slug}`} className="art-category-pill">
+                    <span className="art-category-pill-dot" aria-hidden />
+                    {article.category.name}
+                  </Link>
+                  {article.isUrgent && <span className="art-badge art-badge--urgent">Urgent</span>}
+                  {article.isPremium && <span className="art-badge art-badge--premium">Premium</span>}
+                  {article.contentType === "video" && (
+                    <span className="art-badge art-badge--gold">Video</span>
+                  )}
+                  {article.contentType === "podcast" && (
+                    <span className="art-badge art-badge--gold">Podcast</span>
+                  )}
+                  {badge !== "News" && badge !== article.category.name && !article.isUrgent && (
+                    <span className="art-badge">{badge}</span>
+                  )}
+                </div>
+
+                <h1 className="art-title">{article.title}</h1>
+
+                {article.subtitle && <p className="art-subtitle">{article.subtitle}</p>}
+
+                <div className="art-byline">
+                  {author ? (
+                    <Link href={`/author/${author.slug}`} className="art-author-card">
+                      {author.avatar ? (
+                        <Image
+                          src={author.avatar}
+                          alt={author.name}
+                          width={52}
+                          height={52}
+                          className="art-author-avatar"
+                        />
+                      ) : (
+                        <span className="art-author-avatar art-author-avatar--fallback" aria-hidden>
+                          {authorInitials(author.name)}
+                        </span>
+                      )}
+                      <span>
+                        <span className="art-author-name">{author.name}</span>
+                        {author.bio && (
+                          <span className="art-author-role">{author.bio.split("—")[0]?.trim()}</span>
+                        )}
+                      </span>
+                    </Link>
+                  ) : (
+                    <span />
+                  )}
+
+                  <div className="art-meta-strip">
+                    {article.publishedAt && (
+                      <time
+                        className="art-meta-item"
+                        dateTime={article.publishedAt}
+                        title={formatPublishedDate(article.publishedAt)}
+                      >
+                        {formatArticleDisplayDate(article.publishedAt)}
+                      </time>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
-          </header>
-        </div>
-      </div>
-
-      <figure className="art-hero-media art-reveal art-reveal--d2">
-        <div className="art-hero-frame">
-          <Image
-            src={heroImage}
-            alt={article.featuredImageAlt ?? article.title}
-            fill
-            priority
-            className="object-cover"
-            sizes="(max-width: 1024px) 100vw, 1120px"
-          />
-        </div>
-        {article.featuredImageCaption && (
-          <figcaption className="art-hero-caption">{article.featuredImageCaption}</figcaption>
-        )}
-      </figure>
+          </div>
+          {article.featuredImageCaption && (
+            <figcaption className="art-article-header-caption">
+              {article.featuredImageCaption}
+            </figcaption>
+          )}
+        </figure>
+      </header>
 
       <div className="container art-body-shell">
         <div className="art-layout art-reveal art-reveal--d3">

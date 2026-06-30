@@ -8,6 +8,12 @@ import { canManageArticles } from "@/lib/permissions";
 import { notifySubscribersOnMultimediaPublish } from "@/lib/newsletter-auto-publish";
 import { z } from "zod";
 
+const galleryItemSchema = z.object({
+  url: z.string().min(1),
+  caption: z.string().optional(),
+  credit: z.string().optional(),
+});
+
 const updateSchema = z.object({
   title: z.string().min(1).optional(),
   subtitle: z.string().optional(),
@@ -31,6 +37,7 @@ const updateSchema = z.object({
   commentsDisabled: z.boolean().optional(),
   allowSocialShare: z.boolean().optional(),
   sendPushOnPublish: z.boolean().optional(),
+  gallery: z.array(galleryItemSchema).optional(),
 });
 
 interface RouteContext {
@@ -75,6 +82,7 @@ export async function GET(_request: NextRequest, context: RouteContext) {
     sendPushOnPublish: article.sendPushOnPublish ?? false,
     slug: article.slug,
     version: article.version ?? 1,
+    gallery: article.gallery ?? [],
   });
 }
 
@@ -138,6 +146,7 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
   if (data.commentsDisabled !== undefined) article.commentsDisabled = data.commentsDisabled;
   if (data.allowSocialShare !== undefined) article.allowSocialShare = data.allowSocialShare;
   if (data.sendPushOnPublish !== undefined) article.sendPushOnPublish = data.sendPushOnPublish;
+  if (data.gallery !== undefined) article.gallery = data.gallery;
 
   await article.save();
 

@@ -183,6 +183,21 @@ export const SECTION_META: Record<string, SectionMeta> = {
       { label: "Politics", href: "/category/politics" },
     ],
   },
+  multimedia: {
+    slug: "multimedia",
+    label: "Multimedia",
+    kind: "format",
+    eyebrow: "Multimedia",
+    lead: "Video reports, podcasts, photo galleries, and visual storytelling from our correspondents.",
+    relatedSlugs: ["news", "feature", "culture", "investigations", "special-reports"],
+    linkHref: "/rss?category=multimedia",
+    linkLabel: "Multimedia RSS",
+    formatLinks: [
+      { label: "Videos", href: "/videos" },
+      { label: "Podcasts", href: "/podcasts" },
+      { label: "Photo galleries", href: "/photo-galleries" },
+    ],
+  },
   "special-reports": {
     slug: "special-reports",
     label: "Special Reports",

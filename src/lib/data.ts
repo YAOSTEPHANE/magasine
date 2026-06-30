@@ -20,7 +20,8 @@ import { getPublicSiteSettings } from "@/lib/site-settings";
 import { filterRetiredCategories, filterArticlesByRetiredCategories, isRetiredCategorySlug } from "@/lib/retired-categories";
 import { repairBrokenArticleImagesOnce } from "@/lib/repair-article-images";
 import { migrateCategorySlugsOnce } from "@/lib/migrate-category-slugs";
-import { migrateRetiredMultimediaCategory } from "@/lib/migrate-multimedia-category";
+import { migrateWorldToFeature } from "@/lib/migrate-world-to-feature";
+import { restoreMultimediaCategory } from "@/lib/migrate-multimedia-category";
 import { resolveCategorySlug } from "@/lib/category-slugs";
 import { buildNewsHubSectionCounts } from "@/lib/news-hub";
 
@@ -108,6 +109,12 @@ async function hasDbArticles(): Promise<boolean> {
   }
 }
 
+async function ensureCategoryMigrations(): Promise<void> {
+  await migrateCategorySlugsOnce();
+  await migrateWorldToFeature();
+  await restoreMultimediaCategory();
+}
+
 export const getHomePageData = cache(async function getHomePageData() {
   if (!(await hasDbArticles())) {
     return getMockHomePageData();
@@ -115,8 +122,7 @@ export const getHomePageData = cache(async function getHomePageData() {
 
   await connectDB();
   await repairBrokenArticleImagesOnce();
-  await migrateCategorySlugsOnce();
-  await migrateRetiredMultimediaCategory();
+  await ensureCategoryMigrations();
 
   const siteSettings = await getPublicSiteSettings();
   const baseQuery = { status: "published" as const };
@@ -575,6 +581,7 @@ export async function getCategoryBySlug(slug: string) {
   }
 
   await connectDB();
+  await ensureCategoryMigrations();
   const category = await Category.findOne({ slug: resolvedSlug, isActive: true }).lean();
   if (!category) return getMockCategoryBySlug(resolvedSlug);
 

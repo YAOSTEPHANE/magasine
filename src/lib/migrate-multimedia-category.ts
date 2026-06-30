@@ -1,29 +1,39 @@
 import { connectDB } from "@/lib/mongodb";
-import { Article } from "@/models/Article";
 import { Category } from "@/models/Category";
 
 let migrationDone = false;
 
-export async function migrateRetiredMultimediaCategory(): Promise<void> {
+const MULTIMEDIA_CATEGORY = {
+  name: "Multimedia",
+  slug: "multimedia",
+  color: "#1a3896",
+  order: 9,
+  description: "Video reports, podcasts, and visual storytelling",
+};
+
+/** Reactivates the Multimedia category after legacy retirement (idempotent). */
+export async function restoreMultimediaCategory(): Promise<void> {
   if (migrationDone) return;
   migrationDone = true;
 
   try {
     await connectDB();
 
-    const multimedia = await Category.findOne({ slug: "multimedia" });
-    if (!multimedia) return;
-
-    const feature = await Category.findOne({ slug: "feature" });
-    if (feature) {
-      await Article.updateMany(
-        { category: multimedia._id },
-        { $set: { category: feature._id } }
-      );
+    const existing = await Category.findOne({ slug: "multimedia" });
+    if (!existing) {
+      await Category.create({ ...MULTIMEDIA_CATEGORY, isActive: true });
+      return;
     }
 
-    multimedia.isActive = false;
-    await multimedia.save();
+    existing.isActive = true;
+    existing.name = MULTIMEDIA_CATEGORY.name;
+    if (!existing.description) {
+      existing.description = MULTIMEDIA_CATEGORY.description;
+    }
+    if (!existing.color) {
+      existing.color = MULTIMEDIA_CATEGORY.color;
+    }
+    await existing.save();
   } catch {
     migrationDone = false;
   }

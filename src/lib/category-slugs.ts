@@ -7,6 +7,7 @@ export const CATEGORY_SLUG = {
   explainer: "explainer",
   health: "health",
   feature: "feature",
+  multimedia: "multimedia",
   investigations: "investigations",
   opinion: "commentary",
   local: "local",
@@ -28,7 +29,6 @@ export const LEGACY_CATEGORY_SLUG_MAP: Record<string, string> = {
   world: CATEGORY_SLUG.feature,
   "reportages-speciaux": CATEGORY_SLUG.specialReports,
   opinion: CATEGORY_SLUG.commentary,
-  multimedia: CATEGORY_SLUG.feature,
 };
 
 export function resolveCategorySlug(slug: string): string {

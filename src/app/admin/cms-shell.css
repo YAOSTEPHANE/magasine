@@ -2644,6 +2644,63 @@ body:has(.cms-shell) {
   min-height: 100px;
 }
 
+.cms-shell .cms-gallery-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cms-shell .cms-gallery-item {
+  display: grid;
+  grid-template-columns: 96px 1fr auto;
+  gap: 10px;
+  align-items: start;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.cms-shell .cms-gallery-item:last-of-type {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.cms-shell .cms-gallery-item-preview {
+  width: 96px;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: var(--r6);
+  background: var(--bg2);
+}
+
+.cms-shell .cms-gallery-item-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.cms-shell .cms-gallery-item-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cms-shell .cms-gallery-item-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cms-shell .cms-gallery-intro {
+  margin: 0 0 12px;
+}
+
+.cms-shell .btn-xs {
+  min-width: 32px;
+  padding: 4px 8px;
+  font-size: 12px;
+}
+
 .cms-shell .cms-seo-body .input.lg {
   font-size: 15px;
   font-weight: 700;

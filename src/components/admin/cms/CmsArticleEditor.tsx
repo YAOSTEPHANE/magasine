@@ -27,6 +27,7 @@ import { toast } from "@/lib/toast";
 import { estimateReadingTime } from "@/lib/utils";
 import { getSiteHostname } from "@/lib/site";
 import { uploadAdminMedia } from "@/lib/admin-upload";
+import { CmsArticleGalleryEditor, type GalleryFormItem } from "@/components/admin/cms/CmsArticleGalleryEditor";
 
 interface Category {
   _id: string;
@@ -61,6 +62,7 @@ interface ArticleEditorForm {
   commentsEnabled: boolean;
   socialShare: boolean;
   version: number;
+  gallery: GalleryFormItem[];
 }
 
 const EMPTY_FORM: ArticleEditorForm = {
@@ -83,6 +85,7 @@ const EMPTY_FORM: ArticleEditorForm = {
   commentsEnabled: true,
   socialShare: true,
   version: 1,
+  gallery: [],
 };
 
 function stripHtml(html: string) {
@@ -201,6 +204,13 @@ export function CmsArticleEditor({ mode, articleId }: CmsArticleEditorProps) {
           commentsEnabled: !(article.commentsDisabled ?? false),
           socialShare: article.allowSocialShare ?? true,
           version: article.version ?? 1,
+          gallery: (article.gallery ?? []).map(
+            (item: { url?: string; caption?: string; credit?: string }) => ({
+              url: item.url ?? "",
+              caption: item.caption ?? "",
+              credit: item.credit ?? "",
+            })
+          ),
         });
         setPushNotify(article.sendPushOnPublish ?? false);
         setSlugTouched(true);
@@ -261,6 +271,13 @@ export function CmsArticleEditor({ mode, articleId }: CmsArticleEditorProps) {
         commentsDisabled: !form.commentsEnabled,
         allowSocialShare: form.socialShare,
         sendPushOnPublish: pushNotify,
+        gallery: form.gallery
+          .filter((item) => item.url.trim())
+          .map((item) => ({
+            url: item.url.trim(),
+            caption: item.caption.trim() || undefined,
+            credit: item.credit.trim() || undefined,
+          })),
       };
     },
     [form, pushNotify]
@@ -730,6 +747,22 @@ export function CmsArticleEditor({ mode, articleId }: CmsArticleEditorProps) {
                   placeholder="Image caption…"
                 />
               </div>
+            </div>
+          </div>
+
+          <div className="card">
+            <div className="card-header">
+              <span className="card-title">Article images</span>
+            </div>
+            <div className="card-body">
+              <p className="cms-field-hint cms-gallery-intro">
+                Additional images shown in the article detail page (caption and credit optional).
+              </p>
+              <CmsArticleGalleryEditor
+                items={form.gallery}
+                onChange={(gallery) => patchForm({ gallery })}
+                uploadTitle={form.title}
+              />
             </div>
           </div>
 

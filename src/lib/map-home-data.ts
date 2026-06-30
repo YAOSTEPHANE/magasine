@@ -37,16 +37,6 @@ import { filterArticlesByRetiredCategories } from "@/lib/retired-categories";
 
 type HomeDataSource = Awaited<ReturnType<typeof import("@/lib/data").getHomePageData>>;
 
-const FORMAT_ROW_SOURCES: {
-  slug: string;
-  title: string;
-  href: string;
-  key: "featuredVideos" | "featuredPodcasts" | "featuredGalleries";
-}[] = [
-  { slug: "videos", title: "Videos", href: "/videos", key: "featuredVideos" },
-  { slug: "podcasts", title: "Podcasts", href: "/podcasts", key: "featuredPodcasts" },
-  { slug: "photo-galleries", title: "Photo galleries", href: "/photo-galleries", key: "featuredGalleries" },
-];
 const RUBRIQUE_SOURCES: {
   slug: string;
   title: string;
@@ -57,6 +47,7 @@ const RUBRIQUE_SOURCES: {
   { slug: "south-asia", title: "South Asia", key: "southAsiaNews" },
   { slug: "west-asia", title: "West Asia", key: "westAsiaNews" },
   { slug: "news", title: "News", key: "nationalNews" },
+  { slug: "feature", title: "Feature", key: "featureNews" },
   { slug: "politics", title: "Politics", key: "politicsNews" },
   { slug: "culture", title: "Culture", key: "cultureNews" },
   { slug: "investigations", title: "Investigations", key: "investigations" },
@@ -399,24 +390,6 @@ function buildUrgent(source: HomeDataSource): HomeUrgent {
   };
 }
 
-function buildFormatRows(source: HomeDataSource): HomeRubriqueBlock[] {
-  return FORMAT_ROW_SOURCES.flatMap(({ slug, title, href, key }) => {
-    const items = filterArticlesByRetiredCategories(
-      (source[key] as ArticleListItem[] | undefined) ?? []
-    );
-    if (!items.length) return [];
-
-    return [
-      {
-        slug,
-        title,
-        href,
-        articles: items.slice(0, 4).map(toHomeCard),
-      },
-    ];
-  });
-}
-
 function buildRubriques(source: HomeDataSource): HomeRubriqueBlock[] {
   return RUBRIQUE_SOURCES.flatMap(({ slug, title, key }) => {
     const items = filterArticlesByRetiredCategories(
@@ -451,6 +424,5 @@ export function mapHomePageData(source: HomeDataSource): HomePageViewModel {
     thematic: buildThematic(source),
     urgent: buildUrgent(source),
     rubriques: buildRubriques(source),
-    formatRows: buildFormatRows(source),
   };
 }

@@ -37,8 +37,9 @@ picture,
 .hero-latest-item-media,
 
 /* Article */
+.art-article-header-frame,
+.art-article-header-frame img,
 .art-hero-frame,
-.art-hero-frame img,
 .article-page--premium .article-content img,
 .article-page--premium .article-media--video,
 .article-page--premium .article-gallery-img,
@@ -49,6 +50,8 @@ picture,
 
 /* Category */
 .category-featured .ec-card-h-media,
+.section-page-hero-cover-frame,
+.section-page-hero-cover-frame img,
 .category-page--revolution .ec-card-h-media,
 
 /* Team / admin previews */

@@ -13,8 +13,34 @@ export function ArticleBody({ article, truncated = false }: ArticleBodyProps) {
   const embedUrl = article.videoUrl ? toVideoEmbedUrl(article.videoUrl) : null;
   const isVideo = article.contentType === "video";
   const isPodcast = article.contentType === "podcast";
-  const isGallery = article.contentType === "gallery";
+  const isGalleryType = article.contentType === "gallery";
   const heroImage = resolveFeaturedImage(article.featuredImage);
+  const galleryItems = article.gallery?.filter((item) => item.url) ?? [];
+
+  const galleryBlock =
+    galleryItems.length > 0 ? (
+      <div className="article-gallery">
+        {galleryItems.map((item, index) => (
+          <figure key={`${item.url}-${index}`} className="article-gallery-item">
+            <div className="article-gallery-img">
+              <Image
+                src={resolveFeaturedImage(item.url)}
+                alt={item.caption ?? article.title}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 640px"
+              />
+            </div>
+            {(item.caption || item.credit) && (
+              <figcaption>
+                {item.caption}
+                {item.credit && <span className="article-gallery-credit"> · {item.credit}</span>}
+              </figcaption>
+            )}
+          </figure>
+        ))}
+      </div>
+    ) : null;
 
   return (
     <div className={truncated ? "article-body article-body--truncated" : "article-body"}>
@@ -58,28 +84,14 @@ export function ArticleBody({ article, truncated = false }: ArticleBodyProps) {
         </div>
       )}
 
-      {isGallery && article.gallery && article.gallery.length > 0 && (
-        <div className="article-gallery">
-          {article.gallery.map((item) => (
-            <figure key={item.url} className="article-gallery-item">
-              <div className="article-gallery-img">
-                <Image src={resolveFeaturedImage(item.url)} alt={item.caption ?? article.title} fill className="object-cover" sizes="(max-width: 768px) 100vw, 640px" />
-              </div>
-              {(item.caption || item.credit) && (
-                <figcaption>
-                  {item.caption}
-                  {item.credit && <span className="article-gallery-credit"> · {item.credit}</span>}
-                </figcaption>
-              )}
-            </figure>
-          ))}
-        </div>
-      )}
+      {isGalleryType && galleryBlock}
 
       <div
         className="article-content"
         dangerouslySetInnerHTML={{ __html: article.content }}
       />
+
+      {!isGalleryType && galleryBlock}
     </div>
   );
 }

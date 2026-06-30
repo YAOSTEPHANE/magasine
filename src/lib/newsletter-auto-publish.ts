@@ -4,7 +4,6 @@ import { sendNewsletterCampaignById } from "@/lib/newsletter-send";
 import { getSiteUrl } from "@/lib/site";
 import { Article } from "@/models/Article";
 import { NewsletterCampaign } from "@/models/NewsletterCampaign";
-import { isRetiredCategorySlug } from "@/lib/retired-categories";
 
 const MULTIMEDIA_TYPES = new Set(["video", "podcast", "gallery"]);
 
@@ -21,7 +20,7 @@ export function isMultimediaArticle(article: {
 }): boolean {
   if (MULTIMEDIA_TYPES.has(article.contentType)) return true;
   const slug = article.category?.slug?.toLowerCase();
-  return slug === "multimedia" || isRetiredCategorySlug(slug);
+  return slug === "multimedia";
 }
 
 export async function notifySubscribersOnMultimediaPublish(articleId: string): Promise<void> {

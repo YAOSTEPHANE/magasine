@@ -100,5 +100,4 @@ export interface HomePageViewModel {
   thematic: HomeThematicCol[];
   urgent: HomeUrgent;
   rubriques: HomeRubriqueBlock[];
-  formatRows: HomeRubriqueBlock[];
 }

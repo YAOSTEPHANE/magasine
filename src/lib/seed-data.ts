@@ -8,6 +8,7 @@ export const SEED_CATEGORIES = [
   { name: "Explainer", slug: "explainer", color: "#457B9D", order: 5, description: "Context and background to help readers understand complex Global South stories" },
   { name: "Health", slug: "health", color: "#00B4D8", order: 6, description: "Public health, epidemics, and health systems across emerging economies" },
   { name: "Feature", slug: "feature", color: "#F77F00", order: 7, description: "International news" },
+  { name: "Multimedia", slug: "multimedia", color: "#1a3896", order: 9, description: "Video reports, podcasts, and visual storytelling" },
   { name: "Investigations", slug: "investigations", color: "#D62828", order: 7, description: "Accountability journalism and long-form probes" },
   { name: "Opinion", slug: "opinion", color: "#6B6B6B", order: 8, description: "Analysis, columns, and debate from experts and public intellectuals" },
   { name: "Local", slug: "local", color: "#588157", order: 10, description: "City and regional stories beyond the capital" },
@@ -224,7 +225,7 @@ export const SEED_ARTICLES: SeedArticle[] = [
   {
     title: "Port of Abidjan: how it became West Africa's leading logistics hub",
     slug: "le-port-dabidjan-comment-il-est-devenu-le-premier-hub-logistique-dafrique-de-louest",
-    category: "news",
+    category: "multimedia",
     excerpt: "Video report on the port's transformation into a continental logistics platform.",
     content: `<p>With 25 million tonnes of freight handled per year, the Port of Abidjan has become the commercial gateway to the West African hinterland.</p>`,
     tags: ["port", "logistics", "economy", "Abidjan"],

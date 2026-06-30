@@ -35,7 +35,153 @@
   z-index: 1;
 }
 
-/* ─── Hero editorial band ─── */
+/* ─── Article header with cover image ─── */
+.art-article-header {
+  position: relative;
+  margin-bottom: clamp(16px, 2vw, 24px);
+}
+
+.art-article-header-cover {
+  margin: 0;
+  width: 100%;
+}
+
+.art-article-header-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 21 / 5;
+  min-height: clamp(120px, 16vw, 170px);
+  max-height: clamp(140px, 20vw, 200px);
+  overflow: hidden;
+  background: var(--ink);
+}
+
+.art-article-header-frame img {
+  object-fit: cover;
+}
+
+.art-article-header-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(8, 12, 20, 0.35) 0%,
+    rgba(8, 12, 20, 0.12) 32%,
+    rgba(8, 12, 20, 0.55) 68%,
+    rgba(8, 12, 20, 0.88) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.art-article-header-caption {
+  width: min(1120px, calc(100% - clamp(24px, 4vw, 48px)));
+  margin: 12px auto 0;
+  padding: 0 clamp(8px, 2vw, 16px);
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--mid-gray);
+  text-align: center;
+  font-style: normal;
+}
+
+.art-article-header-panel {
+  position: relative;
+  z-index: 2;
+}
+
+.art-article-header-panel--overlay {
+  position: absolute;
+  inset: auto 0 0;
+  width: 100%;
+  margin: 0;
+  padding: clamp(8px, 1.5vw, 14px) 0 clamp(10px, 1.5vw, 14px);
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.art-article-header--combined .art-breadcrumb {
+  color: rgba(255, 255, 255, 0.72);
+  margin-bottom: 6px;
+  font-size: 9px;
+}
+
+.art-article-header--combined .art-breadcrumb a {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.art-article-header--combined .art-breadcrumb a:hover {
+  color: #fff;
+}
+
+.art-article-header--combined .art-breadcrumb-current {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.art-article-header--combined .art-byline {
+  display: none;
+}
+
+.art-article-header--combined .art-kicker-row {
+  margin-bottom: 6px;
+  gap: 6px;
+}
+
+.art-article-header--combined .art-category-pill {
+  padding: 4px 10px;
+  font-size: 9px;
+}
+
+.art-article-header--combined .art-title {
+  color: #fff;
+  text-shadow: 0 2px 28px rgba(0, 0, 0, 0.4);
+  font-size: clamp(20px, 3.2vw, 32px);
+  margin-bottom: 0;
+  line-height: 1.08;
+  -webkit-line-clamp: 2;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.art-article-header--combined .art-subtitle {
+  display: none;
+}
+
+.art-article-header--combined .art-author-avatar {
+  width: 40px;
+  height: 40px;
+}
+
+.art-article-header--combined .art-author-name {
+  color: #fff;
+}
+
+.art-article-header--combined .art-author-card:hover .art-author-name {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.art-article-header--combined .art-author-role,
+.art-article-header--combined .art-meta-item {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.art-article-header--combined .art-badge:not(.art-badge--urgent):not(.art-badge--premium):not(.art-badge--gold) {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.28);
+  color: #fff;
+  backdrop-filter: blur(8px);
+}
+
+.art-article-header-inner {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+/* Legacy hero blocks (kept for compatibility) */
 .art-hero-band {
   position: relative;
   padding: clamp(20px, 3vw, 36px) 0 clamp(28px, 4vw, 44px);
@@ -921,6 +1067,25 @@
 }
 
 @media (max-width: 768px) {
+  .art-article-header-frame {
+    aspect-ratio: 16 / 6;
+    min-height: 130px;
+    max-height: 160px;
+  }
+
+  .art-article-header-panel--overlay {
+    padding: 8px 0 10px;
+  }
+
+  .art-article-header--combined .art-breadcrumb {
+    display: none;
+  }
+
+  .art-article-header--combined .art-title {
+    font-size: clamp(18px, 5vw, 24px);
+    -webkit-line-clamp: 3;
+  }
+
   .art-hero-frame {
     aspect-ratio: 16 / 10;
     border-radius: 16px;

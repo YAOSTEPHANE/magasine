@@ -55,7 +55,7 @@ const nextConfig: NextConfig = {
       { source: "/category/sante", destination: "/category/health", permanent: true },
       { source: "/category/monde", destination: "/category/feature", permanent: true },
       { source: "/category/world", destination: "/category/feature", permanent: true },
-      { source: "/category/multimedia", destination: "/videos", permanent: true },
+      { source: "/multimedia", destination: "/category/multimedia", permanent: true },
       { source: "/galleries", destination: "/photo-galleries", permanent: true },
       { source: "/erasure", destination: "/right-to-erasure", permanent: true },
       { source: "/suppression-donnees", destination: "/right-to-erasure", permanent: true },

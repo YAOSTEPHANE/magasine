@@ -6,6 +6,12 @@ import { Article } from "@/models/Article";
 import { estimateReadingTime } from "@/lib/utils";
 import { z } from "zod";
 
+const galleryItemSchema = z.object({
+  url: z.string().min(1),
+  caption: z.string().optional(),
+  credit: z.string().optional(),
+});
+
 const schema = z.object({
   title: z.string().min(1),
   subtitle: z.string().optional(),
@@ -29,6 +35,7 @@ const schema = z.object({
   commentsDisabled: z.boolean().optional(),
   allowSocialShare: z.boolean().optional(),
   sendPushOnPublish: z.boolean().optional(),
+  gallery: z.array(galleryItemSchema).optional(),
 });
 
 export async function POST(request: NextRequest) {
@@ -79,6 +86,7 @@ export async function POST(request: NextRequest) {
       commentsDisabled: parsed.data.commentsDisabled ?? false,
       allowSocialShare: parsed.data.allowSocialShare ?? true,
       sendPushOnPublish: parsed.data.sendPushOnPublish ?? false,
+      gallery: parsed.data.gallery ?? [],
     });
 
     return NextResponse.json({ _id: String(article._id), slug: article.slug }, { status: 201 });
