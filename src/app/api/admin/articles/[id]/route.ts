@@ -7,6 +7,7 @@ import { estimateReadingTime } from "@/lib/utils";
 import { canManageArticles } from "@/lib/permissions";
 import { notifySubscribersOnMultimediaPublish } from "@/lib/newsletter-auto-publish";
 import { z } from "zod";
+import { isValidVideoSourceUrl } from "@/lib/article-content-types";
 
 const galleryItemSchema = z.object({
   url: z.string().min(1),
@@ -38,6 +39,11 @@ const updateSchema = z.object({
   allowSocialShare: z.boolean().optional(),
   sendPushOnPublish: z.boolean().optional(),
   gallery: z.array(galleryItemSchema).optional(),
+  contentType: z.enum(["article", "video", "podcast", "gallery"]).optional(),
+  videoUrl: z
+    .string()
+    .optional()
+    .refine((value) => !value || isValidVideoSourceUrl(value), "Invalid video URL"),
 });
 
 interface RouteContext {
@@ -83,6 +89,8 @@ export async function GET(_request: NextRequest, context: RouteContext) {
     slug: article.slug,
     version: article.version ?? 1,
     gallery: article.gallery ?? [],
+    contentType: article.contentType ?? "article",
+    videoUrl: article.videoUrl ?? "",
   });
 }
 
@@ -147,6 +155,10 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
   if (data.allowSocialShare !== undefined) article.allowSocialShare = data.allowSocialShare;
   if (data.sendPushOnPublish !== undefined) article.sendPushOnPublish = data.sendPushOnPublish;
   if (data.gallery !== undefined) article.gallery = data.gallery;
+  if (data.contentType) article.contentType = data.contentType;
+  if (data.videoUrl !== undefined) {
+    article.videoUrl = data.videoUrl.trim() || undefined;
+  }
 
   await article.save();
 

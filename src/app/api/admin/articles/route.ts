@@ -5,6 +5,7 @@ import { connectDB } from "@/lib/mongodb";
 import { Article } from "@/models/Article";
 import { estimateReadingTime } from "@/lib/utils";
 import { z } from "zod";
+import { isValidVideoSourceUrl } from "@/lib/article-content-types";
 
 const galleryItemSchema = z.object({
   url: z.string().min(1),
@@ -36,6 +37,11 @@ const schema = z.object({
   allowSocialShare: z.boolean().optional(),
   sendPushOnPublish: z.boolean().optional(),
   gallery: z.array(galleryItemSchema).optional(),
+  contentType: z.enum(["article", "video", "podcast", "gallery"]).optional().default("article"),
+  videoUrl: z
+    .string()
+    .optional()
+    .refine((value) => !value || isValidVideoSourceUrl(value), "Invalid video URL"),
 });
 
 export async function POST(request: NextRequest) {
@@ -87,6 +93,8 @@ export async function POST(request: NextRequest) {
       allowSocialShare: parsed.data.allowSocialShare ?? true,
       sendPushOnPublish: parsed.data.sendPushOnPublish ?? false,
       gallery: parsed.data.gallery ?? [],
+      contentType: parsed.data.contentType,
+      videoUrl: parsed.data.videoUrl?.trim() || undefined,
     });
 
     return NextResponse.json({ _id: String(article._id), slug: article.slug }, { status: 201 });

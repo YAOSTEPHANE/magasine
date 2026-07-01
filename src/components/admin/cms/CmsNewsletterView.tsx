@@ -48,6 +48,7 @@ export function CmsNewsletterView({ initialTotalActive }: CmsNewsletterViewProps
     `Hello,\n\nHere is today's editorial selection.\n\n— The ${siteName} team`
   );
   const [saving, setSaving] = useState(false);
+  const [importing, setImporting] = useState(false);
 
   const load = useCallback(() => {
     Promise.all([
@@ -138,6 +139,46 @@ export function CmsNewsletterView({ initialTotalActive }: CmsNewsletterViewProps
     toast.success("Subscriber export started");
   };
 
+  const importMailchimpCsv = async (file: File) => {
+    setImporting(true);
+    const toastId = toast.loading("Importing Mailchimp subscribers…");
+    try {
+      const form = new FormData();
+      form.append("file", file);
+
+      const res = await fetch("/api/admin/newsletter/import", {
+        method: "POST",
+        body: form,
+      });
+      const data = (await res.json()) as {
+        error?: string;
+        message?: string;
+        added?: number;
+        updated?: number;
+        reactivated?: number;
+        skipped?: number;
+        invalid?: number;
+      };
+      toast.dismiss(toastId);
+
+      if (!res.ok) {
+        toast.error(data.error ?? "Import failed.");
+        return;
+      }
+
+      toast.success(
+        data.message ??
+          `Import complete: ${data.added ?? 0} added, ${data.updated ?? 0} updated.`
+      );
+      load();
+    } catch {
+      toast.dismiss(toastId);
+      toastNetworkError();
+    } finally {
+      setImporting(false);
+    }
+  };
+
   const deleteCampaign = async (campaign: CampaignRow) => {
     if (!confirm(`Delete campaign "${campaign.title}"?`)) return;
     const res = await fetch(`/api/admin/newsletter/campaigns/${campaign._id}`, {
@@ -173,6 +214,20 @@ export function CmsNewsletterView({ initialTotalActive }: CmsNewsletterViewProps
           </div>
         </div>
         <div className="vacts">
+          <label className="btn btn-out" style={{ cursor: importing ? "wait" : "pointer" }}>
+            {importing ? "Importing…" : "Import Mailchimp CSV"}
+            <input
+              type="file"
+              accept=".csv,text/csv"
+              hidden
+              disabled={importing}
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                e.target.value = "";
+                if (file) void importMailchimpCsv(file);
+              }}
+            />
+          </label>
           <button type="button" className="btn btn-out" onClick={exportSubscribers}>
             Export subscribers
           </button>
@@ -192,6 +247,20 @@ export function CmsNewsletterView({ initialTotalActive }: CmsNewsletterViewProps
           </div>
         </div>
       )}
+
+      <div className="card mb20">
+        <div className="card-header">
+          <span className="card-title">Import from Mailchimp</span>
+        </div>
+        <div className="card-body cms-stack">
+          <p className="cms-field-hint" style={{ margin: 0 }}>
+            In Mailchimp: <strong>Audience → Manage contacts → Export audience → Export as CSV</strong>.
+            Only contacts with status <strong>subscribed</strong> are imported. Mailchimp tags are mapped to
+            newsletter topics when they match (e.g. <code>africa</code>, <code>weekly</code>). No welcome
+            email is sent during import.
+          </p>
+        </div>
+      </div>
 
       <div className="kgrid mb20">
         <div className="kpi k-green">

@@ -28,6 +28,11 @@ import { estimateReadingTime } from "@/lib/utils";
 import { getSiteHostname } from "@/lib/site";
 import { uploadAdminMedia } from "@/lib/admin-upload";
 import { CmsArticleGalleryEditor, type GalleryFormItem } from "@/components/admin/cms/CmsArticleGalleryEditor";
+import {
+  ARTICLE_CONTENT_TYPES,
+  type ArticleContentType,
+  isValidVideoSourceUrl,
+} from "@/lib/article-content-types";
 
 interface Category {
   _id: string;
@@ -63,6 +68,8 @@ interface ArticleEditorForm {
   socialShare: boolean;
   version: number;
   gallery: GalleryFormItem[];
+  contentType: ArticleContentType;
+  videoUrl: string;
 }
 
 const EMPTY_FORM: ArticleEditorForm = {
@@ -86,6 +93,8 @@ const EMPTY_FORM: ArticleEditorForm = {
   socialShare: true,
   version: 1,
   gallery: [],
+  contentType: "article",
+  videoUrl: "",
 };
 
 function stripHtml(html: string) {
@@ -128,13 +137,21 @@ function publishModeToStatus(mode: PublishMode) {
 interface CmsArticleEditorProps {
   mode: "create" | "edit";
   articleId?: string;
+  defaultContentType?: ArticleContentType;
 }
 
-export function CmsArticleEditor({ mode, articleId }: CmsArticleEditorProps) {
+export function CmsArticleEditor({
+  mode,
+  articleId,
+  defaultContentType = "article",
+}: CmsArticleEditorProps) {
   const router = useRouter();
   const [categories, setCategories] = useState<Category[]>([]);
   const [authors, setAuthors] = useState<Author[]>([]);
-  const [form, setForm] = useState<ArticleEditorForm>(EMPTY_FORM);
+  const [form, setForm] = useState<ArticleEditorForm>({
+    ...EMPTY_FORM,
+    contentType: defaultContentType,
+  });
   const [tagInput, setTagInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -144,7 +161,9 @@ export function CmsArticleEditor({ mode, articleId }: CmsArticleEditorProps) {
   const [autoSaveAgeSec, setAutoSaveAgeSec] = useState(0);
   const [pushNotify, setPushNotify] = useState(false);
   const [uploadingCover, setUploadingCover] = useState(false);
+  const [uploadingVideo, setUploadingVideo] = useState(false);
   const coverFileRef = useRef<HTMLInputElement>(null);
+  const videoFileRef = useRef<HTMLInputElement>(null);
   const autoSaveRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const dirtyRef = useRef(false);
 
@@ -211,6 +230,8 @@ export function CmsArticleEditor({ mode, articleId }: CmsArticleEditorProps) {
               credit: item.credit ?? "",
             })
           ),
+          contentType: article.contentType ?? "article",
+          videoUrl: article.videoUrl ?? "",
         });
         setPushNotify(article.sendPushOnPublish ?? false);
         setSlugTouched(true);
@@ -278,6 +299,8 @@ export function CmsArticleEditor({ mode, articleId }: CmsArticleEditorProps) {
             caption: item.caption.trim() || undefined,
             credit: item.credit.trim() || undefined,
           })),
+        contentType: form.contentType,
+        videoUrl: form.videoUrl.trim() || undefined,
       };
     },
     [form, pushNotify]
@@ -290,6 +313,25 @@ export function CmsArticleEditor({ mode, articleId }: CmsArticleEditorProps) {
           toast.error("Title, category, and author are required.");
         }
         return false;
+      }
+
+      const publishing =
+        (options?.publishMode ?? form.publishMode) === "publish" ||
+        (options?.publishMode ?? form.publishMode) === "schedule";
+
+      if (form.contentType === "video" && publishing) {
+        if (!form.videoUrl.trim() || !isValidVideoSourceUrl(form.videoUrl)) {
+          if (!options?.silent) {
+            toast.error("Add a YouTube/Vimeo link or upload an MP4 for this video.");
+          }
+          return false;
+        }
+        if (!form.featuredImage.trim()) {
+          if (!options?.silent) {
+            toast.error("Add a cover image (thumbnail) for this video.");
+          }
+          return false;
+        }
       }
 
       setLoading(true);
@@ -368,6 +410,32 @@ export function CmsArticleEditor({ mode, articleId }: CmsArticleEditorProps) {
     }
   };
 
+  const uploadVideo = async (file: File) => {
+    if (!file.type.startsWith("video/")) {
+      toast.error("Only video files are allowed (MP4 recommended).");
+      return;
+    }
+    setUploadingVideo(true);
+    try {
+      const { url } = await uploadAdminMedia(file, form.title || file.name);
+      patchForm({ videoUrl: url, contentType: "video" });
+      toast.success("Video uploaded.");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Upload failed.");
+    } finally {
+      setUploadingVideo(false);
+    }
+  };
+
+  const editorTitle =
+    form.contentType === "video"
+      ? "Video editor"
+      : form.contentType === "podcast"
+        ? "Podcast editor"
+        : form.contentType === "gallery"
+          ? "Gallery editor"
+          : "Article editor";
+
   const addTag = () => {
     const tag = tagInput.trim();
     if (!tag || form.tags.includes(tag)) return;
@@ -402,7 +470,7 @@ export function CmsArticleEditor({ mode, articleId }: CmsArticleEditorProps) {
     <CmsPage className="cms-editor-page">
       <div className="vhead">
         <div>
-          <div className="vh1">Article editor</div>
+          <div className="vh1">{editorTitle}</div>
           <div className="vh2">
             {statusLabel(form.publishMode)} · {autoSaveLabel}
           </div>
@@ -705,6 +773,85 @@ export function CmsArticleEditor({ mode, articleId }: CmsArticleEditorProps) {
 
           <div className="card">
             <div className="card-header">
+              <span className="card-title">Content format</span>
+            </div>
+            <div className="card-body cms-stack">
+              <div className="field">
+                <label className="lbl" htmlFor="cms-content-type">
+                  Type
+                </label>
+                <select
+                  id="cms-content-type"
+                  className="input sel"
+                  value={form.contentType}
+                  onChange={(e) =>
+                    patchForm({ contentType: e.target.value as ArticleContentType })
+                  }
+                >
+                  {ARTICLE_CONTENT_TYPES.map((item) => (
+                    <option key={item.id} value={item.id}>
+                      {item.label}
+                    </option>
+                  ))}
+                </select>
+                <p className="cms-field-hint">
+                  Choose <strong>Video</strong> to publish on the <Link href="/videos">/videos</Link>{" "}
+                  page and the home video section.
+                </p>
+              </div>
+
+              {form.contentType === "video" && (
+                <>
+                  <div className="field">
+                    <label className="lbl" htmlFor="cms-video-url">
+                      Video URL <span className="req">*</span>
+                    </label>
+                    <input
+                      id="cms-video-url"
+                      className="input"
+                      type="url"
+                      value={form.videoUrl}
+                      onChange={(e) => patchForm({ videoUrl: e.target.value })}
+                      placeholder="https://www.youtube.com/watch?v=… or MP4 URL"
+                    />
+                    <p className="cms-field-hint">
+                      YouTube, YouTube Shorts, Vimeo, or a direct MP4 link (upload below).
+                    </p>
+                  </div>
+                  <div className="field">
+                    <label className="lbl">Upload MP4</label>
+                    <button
+                      type="button"
+                      className="btn btn-out"
+                      disabled={uploadingVideo}
+                      onClick={() => videoFileRef.current?.click()}
+                    >
+                      {uploadingVideo ? "Uploading…" : "Upload video file (max 15 MB)"}
+                    </button>
+                    <input
+                      ref={videoFileRef}
+                      type="file"
+                      accept="video/mp4,video/webm"
+                      hidden
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        e.target.value = "";
+                        if (file) void uploadVideo(file);
+                      }}
+                    />
+                    {form.videoUrl && (
+                      <p className="cms-branding-path">
+                        <code>{form.videoUrl}</code>
+                      </p>
+                    )}
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+
+          <div className="card">
+            <div className="card-header">
               <span className="card-title">Featured image</span>
             </div>
             <div className="card-body">
@@ -718,7 +865,10 @@ export function CmsArticleEditor({ mode, articleId }: CmsArticleEditorProps) {
                       <ImageIcon size={32} aria-hidden />
                     </div>
                     <div>{uploadingCover ? "Uploading…" : "Click to upload"}</div>
-                    <div className="cms-cover-hint">JPG · PNG · WebP — max 15 MB · local storage</div>
+                    <div className="cms-cover-hint">
+                      JPG · PNG · WebP — max 15 MB
+                      {form.contentType === "video" ? " · used as video thumbnail" : ""}
+                    </div>
                   </>
                 )}
                 <input

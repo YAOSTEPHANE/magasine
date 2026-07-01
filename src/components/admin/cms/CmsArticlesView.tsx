@@ -91,6 +91,9 @@ export function CmsArticlesView({
           </div>
         </div>
         <div className="vacts">
+          <Link href="/admin/articles/new?type=video" className="btn btn-out">
+            + New video
+          </Link>
           <Link href="/admin/articles/new" className="btn btn-red">
             + New article
           </Link>
