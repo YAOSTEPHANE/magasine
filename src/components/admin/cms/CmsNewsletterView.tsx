@@ -140,6 +140,18 @@ export function CmsNewsletterView({ initialTotalActive }: CmsNewsletterViewProps
   };
 
   const importMailchimpCsv = async (file: File) => {
+    const name = file.name.toLowerCase();
+    if (name.endsWith(".zip")) {
+      toast.error(
+        "Fichier ZIP détecté. Décompressez l'export Mailchimp et importez le CSV « subscribed_members »."
+      );
+      return;
+    }
+    if (!name.endsWith(".csv") && file.type && file.type !== "text/csv" && file.type !== "application/vnd.ms-excel") {
+      toast.error("Choisissez un fichier .csv exporté depuis Mailchimp.");
+      return;
+    }
+
     setImporting(true);
     const toastId = toast.loading("Importing Mailchimp subscribers…");
     try {
@@ -258,10 +270,10 @@ export function CmsNewsletterView({ initialTotalActive }: CmsNewsletterViewProps
         </div>
         <div className="card-body cms-stack">
           <p className="cms-field-hint" style={{ margin: 0 }}>
-            In Mailchimp: <strong>Audience → Manage contacts → Export audience → Export as CSV</strong>.
-            Only contacts with status <strong>subscribed</strong> are imported. Mailchimp tags are mapped to
-            newsletter topics when they match (e.g. <code>africa</code>, <code>weekly</code>). No welcome
-            email is sent during import.
+            In Mailchimp: <strong>Audience → Export audience → Export CSV</strong> (you receive a{" "}
+            <strong>ZIP</strong>). Unzip it and upload the file named like{" "}
+            <strong>subscribed_members_*.csv</strong> — not the whole ZIP, and not unsubscribed/cleaned
+            files. Only <strong>subscribed</strong> contacts are imported.
           </p>
         </div>
       </div>
