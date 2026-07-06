@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { readApiError, toastNetworkError } from "@/lib/api-toast";
 import { toast } from "@/lib/toast";
-import { formatRelativeDate } from "@/lib/utils";
+import { RelativeTime } from "@/components/admin/cms/RelativeTime";
 
 interface Comment {
   _id: string;
@@ -130,7 +130,7 @@ export function CommentsSection({
               <div>
                 <span className="text-sm font-medium text-charcoal">{comment.user.name}</span>
                 <span className="text-xs text-muted ml-2">
-                  {formatRelativeDate(comment.createdAt)}
+                  <RelativeTime iso={comment.createdAt} />
                 </span>
               </div>
             </div>

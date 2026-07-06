@@ -174,7 +174,7 @@ export function ArticleDetailView({
 
             {(article.isPremium || article.isEditorsChoice) && <NewsletterPrompt />}
 
-            {author?.bio && (
+            {author && (
               <aside className="art-author-box">
                 <div className="art-author-box-header">
                   {author.avatar ? (
@@ -196,7 +196,7 @@ export function ArticleDetailView({
                     <h3>{author.name}</h3>
                   </div>
                 </div>
-                <p>{author.bio}</p>
+                {author.bio ? <p>{author.bio}</p> : null}
                 <Link href={`/author/${author.slug}`} className="art-author-box-link">
                   View all articles
                   <ArrowRight className="w-4 h-4" aria-hidden />

@@ -45,8 +45,20 @@ export async function POST(request: NextRequest) {
     if (result.errors.length > 0 && result.added === 0 && result.updated === 0 && result.reactivated === 0) {
       return NextResponse.json(
         {
-          error: result.errors[0] ?? "Import failed.",
           ...result,
+          error: result.errors[0] ?? "Import failed.",
+        },
+        { status: 400 }
+      );
+    }
+
+    if (result.totalRows === 0 && result.added === 0 && result.updated === 0 && result.reactivated === 0) {
+      return NextResponse.json(
+        {
+          ...result,
+          error:
+            result.errors[0] ??
+            "No contacts imported. Export your Mailchimp audience as CSV with an Email Address column.",
         },
         { status: 400 }
       );

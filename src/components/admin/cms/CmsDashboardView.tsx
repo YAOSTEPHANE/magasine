@@ -21,6 +21,8 @@ import {
   TopArticlesChart,
 } from "@/components/admin/dashboard/DashboardCharts";
 import { toast } from "@/lib/toast";
+import { formatScheduledLabel } from "@/lib/relative-time";
+import { RelativeTime } from "@/components/admin/cms/RelativeTime";
 
 interface CmsDashboardViewProps {
   data: AdminDashboardData;
@@ -29,24 +31,6 @@ interface CmsDashboardViewProps {
 }
 
 const KPI_ACCENTS = ["#1a3896", "#22C55E", "#C9A227", "#9B2226"];
-
-function formatRelative(iso: string) {
-  const diff = Date.now() - new Date(iso).getTime();
-  const minutes = Math.floor(diff / 60_000);
-  if (minutes < 1) return "Just now";
-  if (minutes < 60) return `${minutes} min ago`;
-  const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `${hours}h ago`;
-  const days = Math.floor(hours / 24);
-  return `${days}d ago`;
-}
-
-function formatScheduled(iso: string) {
-  const date = new Date(iso);
-  const day = date.toLocaleDateString("en-US", { day: "2-digit", month: "2-digit" });
-  const time = date.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
-  return `Scheduled — ${day} ${time}`;
-}
 
 function initials(name: string) {
   const parts = name.trim().split(/\s+/).filter(Boolean);
@@ -73,8 +57,8 @@ function StatusBadge({
   if (status === "review") return <span className="badge b-rev">In review</span>;
   if (status === "scheduled") {
     return (
-      <span className="badge b-plan">
-        {scheduledAt ? formatScheduled(scheduledAt) : "Scheduled"}
+      <span className="badge b-plan" suppressHydrationWarning>
+        {scheduledAt ? formatScheduledLabel(scheduledAt) : "Scheduled"}
       </span>
     );
   }
@@ -105,7 +89,7 @@ function ActivityRow({ item }: { item: DashboardActivityItem }) {
             </>
           )}
         </div>
-        <div className="atime" suppressHydrationWarning>{formatRelative(item.at)}</div>
+        <RelativeTime iso={item.at} className="atime" />
       </div>
     </>
   );
@@ -252,7 +236,7 @@ export function CmsDashboardView({ data, userName, todayLabel }: CmsDashboardVie
             <div className="dash-hero-metrics">
               <div className="dash-hero-metric">
                 <Eye className="w-4 h-4" aria-hidden />
-                <span>{data.totalViews.toLocaleString()}</span>
+                <span>{data.totalViews.toLocaleString("en-US")}</span>
                 <small>Total views</small>
               </div>
               <div className="dash-hero-metric">
@@ -378,7 +362,9 @@ export function CmsDashboardView({ data, userName, todayLabel }: CmsDashboardVie
                     <td>
                       <StatusBadge status={article.status} scheduledAt={article.scheduledAt} />
                     </td>
-                    <td className="tc-muted" suppressHydrationWarning>{formatRelative(article.updatedAt)}</td>
+                    <td className="tc-muted">
+                      <RelativeTime iso={article.updatedAt} />
+                    </td>
                     <td>
                       <div className="cms-row-actions">
                         {article.status === "review" && (

@@ -4,7 +4,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useState } from "react";
 import type { ArticleListRow } from "@/components/admin/cms/CmsArticlesView";
-import { CmsStatusBadge, formatArticleDate, formatRelativeEn, authorAvatarGradient, authorInitials, categoryAccent } from "@/components/admin/cms/cms-ui";
+import { CmsStatusBadge, formatArticleDate, authorAvatarGradient, authorInitials, categoryAccent } from "@/components/admin/cms/cms-ui";
+import { RelativeTime } from "@/components/admin/cms/RelativeTime";
 import { CmsActionIcons } from "@/components/admin/cms/CmsIcons";
 import { toast } from "@/lib/toast";
 import {
@@ -165,16 +166,24 @@ export function CmsArticlesTable({
               )}
               {articles.map((article) => {
                 const color = categoryAccent(article.categoryName);
-                const dateLabel =
+                const dateCell =
                   article.status === "published" && article.publishedAt
                     ? formatArticleDate(article.publishedAt)
                     : article.status === "scheduled" && article.scheduledAt
                       ? formatArticleDate(article.scheduledAt)
                       : article.status === "review"
-                        ? `Submitted ${formatRelativeEn(article.updatedAt)}`
+                        ? (
+                            <>
+                              Submitted <RelativeTime iso={article.updatedAt} />
+                            </>
+                          )
                         : article.status === "draft"
-                          ? `Edited ${formatRelativeEn(article.updatedAt)}`
-                          : formatRelativeEn(article.updatedAt);
+                          ? (
+                              <>
+                                Edited <RelativeTime iso={article.updatedAt} />
+                              </>
+                            )
+                          : <RelativeTime iso={article.updatedAt} />;
 
                 return (
                   <tr key={article._id}>
@@ -213,7 +222,7 @@ export function CmsArticlesTable({
                     <td style={{ fontFamily: "var(--mono)", fontSize: "11.5px" }}>
                       {article.views > 0 ? article.views.toLocaleString("en-US") : "—"}
                     </td>
-                    <td className="tc-muted">{dateLabel}</td>
+                    <td className="tc-muted">{dateCell}</td>
                     <td>
                       <div className="cms-row-actions">
                         {article.status === "review" && (

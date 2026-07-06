@@ -153,6 +153,7 @@ export function CmsNewsletterView({ initialTotalActive }: CmsNewsletterViewProps
       const data = (await res.json()) as {
         error?: string;
         message?: string;
+        errors?: string[];
         added?: number;
         updated?: number;
         reactivated?: number;
@@ -162,7 +163,10 @@ export function CmsNewsletterView({ initialTotalActive }: CmsNewsletterViewProps
       toast.dismiss(toastId);
 
       if (!res.ok) {
-        toast.error(data.error ?? "Import failed.");
+        const detail = data.errors?.length
+          ? `${data.error ?? "Import failed."} (${data.errors.slice(0, 2).join(" ")})`
+          : (data.error ?? "Import failed.");
+        toast.error(detail);
         return;
       }
 

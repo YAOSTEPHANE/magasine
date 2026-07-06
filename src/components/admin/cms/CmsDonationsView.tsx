@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { CmsPage } from "@/components/admin/cms/CmsPage";
-import { formatRelativeEn } from "@/components/admin/cms/cms-ui";
+import { RelativeTime } from "@/components/admin/cms/RelativeTime";
 import { readApiError, toastNetworkError } from "@/lib/api-toast";
 import {
   type AdminDonationRow,
@@ -285,7 +285,7 @@ export function CmsDonationsView() {
                     <td>
                       <span className={statusBadgeClass(row.status)}>{donationStatusLabel(row.status)}</span>
                     </td>
-                    <td>{formatRelativeEn(row.createdAt)}</td>
+                    <td><RelativeTime iso={row.createdAt} /></td>
                     <td className="cms-donation-message">{row.message || "—"}</td>
                     <td>
                       <div className="tbl-actions">

@@ -17,7 +17,8 @@ import {
 } from "lucide-react";
 import type { ReviewQueueItem } from "@/lib/admin-review";
 import { resolveFeaturedImage } from "@/lib/images";
-import { formatDate, formatRelativeDate } from "@/lib/utils";
+import { formatDate } from "@/lib/utils";
+import { RelativeTime } from "@/components/admin/cms/RelativeTime";
 import { toast } from "@/lib/toast";
 
 interface ReviewQueueManagerProps {
@@ -97,7 +98,7 @@ function ReviewQueueCard({
           </span>
           <span className="rvq-meta-dot" aria-hidden />
           <time dateTime={item.updatedAt} title={formatDate(item.updatedAt)}>
-            Updated {formatRelativeDate(item.updatedAt)}
+            Updated <RelativeTime iso={item.updatedAt} />
           </time>
         </div>
 

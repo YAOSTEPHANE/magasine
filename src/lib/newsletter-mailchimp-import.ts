@@ -14,6 +14,8 @@ const EMAIL_HEADERS = new Set([
   "e-mail address",
   "adresse e-mail",
   "adresse email",
+  "courriel",
+  "mail",
 ]);
 
 const STATUS_HEADERS = new Set(["status", "member status", "email marketing status"]);
@@ -64,8 +66,20 @@ function normalizeHeader(value: string): string {
     .replace(/\s+/g, " ");
 }
 
+function detectDelimiter(headerLine: string): "," | ";" | "\t" {
+  const commaCount = (headerLine.match(/,/g) ?? []).length;
+  const semiCount = (headerLine.match(/;/g) ?? []).length;
+  const tabCount = (headerLine.match(/\t/g) ?? []).length;
+  if (tabCount > commaCount && tabCount > semiCount) return "\t";
+  if (semiCount > commaCount) return ";";
+  return ",";
+}
+
 function parseCsvRows(text: string): string[][] {
   const normalized = text.replace(/^\uFEFF/, "").replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+  const firstLineEnd = normalized.indexOf("\n");
+  const headerLine = firstLineEnd >= 0 ? normalized.slice(0, firstLineEnd) : normalized;
+  const delimiter = detectDelimiter(headerLine);
   const rows: string[][] = [];
   let row: string[] = [];
   let field = "";
@@ -89,7 +103,7 @@ function parseCsvRows(text: string): string[][] {
 
     if (char === '"') {
       inQuotes = true;
-    } else if (char === ",") {
+    } else if (char === delimiter) {
       row.push(field);
       field = "";
     } else if (char === "\n") {
@@ -233,6 +247,14 @@ export function parseMailchimpCsv(csvText: string): {
       preferences,
       subscribedAt,
     });
+  }
+
+  if (rows.length === 0) {
+    if (skipped > 0 && errors.length === 0) {
+      errors.push(
+        `No subscribed contacts found (${skipped} row(s) skipped — only "subscribed" / "active" status is imported).`
+      );
+    }
   }
 
   return { rows, invalid, skipped, errors };

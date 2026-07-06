@@ -121,7 +121,14 @@
 }
 
 .art-article-header--combined .art-byline {
-  display: none;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 20px;
+  margin-top: clamp(10px, 1.5vw, 14px);
+  padding-top: 0;
+  border-top: none;
 }
 
 .art-article-header--combined .art-kicker-row {

@@ -1,3 +1,7 @@
+import { formatRelativeEn, formatScheduledLabel } from "@/lib/relative-time";
+
+export { formatRelativeEn };
+
 const CATEGORY_COLORS: Record<string, string> = {
   économie: "var(--amber)",
   economie: "var(--amber)",
@@ -32,25 +36,9 @@ export function authorAvatarGradient(name: string) {
   return `linear-gradient(135deg, ${hue}, #141829)`;
 }
 
-export function formatRelativeEn(iso: string) {
-  const diff = Date.now() - new Date(iso).getTime();
-  const minutes = Math.floor(diff / 60_000);
-  if (minutes < 1) return "Just now";
-  if (minutes < 60) return `${minutes} min ago`;
-  const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `${hours}h ago`;
-  const days = Math.floor(hours / 24);
-  if (days < 7) return `${days}d ago`;
-  return new Date(iso).toLocaleDateString("en-US", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  });
-}
-
 export function formatArticleDate(iso: string) {
   const date = new Date(iso);
-  return `${date.toLocaleDateString("en-US", { day: "2-digit", month: "2-digit" })} ${date.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}`;
+  return `${date.toLocaleDateString("en-US", { day: "2-digit", month: "2-digit", timeZone: "UTC" })} ${date.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", timeZone: "UTC" })}`;
 }
 
 export function CmsStatusBadge({
@@ -63,10 +51,12 @@ export function CmsStatusBadge({
   if (status === "published") return <span className="badge b-pub">Published</span>;
   if (status === "review") return <span className="badge b-rev">In review</span>;
   if (status === "scheduled") {
-    const label = scheduledAt
-      ? `Scheduled — ${new Date(scheduledAt).toLocaleDateString("en-US", { day: "2-digit", month: "2-digit" })} ${new Date(scheduledAt).toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}`
-      : "Scheduled";
-    return <span className="badge b-plan">{label}</span>;
+    const label = scheduledAt ? formatScheduledLabel(scheduledAt) : "Scheduled";
+    return (
+      <span className="badge b-plan" suppressHydrationWarning>
+        {label}
+      </span>
+    );
   }
   if (status === "draft") return <span className="badge b-draft">Draft</span>;
   if (status === "archived") return <span className="badge b-arch">Archived</span>;

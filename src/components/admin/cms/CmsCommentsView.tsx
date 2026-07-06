@@ -3,7 +3,8 @@
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { CmsPage } from "@/components/admin/cms/CmsPage";
-import { authorAvatarGradient, authorInitials, formatRelativeEn } from "@/components/admin/cms/cms-ui";
+import { authorAvatarGradient, authorInitials } from "@/components/admin/cms/cms-ui";
+import { RelativeTime } from "@/components/admin/cms/RelativeTime";
 import { toast } from "@/lib/toast";
 
 interface CommentRow {
@@ -175,7 +176,7 @@ export function CmsCommentsView() {
                 {c.isReported && <span className="cc-flag"> ⚑ Flagged as spam</span>}
               </div>
               <div className="ccinfo">
-                {c.user?.email ?? "—"} · {formatRelativeEn(c.createdAt)}
+                {c.user?.email ?? "—"} · <RelativeTime iso={c.createdAt} />
               </div>
             </div>
             {c.article?.slug && (
