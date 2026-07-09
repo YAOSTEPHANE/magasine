@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { requireAdminApi } from "@/lib/admin-api";
 import {
@@ -82,5 +83,6 @@ export async function PATCH(request: NextRequest) {
   }
 
   const content = await updateAboutPageContent(parsed.data);
+  revalidatePath("/about");
   return NextResponse.json(content);
 }

@@ -3,6 +3,9 @@ import { AboutPageView } from "@/components/about/AboutPageView";
 import { getAboutPageContent } from "@/lib/about-page";
 import "./about-page.css";
 
+/** Contenu éditable depuis l’admin — revalidation après sauvegarde via revalidatePath. */
+export const revalidate = 60;
+
 export async function generateMetadata(): Promise<Metadata> {
   const content = await getAboutPageContent();
   return {
